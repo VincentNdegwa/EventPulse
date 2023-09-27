@@ -23,24 +23,27 @@ export default {
 </script>
 
 <template>
-    <div class="home-conatiner">
-        <TopHeader />
-        <HeroSection />
-        <Events />
-        <div class="sponsors-holder cont" id="Support">
-            <div class="sponsors-container">
-                <span>Companies That Support EventPulse</span>
-                <div class="sponsor-cards">
-                    <div class="sponsor-car-item" v-for="(item, index) in Sponsors" :key="index">
-                        <p>{{ item.name }}</p>
-                        <img :src="item.url" alt="">
-                    </div>
+    <section class="main_section">
+        <div class="home-conatiner">
+            <TopHeader />
+            <HeroSection />
+            <Events />
+            <div class="sponsors-holder cont" id="Support">
+                <div class="sponsors-container">
+                    <span>Companies That Support EventPulse</span>
+                    <div class="sponsor-cards">
+                        <div class="sponsor-car-item" v-for="(item, index) in Sponsors" :key="index">
+                            <p>{{ item.name }}</p>
+                            <img :src="item.url" alt="">
+                        </div>
 
+                    </div>
                 </div>
             </div>
+
         </div>
 
-    </div>
+    </section>
 </template>
 
 <style>

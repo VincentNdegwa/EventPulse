@@ -55,7 +55,7 @@
     border: 0px;
     background: var(--main-orange);
     width: 100%;
-    padding: 1em;
+    padding: 0.4em;
     border-radius: 0.5em;
     color: var(--main-white);
 }
@@ -65,7 +65,7 @@
 }
 
 .input_label > input {
-    height: 4rem;
+    height: 3.5rem;
 }
 
 .form_main {
@@ -75,7 +75,8 @@
 }
 
 .login-button {
-    margin-top: 4em;
+    margin-top: 1em;
+    padding: 0px !important;
 }
 
 .input_label > label {
@@ -84,7 +85,7 @@
 
 .button_register {
     width: 50%;
-    padding: 1em;
+    padding: 0.16em;
     margin-top: 2em;
     background: var(--main-green);
     outline: 0;
@@ -142,6 +143,9 @@
     .login_main {
         height: 100vh;
         grid-template-columns: repeat(1, 1fr);
+    }
+    #app {
+        display: "";
     }
 
     .login_details {

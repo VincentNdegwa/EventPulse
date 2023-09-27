@@ -6,6 +6,7 @@
     --main-fade-green: #9dc2bf;
 }
 
+
 .home-conatiner {
     width: 100%;
     background-color: white;
@@ -89,9 +90,9 @@ header {
 /*  */
 .nav_right_active {
     display: flex;
-    position: fixed;
+    position: absolute;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     left: 0;
     background: var(--main-blue);
     top: 4em;
