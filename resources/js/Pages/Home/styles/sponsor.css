@@ -1,0 +1,48 @@
+.sponsors-holder {
+    height: auto;
+    padding-left: 3em;
+    padding-right: 3em;
+}
+
+.sponsors-container {
+    width: 100%;
+    padding-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.sponsors-container > span {
+    color: var(--main-orange);
+    font-size: 2rem;
+}
+
+.sponsor-cards {
+    height: auto;
+    margin-top: 5em;
+    gap: 1rem;
+    justify-content: center;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.sponsor-car-item {
+    width: 16rem;
+    height: 100%;
+    border-radius: 1rem;
+    flex-wrap: nowrap;
+}
+
+.sponsor-car-item > p {
+    margin-bottom: 2em;
+    color: var(--main-orange);
+}
+
+.sponsor-car-item > img {
+    width: 100%;
+    border-radius: 1rem;
+    border: 1px solid var(--main-orange);
+    height: 100%;
+    object-fit: contain;
+}

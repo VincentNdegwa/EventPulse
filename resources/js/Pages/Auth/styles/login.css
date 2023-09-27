@@ -1,0 +1,158 @@
+.login_main {
+    background-image: linear-gradient(
+        90deg,
+        var(--main-orange),
+        var(--main-green)
+    );
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-self: center;
+}
+
+.login_details,
+.login_form_holder {
+    width: 100%;
+    height: 100%;
+}
+
+.login_form_holder {
+    padding: 2em;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.login-main-container {
+    justify-content: center;
+}
+
+.form_holder {
+    height: 50%;
+}
+
+.login_details {
+    display: flex;
+    padding: 2em;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login_details > h1 {
+    font-size: 2.3em;
+    color: var(--main-white);
+}
+
+.form_holder {
+    width: 100%;
+    height: 60%;
+}
+
+.button_login {
+    outline: none;
+    border: 0px;
+    background: var(--main-orange);
+    width: 100%;
+    padding: 1em;
+    border-radius: 0.5em;
+    color: var(--main-white);
+}
+
+.input_label {
+    height: auto;
+}
+
+.input_label > input {
+    height: 4rem;
+}
+
+.form_main {
+    height: auto;
+    background: transparent !important;
+    border: 1px solid var(--main-orange);
+}
+
+.login-button {
+    margin-top: 4em;
+}
+
+.input_label > label {
+    color: var(--main-white);
+}
+
+.button_register {
+    width: 50%;
+    padding: 1em;
+    margin-top: 2em;
+    background: var(--main-green);
+    outline: 0;
+    border: 0px;
+    border-radius: 0.4em;
+    font-size: 1em;
+    color: var(--main-white);
+}
+
+.back-icon {
+    position: absolute;
+    top: 2em;
+    left: 2em;
+    width: 3em;
+    height: 3em;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+}
+
+.back-icon > i {
+    font-size: 2em;
+    color: var(--main-orange);
+}
+
+.reg_hidden {
+    display: none;
+}
+.forgot-text {
+    color: var(--main-white);
+    font-size: 1.3em;
+}
+.input_label > button {
+    font-size: 1.2em;
+}
+
+@media screen and (max-width: 1036px) {
+    .login_main {
+        height: 100vh;
+        grid-template-columns: 1fr 2fr;
+    }
+
+    .login_details > h1 {
+        font-size: 1.6em;
+    }
+
+    .button_register {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .login_main {
+        height: 100vh;
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .login_details {
+        display: none;
+    }
+
+    .form_main {
+        border: 1px solid var(--main-blue);
+    }
+
+    .reg_hidden {
+        display: block;
+    }
+}
