@@ -7,7 +7,7 @@ export default {
     },
     methods: {
         redirectToLogin() {
-            this.$router.push("/login")
+            window.location.href = "/login"
         }
     }
 }

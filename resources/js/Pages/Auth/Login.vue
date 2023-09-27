@@ -7,7 +7,7 @@ export default {
     },
     methods: {
         redirectToRegister() {
-            this.$router.push("/register")
+            window.location.href = "/register"
         }
     }
 }

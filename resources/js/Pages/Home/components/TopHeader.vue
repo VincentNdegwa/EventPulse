@@ -13,7 +13,7 @@ export default {
             this.menu = false
         },
         naviagteToLogin() {
-            this.$router.push("/login")
+            window.location.href = "/login"
         }
     }, mounted() {
         window.addEventListener("resize", (ev) => {
