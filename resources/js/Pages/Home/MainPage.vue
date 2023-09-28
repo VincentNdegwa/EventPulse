@@ -51,5 +51,6 @@ export default {
 @import url("./styles//hero.css");
 @import url("./styles/events.css");
 @import url("./styles/sponsor.css");
+@import url("../../../css/app.css");
 </style>
 

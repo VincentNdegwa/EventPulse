@@ -1,4 +1,6 @@
 <script>
+import NProgress from 'nprogress'
+import { router } from '@inertiajs/vue3'
 export default {
     data() {
         return {
@@ -8,6 +10,9 @@ export default {
     methods: {
         redirectToRegister() {
             window.location.href = "/register"
+        },
+        login() {
+            NProgress.start()
         }
     }
 }
@@ -41,7 +46,7 @@ export default {
                         </div>
                         <span class="forgot-text">Forgot password?</span>
                         <div class="mb-3 input_label login-button">
-                            <button class="button_login" type="button">Login</button>
+                            <button class="button_login" type="button" @click="login">Login</button>
                         </div>
                         <div class="mb-3 input_label">
                             <button @click="redirectToRegister" class="button_register reg_hidden"
