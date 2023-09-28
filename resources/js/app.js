@@ -1,22 +1,27 @@
 import { createInertiaApp } from '@inertiajs/vue3';
 import './bootstrap';
-
 import { createApp, h } from 'vue';
+import { createVuetify } from 'vuetify';
+import 'vuetify/dist/vuetify.min.css';
+import 'vuetify/styles';
+
+import * as VuetifyComponents from 'vuetify/components';
+import * as VuetifyDirectives from 'vuetify/directives';
+
+const vuetify = createVuetify({
+    components: VuetifyComponents,
+    directives: VuetifyDirectives,
+});
 
 createInertiaApp({
     resolve: name => {
-        const pages = import.meta.glob('./Pages/**/*.vue', { eager: true })
-        return pages[`./Pages/${name}.vue`]
+        const pages = import.meta.glob('./Pages/**/*.vue', { eager: true });
+        return pages[`./Pages/${name}.vue`];
     },
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
             .use(plugin)
-            .mount(el)
+            .use(vuetify)
+            .mount(el);
     }
-})
-// import App from './App.vue';
-// import router from './router';
-
-// const app = createApp(App);
-// app.use(router);
-// app.mount('#app');
+});

@@ -1,0 +1,61 @@
+.side-nav {
+    width: 15rem;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background: linear-gradient(130deg, var(--main-green), var(--main-orange));
+}
+
+.nav-logo {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 1em;
+    border-bottom: 1px solid var(--main-blue);
+}
+
+.nav-logo > span {
+    background: linear-gradient(180deg, var(--main-white), var(--main-blue));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    font-size: 2em;
+}
+
+.nav-item {
+    background-color: var(--main-green);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0.6em;
+    gap: 0.4em;
+    border-radius: 0.4em;
+}
+
+.nav-item:hover {
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.nav-holder {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+    padding: 0.3em;
+}
+
+.icon {
+    width: 3em;
+    color: var(--main-orange);
+    font-size: 1.4em;
+}
+
+.nav-text {
+    color: var(--main-white);
+}
+
+@media screen and (max-width: 1200px) {
+    .side-nav {
+        width: 20%;
+    }
+}
