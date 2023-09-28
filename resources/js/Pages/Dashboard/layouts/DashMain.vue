@@ -11,8 +11,9 @@ export default {
                 <!-- top left -->
                 <div class="travel-advert">
                     <div class="travel-vcard">
+
                         <v-card class="mx-auto" max-width="auto">
-                            <v-img src="images/hero.jpg" height="200px" cover></v-img>
+                            <v-img src="images/hero.jpg"></v-img>
 
                             <div class="event-details">
                                 <div class="event-descriptions">
@@ -25,22 +26,20 @@ export default {
                                         Mumbai/India
                                     </v-card-subtitle>
 
-                                    <v-card-subtitle class="event-date">
+                                    <p class="event-date">
                                         May3,2023
-                                    </v-card-subtitle>
+                                    </p>
                                 </div>
-                                <div class="event-actions">
-                                    <v-card-title>
+                                <!-- <div class="event-actions"> -->
+                                <v-card-actions class="ev-actions">
+                                    <v-card-title class="ev-price">
                                         price:1000
                                     </v-card-title>
-                                    <v-card-actions>
-                                        <v-btn class="book_button" variant="text">
-                                            Book Ticket
-                                        </v-btn>
-
-                                        <v-spacer></v-spacer>
-                                    </v-card-actions>
-                                </div>
+                                    <v-btn class="book_button">
+                                        Book Ticket
+                                    </v-btn>
+                                </v-card-actions>
+                                <!-- </div> -->
                             </div>
 
                         </v-card>
@@ -49,7 +48,7 @@ export default {
 
                             <v-card>
                                 <div class="small-card-holder">
-                                    <v-img src="images/hero.jpg"></v-img>
+                                    <v-img src="images/hero.jpg" cover></v-img>
                                     <div class="text-carfd-holder">
                                         <v-card-subtitle class="text-event-place">
                                             Paris
@@ -69,142 +68,78 @@ export default {
                 </div>
                 <!-- top right -->
                 <div class="event-navigation">
-                    hello
+                    <div class="events-category-select">
+                        <div class="select-item">
+                            <i class='bx bx-briefcase-alt'></i>
+                            <span>Business</span>
+                        </div>
+
+                    </div>
+                    <div class="tickets-display">
+                        <p>
+                            Your Tickets
+                        </p>
+                        <div class="tickets-cards-holder">
+                            <v-card>
+                                <v-img class="ticket-image" src="images/hero.jpg" cover></v-img>
+                                <p class="ticket-title">DevOps Summit</p>
+                                <p class="ticket-number">th568</p>
+                                <p class="ticket-date">12May,2023</p>
+                                <p class="ticket-time">12:00pm</p>
+                            </v-card>
+
+                        </div>
+                    </div>
                 </div>
 
             </div>
-            <div class="botton-dash">world</div>
+            <div class="botton-dash">
+                <div class="recommended">
+                    <p>Recommended</p>
+                    <div class="recommended-holder">
+                        <v-card>
+                            <v-img src="images/image2.jpg" cover></v-img>
+                            <v-card-subtitle class="text-caption text-center rec-date">20thMay,2023</v-card-subtitle>
+                            <v-card-text class="text-body-2 rec-title ext-center">
+                                Let’s Talk Machine Learning
+                            </v-card-text>
+                            <v-card-subtitle class="text-h7 rec-place text-center">
+                                Nairobi
+                            </v-card-subtitle>
+                            <v-card-subtitle class="text-caption rec-price text-center">
+                                500ksh
+                            </v-card-subtitle>
+
+                        </v-card>
+
+                    </div>
+                </div>
+                <div class="saved-events">
+                    <p>Saved Events</p>
+                    <div class="saved-events-holder">
+                        <v-card class="saved-events-card">
+                            <div class="saved-holder">
+                                <v-img src="images/image2.jpg" cover></v-img>
+                                <div class="saved-details">
+                                    <p class="text-caption saved-heading text-center">
+                                        Talk Machine Learning
+                                    </p>
+                                    <p class="saved-date">
+                                        12June,2023
+                                    </p>
+                                    <p class="saved-price">
+                                        2000
+                                    </p>
+                                </div>
+                            </div>
+                        </v-card>
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 <style>
-.dash-main {
-    width: 100%;
-    height: 100vh;
-    padding-left: 15rem;
-}
-
-.dash-holder {
-    width: 100%;
-    height: 100%;
-    display: grid;
-    padding: 2em;
-    grid-template-rows: 1fr 1fr;
-
-}
-
-.top-dash {
-    display: grid;
-    gap: 0.3em;
-    grid-template-columns: 55% 45%;
-}
-
-.travel-advert {
-    width: 100%;
-    height: 100%;
-    box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 0.3em;
-    /* border: 1px solid; */
-}
-
-.travel-vcard {
-    display: grid;
-    gap: 1em;
-    grid-template-columns: 60% 30%;
-    width: 100%;
-}
-
-.mx-auto {
-    /* border: 2px solid green !important; */
-    margin-left: -5em !important;
-    width: 100% !important;
-}
-
-.event-details {
-    display: grid;
-    grid-template-columns: 57% 40%;
-    justify-content: space-between;
-    height: 9rem;
-}
-
-.event-actions {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    align-items: end;
-    justify-content: space-evenly;
-}
-
-.event-actions>.v-card-title {
-    color: var(--main-blue) !important;
-    font-size: 0.9em;
-    display: grid;
-    place-items: center;
-    padding: 0.1em;
-    background: var(--main-orange);
-    border-radius: 0.4em;
-}
-
-.book_button {
-    background: var(--main-green) !important;
-    color: var(--main-white) !important;
-}
-
-.event-title {
-    color: var(--main-blue) !important;
-}
-
-.event-place {
-    color: var(--main-orange);
-    font-size: 1em !important;
-}
-
-.event-date {
-    color: var(--main-green);
-    margin-top: 2em;
-}
-
-.small-card-holder {
-    display: flex;
-}
-
-.text-event-place {
-    font-size: 1.2em !important;
-    color: var(--main-green) !important;
-    font-weight: bold !important;
-}
-
-.text-carfd-holder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-}
-
-.text-event-count {
-    color: var(--main-orange);
-}
-
-.top-places {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3em;
-}
-
-/* top-right */
-.event-navigation {
-    background: gray;
-}
-
-/* bottom dash */
-
-/* .botton-dash {
-    border: 1px solid;
-} */
-
-@media screen and (max-width: 1200px) {
-    .dash-main {
-        padding-left: 20%;
-    }
-}
+@import url('../styles/dashmain.css');
 </style>

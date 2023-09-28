@@ -1,0 +1,383 @@
+.dash-main {
+    width: 100%;
+    height: 100%;
+    padding-left: 15rem;
+}
+
+.dash-holder {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    padding: 1em;
+    gap: 1em;
+    grid-template-rows: 1fr 0.8fr;
+}
+
+.top-dash {
+    display: grid;
+    gap: 0.3em;
+    height: 100%;
+    width: 100%;
+    grid-template-columns: 55% 45%;
+}
+
+.travel-advert {
+    width: 100%;
+    height: 100%;
+    box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 0.3em;
+    /* border: 1px solid; */
+}
+
+.travel-vcard {
+    display: grid;
+    gap: 1em;
+    height: 100% !important;
+    grid-template-columns: 60% 30%;
+    width: 100%;
+}
+
+.mx-auto {
+    /* border: 2px solid green !important; */
+    margin-left: -5em !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.event-details {
+    display: grid;
+    /* grid-template-columns: 57% 40%;
+    justify-content: space-between; */
+    /* height: 9rem; */
+}
+.event-title {
+    width: 100%;
+}
+
+.event-actions {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-items: end;
+    justify-content: space-evenly;
+}
+
+.ev-price {
+    color: var(--main-orange) !important;
+    font-size: 0.7em !important;
+    /* display: grid;
+    place-items: center; */
+    padding: 0.1em !important;
+    border-radius: 0.4em;
+}
+.ev-actions {
+    display: flex !important;
+    gap: 1em;
+}
+
+.book_button {
+    background: var(--main-green) !important;
+    color: var(--main-white) !important;
+    font-size: 0.6em !important;
+    padding: 0em !important;
+}
+
+.event-title {
+    color: var(--main-blue) !important;
+}
+
+.event-place {
+    color: var(--main-orange);
+    font-size: 1em !important;
+}
+
+.event-date {
+    color: var(--main-green);
+    margin-top: 0em;
+    margin: 0;
+    margin-left: 1.2em;
+}
+
+.small-card-holder {
+    display: flex;
+}
+
+.text-event-place {
+    font-size: 1.2em !important;
+    color: var(--main-green) !important;
+    font-weight: bold !important;
+}
+
+.text-carfd-holder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.text-event-count {
+    color: var(--main-orange);
+}
+
+.top-places {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+}
+
+/* top-right */
+.event-navigation {
+    /* background: gray; */
+    display: grid;
+    gap: 0.4em;
+    height: 100%;
+    border-radius: 0.4em;
+    grid-template-rows: 35% 60%;
+}
+
+.events-category-select {
+    box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 0.4em;
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+    place-items: center;
+    overflow-x: hidden;
+}
+
+.select-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--main-blue);
+    /* background: var(--main-orange); */
+    padding: 0.2em;
+    border-radius: 0.2em;
+}
+
+.select-item > span {
+    font-size: 0.9em;
+    color: var(--main-white);
+}
+
+.select-item > i {
+    color: var(--main-orange);
+    font-size: 1em;
+}
+
+.tickets-display {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.tickets-display > p {
+    color: var(--main-blue);
+    font-size: 0.7em;
+}
+
+.tickets-cards-holder {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.3em;
+    height: auto;
+    box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.25);
+
+    /* place-items: center; */
+}
+
+.ticket-title {
+    font-size: 0.6em !important;
+    color: var(--main-green) !important;
+    font-weight: bold !important;
+}
+
+.ticket-number {
+    font-size: 0.65em !important;
+    color: var(--main-orange);
+    margin-top: -1em;
+}
+
+.ticket-date {
+    font-size: 0.5em !important;
+}
+
+.ticket-time {
+    color: var(--main-orange);
+    font-size: 0.7em !important;
+}
+.ticket-title,
+.ticket-number,
+.ticket-date,
+.ticket-time {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+.ticket-image {
+    height: 40%;
+}
+.botton-dash {
+    display: grid;
+    height: 100%;
+    width: 100%;
+    gap: 4%;
+    grid-template-columns: 65% 30%;
+}
+
+.recommended > p,
+.saved-events > p {
+    font-size: 1em;
+    color: var(--main-blue);
+}
+
+.recommended,
+.saved-events {
+    display: flex;
+    flex-direction: column;
+}
+
+.recommended-holder,
+.saved-events-holder {
+    height: 100%;
+    padding: 0.7em;
+}
+
+.recommended-holder {
+    border: 1px solid var(--main-orange);
+    border-radius: 0.5em;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    align-items: center;
+}
+
+.saved-events-holder {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.3em;
+    grid-template-rows: repeat(3, 1fr);
+    align-items: center;
+}
+
+.recommended-holder > * {
+    width: 100% !important;
+}
+
+/* rec-date
+rec-title
+rec-place
+rec-price */
+.rec-date {
+    color: var(--main-green);
+}
+
+.rec-title {
+    color: var(--main-orange) !important;
+    font-weight: bold !important;
+    padding: 0 !important;
+    text-align: center;
+}
+
+.rec-place {
+    color: var(--main-green);
+}
+
+.rec-price {
+    color: var(--main-blue);
+}
+
+.saved-events-holder > * {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.saved-holder {
+    display: flex;
+}
+
+.saved-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.saved-details > * {
+    padding: 0;
+    margin: 0;
+}
+
+.saved-details > :nth-child(1) {
+    color: var(--main-blue);
+}
+
+.saved-details > :nth-child(2) {
+    font-size: 0.6em;
+    color: var(--main-orange);
+}
+
+.saved-details > :nth-child(3) {
+    font-size: 0.9em;
+    color: var(--main-green);
+}
+
+.saved-events-card {
+    height: 100%;
+}
+/* bottom dash */
+
+/* .botton-dash {
+    border: 1px solid;
+} */
+
+@media screen and (max-width: 1200px) {
+    .dash-main {
+        padding-left: 20%;
+    }
+}
+@media screen and (max-width: 800px) {
+    /* .travel-vcard {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 60% 40%;
+    } */
+    .top-places {
+        display: none;
+    }
+    .travel-vcard {
+        grid-template-columns: 1fr;
+    }
+    .top-dash {
+        display: grid;
+        gap: 0.3em;
+        height: 100%;
+        width: 100%;
+        grid-template-columns: 45% 55%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .top-dash {
+        display: grid;
+        gap: 0.3em;
+        height: 100%;
+        width: 100%;
+        grid-template-columns: 1fr;
+    }
+    .botton-dash {
+        display: grid;
+        margin-top: 2em;
+        gap: 4%;
+        grid-template-columns: 1fr;
+    }
+    .saved-events-holder {
+        grid-template-rows: repeat(3, 1fr);
+    }
+    .saved-events-holder > .v-card {
+        height: 5em;
+    }
+    .saved-holder {
+        display: grid;
+        grid-template-columns: 40% 60%;
+    }
+}
