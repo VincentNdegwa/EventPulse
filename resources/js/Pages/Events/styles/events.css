@@ -1,0 +1,126 @@
+.event-body {
+    padding-left: 3em;
+    padding-right: 3em;
+    height: 100%;
+}
+
+.event-container {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    margin-top: 0.3em;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3em;
+    /* justify-content: space-evenly; */
+    flex-grow: flex-grow;
+}
+
+.event-container > .card {
+    /* flex-grow: 1; */
+    width: 20rem;
+    height: fit-content;
+}
+
+.card {
+    background: var(--main-white) !important;
+    box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.1);
+    border: 0px;
+}
+
+.card-body > * {
+    padding: 0;
+    margin: 0;
+}
+
+.card-body > p {
+    font-size: 1em;
+    color: var(--main-blue);
+    font-weight: bold;
+}
+
+.card-body > span {
+    font-size: 0.8em;
+    color: var(--main-green);
+}
+
+.event-desc-display {
+    display: flex;
+    gap: 0.2em;
+    flex-direction: row;
+    align-items: center;
+}
+
+.event-desc-display > span {
+    margin: 0;
+    background: var(--main-blue);
+    font-size: 0.7em;
+    display: grid;
+    place-items: center;
+    color: var(--main-white);
+    padding: 0.4em;
+    border-radius: 0.4em;
+}
+
+.event-desc-display > p {
+    font-size: 0.6em;
+    margin-bottom: 0.4em;
+}
+
+.card-body > h6 {
+    margin-top: 0.9em;
+    color: var(--main-blue);
+}
+
+.event-container::-webkit-scrollbar {
+    display: none;
+}
+
+@media screen and (max-width: 1305px) {
+    .event-container > .card {
+        flex-grow: 1;
+        min-width: calc(33.33% - 0.6em);
+        max-width: calc(50% - 0.6em);
+    }
+
+    .event-container {
+        justify-content: space-evenly;
+    }
+}
+
+@media screen and (max-width: 723px) {
+    .event-desc-display {
+        display: flex;
+        gap: 0.2em;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .event-container > .card {
+        flex-grow: 1;
+        min-width: calc(33.33% - 0.6em);
+        max-width: calc(100% - 0.6em);
+    }
+
+    .event-container {
+        gap: 0.2em;
+    }
+
+    .event-desc-display {
+        display: flex;
+        gap: 0.2em;
+        flex-direction: row;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .event-body {
+        padding: 0;
+    }
+
+    .event-container {
+        padding: 0.3em;
+    }
+}

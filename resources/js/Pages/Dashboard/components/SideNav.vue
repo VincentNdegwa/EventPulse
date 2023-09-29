@@ -1,4 +1,5 @@
 <script>
+import { router } from "@inertiajs/vue3"
 
 export default {
     data() {
@@ -11,7 +12,7 @@ export default {
             this.menu = !this.menu;
         },
         navigate(routerName) {
-
+            router.visit(route(routerName))
         },
     },
     mounted() {
@@ -48,10 +49,18 @@ export default {
                     Events
                 </div>
             </button>
+            <button @click="navigate('my-events')" class="nav-item">
+                <div class="icon">
+                    <i class='bx bxs-calendar-heart'></i>
+                </div>
+                <div class="nav-text">
+                    My Events
+                </div>
+            </button>
         </nav>
     </div>
-    <i v-if="menu" @click="opemMenu" class='bx bx-x menu-active'></i>
-    <i v-else @click="opemMenu" class='bx bx-menu-alt-left menu-active'></i>
+    <i v-if="menu" @click="openMenu" class='bx bx-x menu-active'></i>
+    <i v-else @click="openMenu" class='bx bx-menu-alt-left menu-active'></i>
 </template>
 <style>
 @import url("../../../../css/app.css");
