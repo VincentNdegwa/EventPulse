@@ -35,3 +35,9 @@ Route::get('/events', function () {
 Route::get('/my-events', function () {
     return Inertia::render('MyEvents/MyEvents');
 })->name("my-events");
+Route::get('/tickets', function () {
+    return Inertia::render('Tickets/Tickets');
+})->name("tickets");
+Route::get('/approvals', function () {
+    return Inertia::render('Approvals/Approvals');
+})->name("approvals");

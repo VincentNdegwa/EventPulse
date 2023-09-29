@@ -57,6 +57,23 @@ export default {
                     My Events
                 </div>
             </button>
+            <button @click="navigate('tickets')" class="nav-item">
+                <div class="icon">
+                    <i class='bx bx-receipt'></i>
+                </div>
+                <div class="nav-text">
+                    Tickets
+                </div>
+            </button>
+
+            <button @click="navigate('approvals')" class="nav-item">
+                <div class="icon">
+                    <i class='bx bxs-hourglass'></i>
+                </div>
+                <div class="nav-text">
+                    Approvals
+                </div>
+            </button>
         </nav>
     </div>
     <i v-if="menu" @click="openMenu" class='bx bx-x menu-active'></i>
@@ -65,3 +82,4 @@ export default {
 <style>
 @import url("../../../../css/app.css");
 </style>
+<!-- approvals -->
