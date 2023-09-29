@@ -83,8 +83,7 @@
     }
 }
 @media screen and (max-width: 900px) {
-    .nav-logo {
-    }
+
     .nav-logo > span {
         display: none;
     }

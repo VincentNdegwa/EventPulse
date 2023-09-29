@@ -11,14 +11,13 @@ export default {
 </script>
 
 <template>
-    <section class="main-section">
+    <div class="main-section">
         <SideNav />
-      EventHeader />
-                <div class="event-body">  <div class="dash-main">
+        <div class="dash-main">
             <div class="events-container">
-                <
+                <EventHeader />
+                <div class="event-body">
                     <div class="event-container">
-
                         <div class="card" style="">
                             <img src="images/image2.jpg" class="card-img-top" alt="...">
                             <div class="card-body">
@@ -65,7 +64,8 @@ export default {
                 </div>
             </div>
         </div>
-    </section>
+
+    </div>
 </template>
 <style>
 @import url("./styles/event-header.css");
