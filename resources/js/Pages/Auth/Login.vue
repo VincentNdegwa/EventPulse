@@ -1,26 +1,64 @@
 <script>
 import NProgress from 'nprogress'
 import { router } from '@inertiajs/vue3'
+import axios from 'axios'
+import nprogress from 'nprogress';
 export default {
     data() {
         return {
-
+            FormData: {
+                "email": "",
+                "password": ""
+            },
+            response: {
+                "error": false,
+                "message": ""
+            }
         }
     },
     methods: {
         redirectToRegister() {
             window.location.href = "/register"
         },
-        login() {
-            NProgress.start()
+        submitForm() {
+            nprogress.start();
+            axios.post("/user/login", this.FormData)
+                .then(res => {
+                    if (res.data?.error === false) {
+                        this.response = {
+                            error: false,
+                            message: ""
+                        };
+                        this.navigateDash();
+                    } else {
+                        this.response = {
+                            error: true,
+                            message: res.data.message
+                        };
+                    }
+                    nprogress.done();
+                })
+                .catch(err => {
+                    nprogress.done();
+                    console.error(err);
+                });
+        },
+
+        navigateDash() {
+            router.visit("/dashboard");
         }
-    }
+
+    },
+    components: {
+
+    },
 }
 </script>
 
 <template>
     <section class="main_section">
         <div class="login_main">
+            <span v-if="response.error" class="error-disp">{{ response.message }}</span>
 
             <div class="login_details">
                 <h1>
@@ -35,22 +73,22 @@ export default {
 
             <div class="login_form_holder login-main-container">
                 <div class="form_holder">
-                    <form action="" class="form_main form-control">
+                    <form @submit.prevent="submitForm" action="" class="form_main form-control">
                         <div class="mb-3 input_label">
                             <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="email" placeholder="test@gmail.com">
+                            <input v-model="FormData.email" type="email" class="form-control" id="email"
+                                placeholder="test@gmail.com">
                         </div>
                         <div class="mb-3 input_label">
                             <label for="pass" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="pass">
+                            <input v-model="FormData.password" type="password" class="form-control" id="pass">
                         </div>
                         <span class="forgot-text">Forgot password?</span>
                         <div class="mb-3 input_label login-button">
-                            <button class="button_login" type="button" @click="login">Login</button>
+                            <button class="button_login" type="button" @click="submitForm">Login</button>
                         </div>
                         <div class="mb-3 input_label">
-                            <button @click="redirectToRegister" class="button_register reg_hidden"
-                                type="button">Register</button>
+                            <button type="submit" class="button_register reg_hidden">Register</button>
                         </div>
                     </form>
                 </div>

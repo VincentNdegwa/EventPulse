@@ -65,13 +65,29 @@ export default {
                     Tickets
                 </div>
             </button>
-
+            <button @click="navigate('create_event')" class="nav-item">
+                <div class="icon">
+                    <i class='bx bx-add-to-queue'></i>
+                </div>
+                <div class="nav-text">
+                    Create
+                </div>
+            </button>
+            <!-- <i class='bx bx-add-to-queue' ></i> -->
             <button @click="navigate('approvals')" class="nav-item">
                 <div class="icon">
                     <i class='bx bxs-hourglass'></i>
                 </div>
                 <div class="nav-text">
                     Approvals
+                </div>
+            </button>
+            <button @click="navigate('logout')" class="nav-item">
+                <div class="icon">
+                    <i class='bx bxs-exit'></i>
+                </div>
+                <div class="nav-text">
+                    Logout
                 </div>
             </button>
         </nav>

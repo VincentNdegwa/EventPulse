@@ -7,7 +7,8 @@ import 'vuetify/styles';
 
 import * as VuetifyComponents from 'vuetify/components';
 import * as VuetifyDirectives from 'vuetify/directives';
-
+import axios from 'axios';
+axios.defaults.withCredentials = true
 const vuetify = createVuetify({
     components: VuetifyComponents,
     directives: VuetifyDirectives,
