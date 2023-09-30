@@ -156,6 +156,7 @@
     border-radius: 0.3em;
     color: var(--main-white);
 }
+
 @media screen and (max-width: 950px) {
     .ticket-details {
         width: 70%;

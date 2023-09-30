@@ -11,7 +11,7 @@ export default {
     },
     methods: {
         toggleTicket() {
-            this.openTicket = true
+            this.openTicket = !this.openTicket
         },
         closeTicket() {
             this.openTicket = false
