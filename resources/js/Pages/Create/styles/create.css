@@ -1,0 +1,192 @@
+.create-container {
+    width: 100%;
+    height: 100%;
+}
+
+.creating-event {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.fillable-container {
+    padding: 2em;
+    display: grid;
+    gap: 5%;
+    grid-template-columns: 55% 40%;
+    width: 100%;
+    height: 100%;
+}
+.part-one-fillables,
+.part-two-fillables {
+    width: 100%;
+    height: 100%;
+}
+/* .part-one-fillables {
+    border: 1px solid;
+} */
+.part-two-fillables {
+    /* border: 1px solid; */
+    position: relative;
+}
+
+/* event form */
+.event-form {
+    width: 60%;
+    height: 2em;
+    border: 1px solid var(--main-orange);
+    text-indent: 0.3em;
+    color: var(--main-blue);
+    outline: none;
+    border-radius: 0.4em;
+}
+.input-holder {
+    display: flex;
+    flex-direction: column;
+}
+.event-label {
+    font-size: 0.9em;
+    color: var(--main-green);
+}
+.helper-text {
+    font-size: 0.6em;
+    color: var(--main-orange);
+}
+.event-text-area {
+    width: 80%;
+    height: 4em;
+    resize: none;
+}
+.fee-select-input {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+.fee-select-input > p {
+    margin: 0;
+}
+.chips-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chip {
+    display: flex;
+    align-items: center;
+    margin: 5px;
+    padding: 5px 10px;
+    background-color: #e0e0e0;
+    border-radius: 20px;
+}
+.chip > label {
+    cursor: pointer;
+}
+.add-host-btn {
+    position: absolute;
+    bottom: 0;
+    right: 1em;
+    padding: 0.3em;
+    border-radius: 0.4em;
+    background: var(--main-green);
+    color: var(--main-white);
+}
+.create-host {
+    width: 100%;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 80% 20%;
+}
+.navigations-host {
+    width: 100%;
+    height: 5em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.navigations-host > button {
+    padding: 1em;
+    background: var(--main-orange);
+    color: var(--main-white);
+    margin: 0.3em;
+    border-radius: 0.4em;
+}
+.create-host-container {
+    width: 100%;
+    height: 100%;
+    padding: 3em;
+}
+.create-host-holder {
+    /* border: 1px solid var(--main-orange); */
+    height: 100%;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    position: relative !important;
+    width: 100%;
+}
+.create-header {
+    background: var(--main-green);
+    display: grid;
+    color: var(--main-white);
+    grid-template-columns: repeat(5, 1fr);
+    position: sticky;
+    top: 0;
+    width: 100%;
+}
+.create-header > span {
+    border-left: 1px solid gray;
+}
+.create-host-items-holder {
+    width: 100%;
+}
+.create-host-item {
+    width: 100%;
+    background: var(--main-white);
+    margin-top: 0.3em;
+    padding-bottom: 1em;
+    padding-top: 1em;
+    box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.3);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    place-content: center;
+    gap: 0.3em;
+    border-radius: 0.3em;
+    position: relative;
+}
+.add-icon-host {
+    border-radius: 50%;
+    background: var(--main-green);
+    display: grid;
+    width: fit-content;
+    height: fit-content;
+    place-items: center;
+    font-size: 2em;
+    color: var(--main-orange);
+    position: sticky;
+    bottom: 0;
+    left: 100%;
+}
+.inputs-host-holder {
+    width: 100%;
+    /* border-left: 1px solid gray; */
+}
+.inputs-host-holder > input {
+    width: 100%;
+    height: 2em;
+    border-radius: 0.4em;
+    border: 1px solid var(--main-orange);
+    background: var(--main-white);
+    outline: none;
+    color: var(--main-green);
+    font-size: 0.8em;
+}
+.inputs-host-holder:nth-child(1) {
+    border-left: 0px;
+}
+.clear-icon {
+    font-size: 1.4em;
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+}
