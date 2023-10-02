@@ -1,15 +1,20 @@
 <script>
 export default {
-
+    props: {
+        loading: Boolean
+    }
 }
 </script>
 
 <template>
-    <span class="loader"></span>
+    <div v-if="loading" class="loading-section">
+        <span class="loader"></span>
+    </div>
 </template>
 <style>
 .loading-section {
-    position: fixed;
+    position: fixed !important;
+    top: 0;
     width: 100%;
     height: 100vh;
     display: grid;

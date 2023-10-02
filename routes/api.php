@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\events_controller;
 use App\Http\Controllers\user_controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,3 +26,7 @@ Route::group(['prefix' => 'user'], function () {
     Route::post('login', [user_controller::class, 'login']);
     Route::post('update', [user_controller::class, 'update']);
 });
+
+
+Route::post("/create-event", [events_controller::class, "createEvent"]);
+Route::post("/get-events", [events_controller::class, "getMyEvents"]);

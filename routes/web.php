@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\user_controller;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use PhpParser\Builder\Param;
@@ -64,3 +65,10 @@ Route::group(['prefix' => 'user'], function () {
     Route::post('update', [user_controller::class, 'update']);
     Route::get('logout', [user_controller::class, 'logout'])->name("logout");
 });
+
+Route::post("/user-id", function () {
+    $data = [
+        "userId" => auth()->id()
+    ];
+    return response()->json($data, 200);
+})->name("get-user-id");

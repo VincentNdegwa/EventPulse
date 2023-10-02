@@ -1,15 +1,22 @@
 <script>
 import SideNav from "../Dashboard/components/SideNav.vue"
 import MyEventsHeader from "./components/MyEventsHeader.vue";
+import Loader from "@/components/Loader.vue";
+import axios from "axios";
 export default {
     data() {
         return {
-            openMore: false
+            errorText: "",
+            openMore: false,
+            loading: false,
+            userid: "",
+            myEventsData: [],
         }
     },
     components: {
         SideNav,
-        MyEventsHeader
+        MyEventsHeader,
+        Loader
     },
     methods: {
         toggleMore() {
@@ -17,11 +24,56 @@ export default {
         },
         closeMore() {
             this.openMore = false
+        }, requestData() {
+            axios.post("/user-id").then(res => {
+                if (res) {
+                    this.userid = res.data.userId
+                    if (res.data.userId) {
+                        axios.post("api/get-events", { userId: res.data.userId }).then(res => {
+                            if (res) {
+                                if (!res.data.error) {
+                                    this.loading = false
+                                    this.errorText = ""
+                                    this.myEventsData = res.data.data
+                                } else {
+                                    this.errorText = res?.data?.message
+                                }
+                            } else {
+                                this.errorText = "Failed to fetch data";
+                            }
+                        })
+                    }
+                } else {
+                    console.log("errr in getting user");
+                }
+            }).catch(err => {
+                console.log(err)
+            })
+        }, calculateDays(date) {
+            let current = new Date();
+            let eventTime = new Date(date)
+            if (eventTime) {
+                let diffMill = eventTime - current
+                let days = Math.ceil(diffMill / (1000 * 60 * 60 * 24));
+                return days;
+            } else {
+                return "N/A"
+            }
+
+        }, eveluatePrice(price) {
+            if (price <= 0) {
+                return "Free"
+            } else if (price > 0) {
+                return `${price} Ksh`
+            }
         }
+    }, mounted() {
+        this.requestData()
     }
 }
 </script>
 <template>
+    <Loader :loading="loading" />
     <div class="main-section">
         <SideNav />
         <div class="dash-main">
@@ -31,17 +83,17 @@ export default {
                     <div class="my-events-container">
                         <div class="my-events-cards-holder event-container">
 
-                            <div @click="toggleMore" class="card" style="">
-                                <img src="images/image2.jpg" class="card-img-top" alt="...">
+                            <div @click="toggleMore" class="card" v-for="(item, index) in myEventsData" :key="index">
+                                <img :src="item.event_image" class="card-img-top" alt="...">
                                 <div class="card-body">
-                                    <p class="card-text">Tech Innovators Symposium</p>
-                                    <span>A gathering of leading tech visionaries discussing the future of innovation</span>
+                                    <p class="card-text">{{ item.title }}</p>
+                                    <span>{{ item.description }}</span>
                                     <div class="event-desc-display">
-                                        <span>Silicon Valley</span>
-                                        <span>Technology</span>
-                                        <p>12May,2023::12pm</p>
+                                        <span>{{ item.venue }}</span>
+                                        <span>{{ item.category }}</span>
+                                        <p>{{ this.calculateDays(item.event_date) }} Days to Event</p>
                                     </div>
-                                    <h6>1000ksh</h6>
+                                    <h6>{{ this.eveluatePrice(item.price) }}</h6>
                                 </div>
                             </div>
 
@@ -87,6 +139,6 @@ export default {
 
 <style>
 @import url("../Events/styles/event-header.css");
-@import url("../Events//styles/events.css");
+@import url("../Events/styles/events.css");
 @import url("./styles/my-events.css");
 </style>

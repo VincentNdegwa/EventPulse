@@ -1,6 +1,9 @@
 <script>
 import SideNav from "../Dashboard/components/SideNav.vue"
-import Chips from "./components/Chips.vue"
+import axios from "axios"
+import EventCreation from "./components/EventCreation.vue"
+import HostComp from "./components/Host.vue"
+import { router } from "@inertiajs/vue3"
 export default {
     data() {
         return {
@@ -11,26 +14,29 @@ export default {
             entryFee: false,
             ageLimits: false,
             eventData: {
-                event_image: Object,
+                event_image: "",
                 title: "",
                 description: "",
                 deadline_application: "",
                 event_date: "",
                 category: "",
+                creator_id: "",
                 venue: "",
                 price: 0,
                 address: "",
                 age_limit: "0",
                 meeting_link: "",
                 hostArray: [],
-                fee: this.entryFee
+                setFee: "yes",
+                setAge: "yes"
             }
 
         }
     },
     components: {
         SideNav,
-        Chips
+        EventCreation,
+        HostComp
     },
     methods: {
         checkFormIsFilled() {
@@ -68,13 +74,27 @@ export default {
             }
 
             if (this.eventOnline) {
-                if (!eventData.meeting_link.trim()) {
+                if (!eventData.meeting_link.trim() || eventData.meeting_link == "null") {
                     alert("Please fill in the meeting link.");
+                    // this.eventData.address = "null"
                     return false;
                 }
             } else {
-                if (!eventData.address.trim()) {
+                if (!eventData.address.trim() || eventData.address == "null") {
                     alert("Please fill in the address.");
+                    // this.eventData.meeting_link = "null"
+                    return false;
+                }
+            }
+            if (this.eventData.setAge == "yes") {
+                if (!eventData.age_limit.trim() || eventData.age_limit == "0") {
+                    alert("Please add age limit or select 'no'");
+                    return false;
+                }
+            }
+            if (this.eventData.setFee == "yes") {
+                if (eventData.price <= 0) {
+                    alert("Please add entry price or select 'no'");
                     return false;
                 }
             }
@@ -97,37 +117,32 @@ export default {
         navigateToHost() {
             if (this.checkFormIsFilled()) {
                 this.openHost = true
-                localStorage.setItem("browsing_state", JSON.stringify({ openHost: true }))
             } else {
                 this.openHost = false
             }
         },
         addNewHost() {
             this.eventData.hostArray.push({
-                name: "",
-                email: "",
-                profession: "",
-                linkedin: "",
-                profile_image: Object
+                host_name: "",
+                host_email: "",
+                host_occupation: "",
+                host_social: "",
+                profile_image: ""
             })
-        }, removeHost(index) {
-            this.eventData.hostArray.splice(index, 1)
-        }, navigateToCreate() {
-            this.openHost = false
         }, changeEventVenue(event) {
             if (event.target.value == "online") {
                 this.eventOnline = true
-                // this.eventData.address = null
+                this.eventData.address = "null"
             } else {
                 this.eventOnline = false
-                // this.eventData.meeting_link = null
+                this.eventData.meeting_link = "null"
             }
         }, changeEntryFee(event) {
             if (event.target.value == "yes") {
                 this.entryFee = true
-                this.eventData.price = 0;
             } else {
                 this.entryFee = false
+                this.eventData.price = 0;
             }
 
         }, changeAgeLimit(event) {
@@ -137,56 +152,92 @@ export default {
             } else {
                 this.ageLimits = false
             }
+        }, removeHost(index) {
+            this.eventData.hostArray.splice(index, 1)
+        }, navigateToCreate() {
+            this.openHost = false
         }, handleWindowLoading(event) {
             event.returnValue = "are you sure?"
         }, savedDataLocalStorage() {
-            console.log("saving....")
             localStorage.setItem("eventData", JSON.stringify(this.eventData))
-        }, handleEventFile(event) {
-            let file = event.target.files[0]
-            if (file) {
-                if (file.type.startsWith("image/")) {
-                    if (file.size <= 3 * 1024 * 1024) {
-                        this.eventData.event_image = file
-                    } else {
-                        alert(`Your image file exceeds 3mbs which is ${file.size / 1024 / 1024}`)
-                        event.target.value = ""
+        }, updatedBrowserState() {
+            localStorage.setItem("browsing_state", JSON.stringify({
+                openHost: this.openHost,
+                eventOnline: this.eventOnline,
+                entryFee: this.entryFee,
+                ageLimits: this.ageLimits,
+            }))
 
-                    }
-                } else {
-                    alert(`Required image file type, found ${file.type}`)
-                    event.target.value = ""
-                }
-            }
         }, handleHostFile(index, event) {
-            let file = event.target.files[0]
+            let file = event.target.files[0];
             if (file) {
                 if (file.type.startsWith("image/")) {
                     if (file.size <= 3 * 1024 * 1024) {
-                        this.eventData.hostArray[index].profile_image = file
-                        // this.eventData.event_image = file
+                        const reader = new FileReader()
+                        reader.readAsDataURL(file)
+                        reader.onload = () => {
+                            let fileBase64 = reader.result
+                            this.eventData.hostArray[index].profile_image = fileBase64;
+                            localStorage.setItem(`host_image_${index}`, fileBase64);
+                        }
                     } else {
-                        alert(`Your image file exceeds 3mbs which is ${file.size / 1024 / 1024}`)
-                        event.target.value = ""
-
+                        alert(`Host image exceeds 3mbs which is ${file.size / 1024 / 1024}`);
+                        event.target.value = "";
                     }
                 } else {
-                    alert(`Required image file type, found ${file.type}`)
-                    event.target.value = ""
+                    alert(`Required image file type, found ${file.type}`);
+                    event.target.value = "";
                 }
             }
+        }, createEvent() {
+            axios.post("/user-id").then(res => {
+                if (res) {
+                    let userid = res?.data.userId
+                    this.eventData.creator_id = userid
+                    axios.post("api/create-event", this.eventData).then(res => {
+                        if (res) {
+                            if (!res?.data?.error) {
+                                router.visit(route("my-events"));
+                                localStorage.removeItem("eventData")
+                                localStorage.removeItem("browsing_state")
+                            } else {
+                                alert(res.data.message);
+                            }
+                        } else {
+                            alert("Creating event failed");
+                        }
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                }
+            }).catch(err => {
+                console.log(err)
+            })
         }
     }, mounted() {
-        // this.addNewHost()
         let savedData = localStorage.getItem("eventData");
         let browersState = localStorage.getItem("browsing_state");
+        let savedEventImage = localStorage.getItem("event_image");
         if (browersState) {
             let state = JSON.parse(browersState);
             this.openHost = state.openHost
+            this.eventOnline = state.eventOnline
+            this.entryFee = state.entryFee
+            this.ageLimits = state.ageLimits
         }
         if (savedData) {
             this.eventData = JSON.parse(savedData)
         }
+        if (savedEventImage) {
+            this.eventData.event_image = savedEventImage;
+        }
+        this.eventData.hostArray.forEach((host, index) => {
+            const savedHostImage = localStorage.getItem(`host_image_${index}`);
+            if (savedHostImage) {
+                host.profile_image = savedHostImage;
+            }
+        });
+
     }, watch: {
         eventData: {
             handler: function (newData, oldData) {
@@ -194,7 +245,34 @@ export default {
                 this.savedDataLocalStorage()
             },
             deep: true
-        }
+        },
+        openHost: {
+            handler: function (newHost, oldHost) {
+                this.updatedBrowserState()
+                this.openHost = newHost
+            },
+            deep: true
+        }, eventOnline: {
+            handler: function (latest, old) {
+                this.updatedBrowserState();
+                this.eventOnline = latest;
+            },
+            deep: true,
+        },
+        entryFee: {
+            handler: function (latest, old) {
+                this.updatedBrowserState();
+                this.entryFee = latest;
+            },
+            deep: true,
+        },
+        ageLimits: {
+            handler: function (latest, old) {
+                this.updatedBrowserState();
+                this.ageLimits = latest;
+            },
+            deep: true,
+        },
     }
 }
 </script>
@@ -203,182 +281,18 @@ export default {
     <div class="main-section">
         <SideNav />
         <div class="dash-main">
-            <form class="create-container">
+            <form @submit.prevent="createEvent" class="create-container">
                 <!-- create -->
                 <div v-if="!openHost" class="creating-event">
                     <span>Create New Events</span>
-                    <div class="fillable-container">
-                        <div class="part-one-fillables">
-                            <!--  -->
-                            <div class="input-holder mb-2">
-                                <label class="event-label">Event Name</label>
-                                <input v-model="eventData.title" type="text" class="event-form" required>
-                                <span class="helper-text">This will be the display name of your event</span>
-                            </div>
-                            <!--  -->
-                            <div class="input-holder mb-2">
-                                <label class="event-label">Event Description</label>
-                                <textarea v-model="eventData.description" type="text" class="event-form event-text-area"
-                                    required></textarea>
-                                <span class="helper-text">Add a description that explains what will be in the event and what
-                                    the event is all about</span>
-                            </div>
-                            <!--  -->
-                            <div class="input-holder mb-2">
-                                <label class="event-label">Event Barner</label>
-                                <input type="file" @change="handleEventFile" class="event-form" required>
-                                <span class="helper-text">Select an image burner that suites your event for advert
-                                    purposes</span>
-                                <span class="helper-text" style="color: red;">The file should be image only and less than
-                                    3.1mbs</span>
-
-                            </div>
-                            <!--  -->
-                            <div class="input-holder mb-2">
-                                <label class="event-label">Event Date</label>
-                                <span class="helper-text">When will be the event?</span>
-                                <span class="helper-text">Note that the date of the event should be after the deadline
-                                    registration</span>
-                                <input v-model="eventData.event_date" type="date" class="event-form" required>
-                            </div>
-                            <!--  -->
-                            <div class="input-holder mb-2">
-                                <label class="event-label">Registration Deadline</label>
-                                <span class="helper-text">Add the date for closing the registration</span>
-                                <input v-model="eventData.deadline_application" type="date" class="event-form" required>
-                            </div>
-                            <!--  -->
-                            <div class="input-holder mb-2">
-                                <label class="event-label">Venue</label>
-                                <select type="text" v-model="eventData.venue" class="event-form" @change="changeEventVenue"
-                                    required>
-                                    <!-- <option value="" selected hidden>Select Venue</option> -->
-                                    <option value="online">Online</option>
-                                    <option value="physical" selected>Physical</option>
-                                </select>
-                                <span class="helper-text">This will be the display name of your event</span>
-                            </div>
-                            <!--  -->
-                            <div class="input-holder mb-2" v-if="eventOnline">
-                                <label class="event-label">Meeting Link</label>
-                                <input v-model="eventData.meeting_link" type="text" class="event-form" required>
-                                <span class="helper-text">Provide the meeting link of your event</span>
-                            </div>
-                            <!--  -->
-                            <div class="input-holder mb-2" v-else>
-                                <label class="event-label">Address</label>
-                                <input v-model="eventData.address" type="text" class="event-form" required>
-                                <span class="helper-text">This will be the display place where you event will happen</span>
-                            </div>
-                            <!--  -->
-
-                        </div>
-                        <div class="part-two-fillables">
-                            <!--  -->
-                            <div class="input-holder mb-2">
-                                <label class="event-label">Would you like to add the entry price of the event?, If not by
-                                    default will be free entry</label>
-                                <label class="fee-select-input">
-                                    <input type="radio" id="fee" value="yes" name="fee" @change="changeEntryFee">
-                                    <p>Yes</p>
-                                </label>
-                                <label class="fee-select-input">
-                                    <input type="radio" id="fee" value="no" name="fee" checked @change="changeEntryFee">
-                                    <p>No</p>
-                                </label>
-                            </div>
-                            <!--  -->
-                            <div class="input-holder mb-2" v-if="entryFee">
-                                <label class="event-label">Entry price per persion</label>
-                                <input v-model="eventData.price" type="number" class="event-form" required>
-                                <span class="helper-text">Every applicants will have to pay this amount</span>
-                            </div>
-                            <!--  -->
-
-                            <div class="input-holder mb-2">
-                                <label class="event-label">Do you have any age limit of your participants?</label>
-                                <label class="fee-select-input">
-                                    <input type="radio" id="age" value="yes" @change="changeAgeLimit" name="age">
-                                    <p>Yes</p>
-                                </label>
-                                <label class="fee-select-input">
-                                    <input type="radio" id="age" value="no" @change="changeAgeLimit" name="age" checked>
-                                    <p>No</p>
-                                </label>
-                            </div>
-                            <!--  -->
-                            <div class="input-holder mb-2" v-if="ageLimits">
-                                <label class="event-label">Select age limit</label>
-                                <select name="age" v-model="eventData.age_limit" class="event-form" required>
-                                    <option value="" selected hidden>Select Age</option>
-                                    <option value="under_18">Under 18</option>
-                                    <option value="18_plus">18+</option>
-                                    <option value="18_24">18 - 24</option>
-                                    <option value="25_34">25 - 34</option>
-                                    <option value="35_44">35 - 44</option>
-                                    <option value="45_54">45 - 54</option>
-                                    <option value="55_plus">55+</option>
-                                </select>
-
-                                <span class="helper-text">Only participants ranging in that age limit can attend your
-                                    event</span>
-                            </div>
-                            <!--  -->
-                            <div class="input-holder mb-2">
-                                <label class="event-label">Select event category</label>
-                                <Chips :eventData="eventData" />
-                            </div>
-                            <!--  -->
-
-                            <div class="input-holder add-host-btn">
-                                <button @click="navigateToHost" type="button">Add Host</button>
-                            </div>
-                            <!--  -->
-
-                        </div>
-                    </div>
+                    <EventCreation :eventData="eventData" :eventOnline="eventOnline" :entryFee="entryFee"
+                        :ageLimits="ageLimits" @navigate-host="navigateToHost" @change-event-venue="changeEventVenue"
+                        @change-entry-fee="changeEntryFee" @change-age-limit="changeAgeLimit" />
                 </div>
                 <!-- add host -->
                 <div v-else class="create-host">
-                    <div class="create-host-container">
-                        <div class="create-host-holder">
-                            <div class="create-header">
-                                <span>Host Name</span>
-                                <span>Host Email</span>
-                                <span>Profession</span>
-                                <span>Linkedin Url</span>
-                                <span>Phote image</span>
-                            </div>
-                            <div class="create-host-items-holder">
-
-
-                                <div v-for="(item, index) in eventData.hostArray" :key="index" class="create-host-item">
-                                    <div class="inputs-host-holder">
-                                        <input type="text" placeholder="Mary" required v-model="item.name">
-                                    </div>
-                                    <div class="inputs-host-holder">
-                                        <input type="email" placeholder="mary@gmail.com" required v-model="item.email">
-                                    </div>
-                                    <div class="inputs-host-holder">
-                                        <input type="text" placeholder="Senior Software Engineer" required
-                                            v-model="item.profession">
-                                    </div>
-                                    <div class="inputs-host-holder">
-                                        <input type="text" placeholder="https://wwww.linkedin.com/mary" required
-                                            v-model="item.linkedin">
-                                    </div>
-                                    <div class="inputs-host-holder">
-                                        <input type="file" @change="handleHostFile(index, $event)" required>
-                                    </div>
-                                    <i class='bx bx-x-circle clear-icon' @click="removeHost(index)"></i>
-                                </div>
-
-                                <div class="add-icon-host" @click="addNewHost">
-                                    <i class='bx bx-plus-circle'></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <HostComp :eventData="eventData" @handle-host-file="handleHostFile" @remove-host="removeHost"
+                        @add-new-host="addNewHost" />
                     <div class="navigations-host">
                         <button type="button" @click="navigateToCreate">Back</button>
                         <button type="submit">Create Event</button>

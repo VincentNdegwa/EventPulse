@@ -19,7 +19,7 @@
 .event-container > .card {
     /* flex-grow: 1; */
     width: 20rem;
-    height: fit-content;
+    height: 21rem;
 }
 
 .card {
@@ -27,7 +27,9 @@
     box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.1);
     border: 0px;
 }
-
+.card > img {
+    height: 50% !important;
+}
 .card-body > * {
     padding: 0;
     margin: 0;
