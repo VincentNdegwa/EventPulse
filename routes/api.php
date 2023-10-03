@@ -30,3 +30,7 @@ Route::group(['prefix' => 'user'], function () {
 
 Route::post("/create-event", [events_controller::class, "createEvent"]);
 Route::post("/get-events", [events_controller::class, "getMyEvents"]);
+Route::group(['prefix' => 'retrieve'], function () {
+    Route::post("/events/all", [events_controller::class, "getAllEvents"]);
+    Route::post("/single", [events_controller::class, "getOneEvent"]);
+});

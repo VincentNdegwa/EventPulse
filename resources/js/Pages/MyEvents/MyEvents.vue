@@ -25,14 +25,15 @@ export default {
         closeMore() {
             this.openMore = false
         }, requestData() {
+            this.loading = true
             axios.post("/user-id").then(res => {
                 if (res) {
                     this.userid = res.data.userId
                     if (res.data.userId) {
                         axios.post("api/get-events", { userId: res.data.userId }).then(res => {
+                            this.loading = false
                             if (res) {
                                 if (!res.data.error) {
-                                    this.loading = false
                                     this.errorText = ""
                                     this.myEventsData = res.data.data
                                 } else {
@@ -41,6 +42,9 @@ export default {
                             } else {
                                 this.errorText = "Failed to fetch data";
                             }
+                        }).catch(err => {
+                            this.loading = false
+                            this.errorText = err
                         })
                     }
                 } else {

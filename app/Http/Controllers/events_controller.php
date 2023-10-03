@@ -88,7 +88,7 @@ class events_controller extends Controller
 
         try {
             $userId = $request->input('userId');
-            $myevents = events::where('creator_id', $userId)->get();
+            $myevents = events::where('creator_id', $userId)->orderBy("created_at", "desc")->get();
 
             return response()->json([
                 'error' => false,
@@ -99,6 +99,49 @@ class events_controller extends Controller
                 'error' => true,
                 'message' => $e->getMessage(),
             ], 500);
+        }
+    }
+
+    function getAllEvents()
+    {
+        try {
+            $allEvents = events::with('hosts')->orderBy("events.created_at", "desc")->get();
+            return response()->json([
+                "error" => false,
+                "data" => $allEvents
+            ]);
+        } catch (\Exception $th) {
+            return response()->json([
+                "error" => true,
+                "message" => $th->getMessage()
+            ]);
+        }
+    }
+
+    function getOneEvent(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'eventId' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Invalid input data',
+            ], 400);
+        }
+        try {
+            $eventId = $request->input("eventId");
+            $allEvents = events::with('hosts')->where("events.id", $eventId)->get();
+            return response()->json([
+                "error" => false,
+                "data" => $allEvents
+            ]);
+        } catch (\Exception $th) {
+            return response()->json([
+                "error" => true,
+                "message" => $th->getMessage()
+            ]);
         }
     }
 }

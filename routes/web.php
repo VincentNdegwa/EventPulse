@@ -3,11 +3,14 @@
 use App\Http\Controllers\dash_controller;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\user_controller;
+use App\Models\events;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
+use Mockery\Undefined;
 use PhpParser\Builder\Param;
 
 /*
@@ -75,3 +78,26 @@ Route::post("/user-id", function () {
     ];
     return response()->json($data, 200);
 })->name("get-user-id");
+
+Route::get('/view/{id}', function ($id) {
+
+    if ($id == null || $id == "undefined") {
+        Inertia::render("Events/Events", [
+            "error" => true,
+            "message" => "Invalid Data"
+        ]);
+    } else {
+        try {
+            $allEvents = events::with('hosts')->where("events.id", $id)->get();
+            return Inertia::render("SingleEvent/SingleEvents", [
+                "error" => false,
+                "data" => $allEvents
+            ]);
+        } catch (\Exception $th) {
+            Inertia::render("Events/Events", [
+                "error" => true,
+                "message" => $th->getMessage(),
+            ]);
+        }
+    }
+})->name("getOneView");

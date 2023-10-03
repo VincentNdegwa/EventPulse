@@ -28,6 +28,6 @@ class events extends Model
 
     public function hosts()
     {
-        return $this->hasMany(host::class);
+        return $this->hasMany(host::class, "host_event_id");
     }
 }
