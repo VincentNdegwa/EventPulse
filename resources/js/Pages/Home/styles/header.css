@@ -6,7 +6,6 @@
     --main-fade-green: #9dc2bf;
 }
 
-
 .home-conatiner {
     width: 100%;
     background-color: white;
@@ -149,6 +148,9 @@ header {
     font-weight: bold;
     margin-top: 0.4em;
     padding: 1em;
+}
+.login-nav-button {
+    background: var(--main-orange) !important;
 }
 @media screen and (max-width: 800px) {
     .bx-menu-alt-right,

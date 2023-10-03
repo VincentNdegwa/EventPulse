@@ -73,13 +73,21 @@ export default {
                     Create
                 </div>
             </button>
-            <!-- <i class='bx bx-add-to-queue' ></i> -->
+            <!-- <i class='bx bxs-user-detail'></i> -->
             <button @click="navigate('approvals')" class="nav-item">
                 <div class="icon">
                     <i class='bx bxs-hourglass'></i>
                 </div>
                 <div class="nav-text">
                     Approvals
+                </div>
+            </button>
+            <button @click="navigate('profile')" class="nav-item">
+                <div class="icon">
+                    <i class='bx bxs-user-detail'></i>
+                </div>
+                <div class="nav-text">
+                    Profile
                 </div>
             </button>
             <button @click="navigate('logout')" class="nav-item">

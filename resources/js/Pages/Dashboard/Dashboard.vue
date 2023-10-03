@@ -3,6 +3,9 @@ import SideNav from './components/SideNav.vue';
 import DashMain from "./layouts/DashMain.vue"
 import Loader from '@/components/Loader.vue';
 export default {
+    props: {
+        userId: Number,
+    },
     data() {
 
     },
@@ -14,7 +17,7 @@ export default {
         this.requestData()
     }, methods: {
         requestData() {
-            console.log("hello dash")
+
         }
     }
 }

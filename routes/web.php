@@ -22,7 +22,10 @@ use PhpParser\Builder\Param;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Home/MainPage');
+    return Inertia::render('Home/MainPage', [
+        "userId" => auth()->id(),
+        "loggedIn" => auth()->check()
+    ]);
 });
 Route::get('/login', function () {
     return Inertia::render('Auth/Login');
@@ -31,16 +34,12 @@ Route::get('/register', function () {
     return Inertia::render('Auth/Register');
 })->name("register");
 
-// Route::middleware(['web', 'auth'])->group(function () {
-//     Route::get('/dashboard', function () {
-//         return Inertia::render('Dashboard/Dashboard');
-//     })->name("dashboard");
-// });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard/Dashboard');
+    return Inertia::render('Dashboard/Dashboard', [
+        "userId" => auth()->id(),
+    ]);
 })->name("dashboard")->middleware("auth");
-// Route::post("/dashboard", [dash_controller::class, "openDash"]);
 Route::get('/events', function () {
     return Inertia::render('Events/Events');
 })->name("events");
@@ -58,6 +57,10 @@ Route::get('/approvals', function () {
     return Inertia::render('Approvals/Approvals');
 })->name("approvals");
 
+
+Route::get('/profile', function () {
+    return Inertia::render('Profile/Profile');
+})->name("profile");
 // create_event
 Route::group(['prefix' => 'user'], function () {
     Route::post('register', [user_controller::class, 'register']);

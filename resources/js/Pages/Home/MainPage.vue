@@ -2,9 +2,12 @@
 import TopHeader from './components/TopHeader.vue';
 import HeroSection from './components/HeroSection.vue';
 import Events from './components/Events.vue';
-
 import Sponsors from "../../data/sponsors"
 export default {
+    props: {
+        userId: Number,
+        loggedIn: Boolean
+    },
     data() {
         return {
             Sponsors
@@ -18,6 +21,16 @@ export default {
     setup() {
         return {
         }
+    }, mounted() {
+        this.requestData()
+    }, methods: {
+        requestData() {
+            if (this.loggedIn) {
+                // console.log(this.userId)
+            } else {
+                // console.log("please login")
+            }
+        }
     }
 }
 </script>
@@ -25,7 +38,7 @@ export default {
 <template>
     <section class="main_section">
         <div class="home-conatiner">
-            <TopHeader />
+            <TopHeader :loggedIn="loggedIn" />
             <HeroSection />
             <Events />
             <div class="sponsors-holder cont" id="Support">

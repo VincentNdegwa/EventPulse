@@ -1,5 +1,10 @@
 <script>
+import { router } from '@inertiajs/vue3'
+
 export default {
+    props: {
+        loggedIn: Boolean
+    },
     data() {
         return {
             menu: false
@@ -14,6 +19,8 @@ export default {
         },
         naviagteToLogin() {
             window.location.href = "/login"
+        }, navigateToDash() {
+            router.visit(route("dashboard"))
         }
     }, mounted() {
         window.addEventListener("resize", (ev) => {
@@ -64,7 +71,10 @@ export default {
 
                 </button>
             </div>
-            <button @click="naviagteToLogin">
+            <button v-if="loggedIn" class="login-nav-button" @click="navigateToDash">
+                Dashboard
+            </button>
+            <button v-else @click="naviagteToLogin">
                 Login/Register
             </button>
         </nav>
