@@ -40,7 +40,6 @@ export default {
                         this.errorText = res.data.message;
                     }
                 }
-                console.log(res.data)
             }).catch(err => {
                 this.loading = false
                 console.log(err)
