@@ -4,7 +4,7 @@ export default {
         userInputs: Object
     }, methods: {
         submittData() {
-            this.$emit("submiting_form")
+            this.$emit("submiting_form", this.userInputs)
         }
     }
 
@@ -17,14 +17,14 @@ export default {
             <div class="mb-3">
                 <label for="exampleFormControlTextarea1" class="form-label">Tell us about your main agenda for
                     attending this event<p class="red-asterik">*</p></label>
-                <input v-model="userInputs.main_agenda" class="form-control" id="exampleFormControlTextarea1" rows="3"
+                <input v-model="userInputs.event_agenda" class="form-control" id="exampleFormControlTextarea1" rows="3"
                     name="main_agenda" required>
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlTextarea2" class="form-label">What do you expect to gain from this
                     event?<p class="red-asterik">*</p></label>
-                <textarea v-model="userInputs.expectations" class="form-control" id="exampleFormControlTextarea2" rows="3"
-                    name="expectations" required></textarea>
+                <textarea v-model="userInputs.expectation" class="form-control" id="exampleFormControlTextarea2" rows="3"
+                    name="expectation" required></textarea>
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlTextarea4" class="form-label">Have you attended similar events in

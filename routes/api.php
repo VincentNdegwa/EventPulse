@@ -34,3 +34,4 @@ Route::group(['prefix' => 'retrieve'], function () {
     Route::post("/events/all", [events_controller::class, "getAllEvents"]);
     Route::post("/single", [events_controller::class, "getOneEvent"]);
 });
+Route::post("event/apply", [events_controller::class, "applyEvents"]);

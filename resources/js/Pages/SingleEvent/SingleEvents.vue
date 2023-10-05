@@ -1,5 +1,8 @@
 <script>
-import ApplicationForm from './ApplicationForm.vue';
+import axios from 'axios';
+import ApplicationForm from './components/ApplicationForm.vue';
+import Loader from '@/components/Loader.vue';
+import { router } from '@inertiajs/vue3';
 export default {
     props: {
         data: Array
@@ -8,16 +11,20 @@ export default {
             eventsData: Object,
             openApply: false,
             userInputs: {
-                eventId: "",
+                user_id: "",
+                event_id: "",
                 event_agenda: "",
-                expectations: "",
+                expectation: "",
                 similar_event: "",
                 learning_objective: "",
                 suggestions: ""
             },
             browserState: {
                 started: false
-            }
+            },
+            loading: false,
+            error: "",
+            message: "",
         }
     }, methods: {
         calculateDays(date) {
@@ -42,27 +49,63 @@ export default {
             localStorage.setItem("user_inputs", JSON.stringify(this.userInputs));
         }, saveBrowserState() {
             localSotrage.setItem("application_status", JSON.stringify(this.browserState));
-        }, submitForm() {
-            console.log("hello")
+        }, submitForm(data) {
+            if (this.validateInputs(data)) {
+                this.loading = true
+                axios.post("/user-id").then(res => {
+                    this.userInputs.user_id = res?.data?.userId;
+                    if (this.userInputs.user_id) {
+                        axios.post("/api/event/apply", data).then(res => {
+                            this.loading = false
+                            if (res?.data?.error) {
+                                this.error = res.data.message;
+                            } else {
+                                this.message = res.data.message;
+                                localStorage.removeItem("user_inputs");
+                                localStorage.removeItem("application_status");
+                                router.visit(route("tickets"))
+                            }
+                            console.log(res.data)
+                        }).catch(err => {
+                            alert(err);
+                            this.loading = false
+                        })
+                    }
+                }).catch(err => {
+                    console.log(err)
+                })
+            } else {
+                alert(this.error)
+            }
+        }, validateInputs(data) {
+            if (!this.userInputs.event_id) {
+                this.goBack()
+                return false;
+            } else if (!data.event_agenda.trim() || !data.expectation.trim() || !data.similar_event.trim()) {
+                this.error = "Please fill in all required fields";
+                return false;
+            } else {
+                return true
+            }
         }
     }, mounted() {
         this.eventsData = this.data[0]
         let storedInputs = localStorage.getItem("user_inputs");
         let jsonInputs = JSON.parse(storedInputs);
-        if (jsonInputs.eventId == this.eventsData.id) {
+        if (jsonInputs.event_id == this.eventsData.id) {
             this.userInputs = jsonInputs
         } else {
             localStorage.removeItem("user_inputs")
-            this.userInputs.eventId = this.eventsData.id
+            this.userInputs.event_id = this.eventsData.id
         }
         let state = localStorage.getItem("application_status");
         let jsonState = JSON.parse(state);
-        console.log(jsonState);
         if (jsonState.started) {
             this.openApply = true
         }
     }, components: {
-        ApplicationForm
+        ApplicationForm,
+        Loader
     }, watch: {
         userInputs: {
             handler: function (newValue, oldValue) {
@@ -74,11 +117,11 @@ export default {
 }
 </script>
 <template>
+    <Loader :loading="loading" />
     <div class="single-events-container">
         <div class="event-button-navigation">
             <button @click="goBack"><i class='bx bx-arrow-back'></i></button>
             <button v-if="!openApply" @click="apply">View Application</button>
-            <button v-else>Apply</button>
         </div>
         <div v-if="!openApply" class="single-event-holder">
             <div class="single-events-details">

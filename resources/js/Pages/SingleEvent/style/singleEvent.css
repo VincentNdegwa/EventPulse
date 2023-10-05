@@ -3,7 +3,7 @@
     height: auto;
     position: absolute;
     top: 0;
-    z-index: 30;
+    z-index: 15;
     /* background: rgba(0, 0, 0, 0.6); */
     background: var(--main-white);
     padding-left: 2em;

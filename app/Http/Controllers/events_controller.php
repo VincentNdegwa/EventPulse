@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\eventApplication;
 use App\Models\events;
 use App\Models\host;
 use Illuminate\Http\Request;
@@ -142,6 +143,77 @@ class events_controller extends Controller
                 "error" => true,
                 "message" => $th->getMessage()
             ]);
+        }
+    }
+
+
+    function applyEvents(Request $request)
+    {
+
+        // return response()->json($request);
+        $validate = Validator::make($request->all(), [
+            "user_id" => "required",
+            "event_id" => "required",
+            "event_agenda" => "required",
+            "expectation" => "required",
+            "similar_event" => "required",
+        ]);
+        if ($validate->fails()) {
+            return response()->json([
+                "error" => true,
+                "message" => "Invalid Data",
+                "errors"=>$validate->errors()
+            ]);
+        } else {
+
+            try {
+                $event = events::find($request->input("event_id"));
+                if (!$event) {
+                    return response()->json([
+                        "error" => true,
+                        "message" => "Event not found",
+                    ]);
+                };
+                if ($event->creator_id == $request->input("user_id")) {
+                    return response()->json([
+                        "error" => true,
+                        "message" => "You cannot apply for an event that is yours"
+                    ]);
+                } else {
+                    $eventApp = eventApplication::where("user_id", $request->input("user_id"))->Where("event_id", $request->input("event_id"))->first();
+                    if ($eventApp) {
+                        return response()->json([
+                            "error" => true,
+                            "message" => "You have already applied for this Event"
+                        ]);
+                    } else {
+                        try {
+
+                            eventApplication::create([
+                                'user_id' => $request->input('user_id'),
+                                'event_id' => $request->input('event_id'),
+                                "event_agenda" => $request->input("event_agenda"),
+                                "expectation" => $request->input("expectation"),
+                                "similar_event" => $request->input("similar_event"),
+                            ]);
+                            return response()->json([
+                                "error" => false,
+                                "message" => "Application successful",
+                            ]);
+                        } catch (\Exception $th) {
+                            return response()->json([
+                                "error" => true,
+                                "message" => $th->getMessage()
+                            ]);
+                        }
+                    }
+                }
+            } catch (\Exception $th) {
+                return response()->json([
+                    "error" => true,
+                    "message" => $th->getMessage()
+                ]);
+            }
         }
     }
 }
