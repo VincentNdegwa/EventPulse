@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\applicant_controller;
 use App\Http\Controllers\events_controller;
 use App\Http\Controllers\user_controller;
 use Illuminate\Http\Request;
@@ -36,3 +37,6 @@ Route::group(['prefix' => 'retrieve'], function () {
 });
 Route::post("event/apply", [events_controller::class, "applyEvents"]);
 Route::post("events/approvals", [events_controller::class, "getApplicants"]);
+Route::group(["prefix" => "applicant"], function () {
+    Route::post("/approve", [applicant_controller::class, "approveApplicants"]);
+});

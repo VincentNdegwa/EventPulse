@@ -3,6 +3,8 @@ import SideNav from '../Dashboard/components/SideNav.vue';
 import axios from 'axios';
 import SweetAlerts from '@/components/SweetAlerts.vue';
 import ApplicantListForm from "./components/ApplicantListForm.vue"
+import Loader from '@/components/Loader.vue';
+import { router } from '@inertiajs/vue3';
 export default {
     data() {
         return {
@@ -11,19 +13,23 @@ export default {
             mainData: Array,
             applicants: Array,
             applicantDetails: Object,
-            sendingData: []
+            sendingData: [],
+            event_id: "",
+            loading: false
         }
     },
     components: {
         SideNav,
         SweetAlerts,
-        ApplicantListForm
+        ApplicantListForm,
+        Loader
     },
     methods: {
         openApproval(id) {
             let data = this.mainData.find((item) => item.id == id)
             this.applicants = data.event_applicants;
             this.approval = true
+            this.event_id = id
             this.application = false
 
             this.applicants.forEach((item) => {
@@ -34,20 +40,34 @@ export default {
             this.approval = false
             this.application = false
         }, requestData() {
+            this.loading = true
             axios.post("/user-id").then(res => {
                 let userId = res?.data.userId
                 axios.post("api/events/approvals", { user_id: userId }).then(res => {
-                    if (!res.error) {
+                    if (!res.data.error) {
+                        this.loading = false
                         this.mainData = res.data.data
+                        if (res.data.data.length <= 0) {
+                            this.$refs.sweetAlerts.showMessage("There are no applicants in your events")
+                            // setTimeout(() => {
+                            //     router.visit("/dashboard")
+                            // }, 3000)
+                        }
                     } else {
+                        this.loading = false
                         this.$refs.sweetAlerts.showNotificationError("An error occured")
                         console.log(res.data.message)
                     }
                 }).catch(err => {
+                    this.loading = false
                     this.$refs.sweetAlerts.showNotificationError(err)
+                    console.log(err)
                 })
             }).catch(err => {
+                this.loading = false
                 this.$refs.sweetAlerts.showNotificationError(err)
+                console.log(err)
+
             })
         }, calculateDays(date) {
             let current = new Date();
@@ -75,6 +95,7 @@ export default {
             this.application = false
             this.approval = true
         }, submitApproved() {
+
             let data = this.applicants.map(item => {
                 let userData = {
                     applicant_id: item.user_id,
@@ -82,7 +103,19 @@ export default {
                 };
                 this.sendingData.push(userData);
             })
-            console.log(this.sendingData)
+            axios.post("api/applicant/approve", { event_id: this.event_id, applicants: this.sendingData }).then((res) => {
+                if (!res.data.error) {
+                    this.$refs.sweetAlerts.showNotification("Applicants Approved");
+                    this.approval = false
+                    this.application = false
+                    this.requestData()
+                } else {
+                    this.$refs.sweetAlerts.showNotificationError(res.data.message);
+                }
+            }).catch((err) => {
+                console.log(err)
+                this.$refs.sweetAlerts.showNotificationError(err);
+            })
         }, markAllSelected() {
             return new Promise((resolve) => {
                 for (let i = 0; i < this.applicants.length; i++) {
@@ -104,6 +137,7 @@ export default {
 <template>
     <SweetAlerts ref="sweetAlerts"></SweetAlerts>
     <div class="main-section">
+        <Loader :loading="loading" />
         <SideNav />
         <div class="dash-main">
             <div class="approve-tickets-container">
@@ -111,7 +145,8 @@ export default {
                 <div class="future-events-holder">
                     <div class="events-item-holder event-container">
 
-                        <div class="card" style="" v-for="(item, index) in mainData" :key="index">
+                        <div @click="openApproval(item.id)" class="card" style="" v-for="(item, index) in mainData"
+                            :key="index">
                             <img :src="item.event_image" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <p class="card-text">{{ item.title }}</p>
@@ -124,7 +159,7 @@ export default {
                                 <h6>{{ calculatePrice(item.price) }}</h6>
                                 <div class="future-events-buttons">
                                     <button @click="openApproval(item.id)">View Applicants</button>
-                                    <button @click="approveAll">Approve All</button>
+
 
                                 </div>
                             </div>
