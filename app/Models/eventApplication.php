@@ -9,7 +9,7 @@ class eventApplication extends Model
 {
     use HasFactory;
     protected $table = "event_application";
-    
+
     protected $fillable = [
         "user_id",
         "event_id",
@@ -19,4 +19,9 @@ class eventApplication extends Model
         "learning_objective",
         "suggestions",
     ];
+
+    public function event()
+    {
+        return $this->belongsTo(events::class);
+    }
 }

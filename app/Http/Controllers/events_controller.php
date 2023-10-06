@@ -162,7 +162,7 @@ class events_controller extends Controller
             return response()->json([
                 "error" => true,
                 "message" => "Invalid Data",
-                "errors"=>$validate->errors()
+                "errors" => $validate->errors()
             ]);
         } else {
 
@@ -214,6 +214,28 @@ class events_controller extends Controller
                     "message" => $th->getMessage()
                 ]);
             }
+        }
+    }
+
+
+    function getApplicants(Request $request)
+    {
+        try {
+            $events = events::rightJoin('event_application', 'events.id', '=', 'event_application.event_id')
+                ->where('events.creator_id', $request->input('user_id'))
+                ->where('event_application.status', 'pending')
+                ->with('eventApplicants')
+                ->get();
+
+            return response()->json([
+                "error" => false,
+                "data" => $events
+            ]);
+        } catch (\Exception $th) {
+            return response()->json([
+                "error" => true,
+                'data' => $th->getMessage(),
+            ]);
         }
     }
 }

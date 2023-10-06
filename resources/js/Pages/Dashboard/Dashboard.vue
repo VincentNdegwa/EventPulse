@@ -2,6 +2,7 @@
 import SideNav from './components/SideNav.vue';
 import DashMain from "./layouts/DashMain.vue"
 import Loader from '@/components/Loader.vue';
+import SweetAlerts from '@/components/SweetAlerts.vue';
 export default {
     props: {
         userId: Number,
@@ -12,9 +13,18 @@ export default {
     components: {
         SideNav,
         DashMain,
-        Loader
+        Loader,
+        SweetAlerts
     }, mounted() {
         this.requestData()
+        let loginStatus = localStorage.getItem("login")
+        if (loginStatus) {
+            let status = JSON.parse(loginStatus).login
+            if (status) {
+                this.$refs.sweetAlert.showNotification("You are signed in")
+                localStorage.removeItem("login")
+            }
+        }
     }, methods: {
         requestData() {
 
@@ -24,6 +34,7 @@ export default {
 </script>
 
 <template>
+    <SweetAlerts ref="sweetAlert"></SweetAlerts>
     <section class="loading-section" v-if="false">
         <Loader />
     </section>

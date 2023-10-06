@@ -35,3 +35,4 @@ Route::group(['prefix' => 'retrieve'], function () {
     Route::post("/single", [events_controller::class, "getOneEvent"]);
 });
 Route::post("event/apply", [events_controller::class, "applyEvents"]);
+Route::post("events/approvals", [events_controller::class, "getApplicants"]);

@@ -30,4 +30,8 @@ class events extends Model
     {
         return $this->hasMany(host::class, "host_event_id");
     }
+    public function eventApplicants()
+    {
+        return $this->hasMany(eventApplication::class, "event_id");
+    }
 }

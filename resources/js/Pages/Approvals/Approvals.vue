@@ -1,5 +1,7 @@
 <script>
 import SideNav from '../Dashboard/components/SideNav.vue';
+import axios from 'axios';
+import SweetAlerts from '@/components/SweetAlerts.vue';
 export default {
     data() {
         return {
@@ -8,7 +10,8 @@ export default {
         }
     },
     components: {
-        SideNav
+        SideNav,
+        SweetAlerts
     },
     methods: {
         openApproval() {
@@ -16,13 +19,27 @@ export default {
         },
         closeApproval() {
             this.approval = false
+        }, requestData() {
+            axios.post("/user-id").then(res => {
+                let userId = res?.data.userId
+                axios.post("api/events/approvals", { user_id: userId }).then(res => {
+                    console.log(res.data)
+                }).catch(err => {
+                    console.log(err)
+                })
+            }).catch(err => {
+                this.$refs.sweetAlerts.showNotificationError(err)
+            })
         }
+    }, mounted() {
+        this.requestData()
     }
 }
 
 </script>
 
 <template>
+    <SweetAlerts ref="sweetAlerts"></SweetAlerts>
     <div class="main-section">
         <SideNav />
         <div class="dash-main">

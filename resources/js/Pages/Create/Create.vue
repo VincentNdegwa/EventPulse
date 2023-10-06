@@ -3,6 +3,7 @@ import SideNav from "../Dashboard/components/SideNav.vue"
 import axios from "axios"
 import EventCreation from "./components/EventCreation.vue"
 import HostComp from "./components/Host.vue"
+import SweetAlerts from "@/components/SweetAlerts.vue"
 import { router } from "@inertiajs/vue3"
 export default {
     data() {
@@ -36,7 +37,7 @@ export default {
     components: {
         SideNav,
         EventCreation,
-        HostComp
+        HostComp, SweetAlerts
     },
     methods: {
         checkFormIsFilled() {
@@ -52,7 +53,7 @@ export default {
                 !eventData.venue.trim() ||
                 !eventData.event_image
             ) {
-                alert("Please fill in all required fields.");
+                this.$refs.sweetAlerts.showNotificationError("Please fill in all required fields.")
                 return false;
             }
 
@@ -60,7 +61,7 @@ export default {
                 this.eventData.age_limit = "0"
             } else {
                 if (!eventData.age_limit.trim()) {
-                    alert("Please fill in all required fields.");
+                    this.$refs.sweetAlerts.showNotificationError("Please fill in all required fields.")
                     return false;
                 }
             }
@@ -68,33 +69,33 @@ export default {
                 this.eventData.price = 0
             } else {
                 if (eventData.price < 0) {
-                    alert("Please fill in all required fields.");
+                    this.$refs.sweetAlerts.showNotificationError("Please fill in all required fields.")
                     return false;
                 }
             }
 
             if (this.eventOnline) {
                 if (!eventData.meeting_link.trim() || eventData.meeting_link == "null") {
-                    alert("Please fill in the meeting link.");
+                    this.$refs.sweetAlerts.showNotificationError("Please fill in in the meeting link.")
                     // this.eventData.address = "null"
                     return false;
                 }
             } else {
                 if (!eventData.address.trim() || eventData.address == "null") {
-                    alert("Please fill in the address.");
+                    this.$refs.sweetAlerts.showNotificationError("Please fill in in the adsdress")
                     // this.eventData.meeting_link = "null"
                     return false;
                 }
             }
             if (this.eventData.setAge == "yes") {
                 if (!eventData.age_limit.trim() || eventData.age_limit == "0") {
-                    alert("Please add age limit or select 'no'");
+                    this.$refs.sweetAlerts.showNotificationError("Please add age limit or select 'no'")
                     return false;
                 }
             }
             if (this.eventData.setFee == "yes") {
                 if (eventData.price <= 0) {
-                    alert("Please add entry price or select 'no'");
+                    this.$refs.sweetAlerts.showNotificationError("Please add age price or select 'no'")
                     return false;
                 }
             }
@@ -104,10 +105,10 @@ export default {
             let currentDate = new Date();
 
             if (deadlineDate < currentDate) {
-                alert("Deadline date cannot be in the past.");
+                this.$refs.sweetAlerts.showNotificationError("Deadline date cannot be in the past.")
                 return false;
             } else if (deadlineDate > eventDate) {
-                alert("Deadline date cannot be past the event date.");
+                this.$refs.sweetAlerts.showNotificationError("Deadline date cannot be past the event date.")
                 return false;
             }
 
@@ -181,11 +182,11 @@ export default {
                             localStorage.setItem(`host_image_${index}`, fileBase64);
                         }
                     } else {
-                        alert(`Host image exceeds 3mbs which is ${file.size / 1024 / 1024}`);
+                        this.$refs.sweetAlerts.showMessage(`Host image exceeds 3mbs which is ${file.size / 1024 / 1024}`)
                         event.target.value = "";
                     }
                 } else {
-                    alert(`Required image file type, found ${file.type}`);
+                    this.$refs.sweetAlerts.showMessage(`Required image file type, found ${file.type}`)
                     event.target.value = "";
                 }
             }
@@ -201,17 +202,17 @@ export default {
                                 localStorage.removeItem("eventData")
                                 localStorage.removeItem("browsing_state")
                             } else {
-                                alert(res.data.message);
+                                this.$refs.sweetAlerts.showNotificationError(res.data.message)
                             }
                         } else {
-                            alert("Creating event failed");
+                            this.$refs.sweetAlerts.showNotificationError("Creating event failed")
                         }
                     }).catch(err => {
-                        console.log(err)
+                        this.$refs.sweetAlerts.showNotificationError(err)
                     })
                 }
             }).catch(err => {
-                console.log(err)
+                this.$refs.sweetAlerts.showMessage("An error occurred")
             })
         }
     }, mounted() {
@@ -278,6 +279,7 @@ export default {
 </script>
 
 <template>
+    <SweetAlerts ref="sweetAlerts"></SweetAlerts>
     <div class="main-section">
         <SideNav />
         <div class="dash-main">

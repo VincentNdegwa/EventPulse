@@ -3,6 +3,7 @@ import { useForm } from '@inertiajs/vue3';
 import { router } from '@inertiajs/vue3'
 import axios from 'axios';
 import nprogress from 'nprogress';
+import SweetAlerts from '@/components/SweetAlerts.vue';
 export default {
     data() {
         return {
@@ -23,18 +24,30 @@ export default {
             nprogress.start()
             axios.post("api/user/register", this.form).then(res => {
                 nprogress.done()
-
+                if (!res.data.error) {
+                    this.navigateDash()
+                } else {
+                    this.$refs.sweetAlert.showNotificationError(res.data.message)
+                }
                 console.log(res.data)
             }).catch(err => {
                 nprogress.done()
                 console.log(err)
             })
+        },
+        navigateDash() {
+            router.visit("/dashboard");
+            localStorage.setItem("login", JSON.stringify({ login: true }))
         }
+    },
+    components: {
+        SweetAlerts
     }
 }
 </script>
 
 <template>
+    <SweetAlerts ref="sweetAlert"></SweetAlerts>
     <section class="main_section">
         <div class="login_main">
 

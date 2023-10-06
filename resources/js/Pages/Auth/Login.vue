@@ -3,6 +3,7 @@ import NProgress from 'nprogress'
 import { router } from '@inertiajs/vue3'
 import axios from 'axios'
 import nprogress from 'nprogress';
+import SweetAlerts from '@/components/SweetAlerts.vue';
 export default {
     data() {
         return {
@@ -31,10 +32,11 @@ export default {
                         };
                         this.navigateDash();
                     } else {
-                        this.response = {
-                            error: true,
-                            message: res.data.message
-                        };
+                        this.$refs.sweetAlerts.showNotificationError(res.data.message)
+                        // this.response = {
+                        //     error: true,
+                        //     message: res.data.message
+                        // };
                     }
                     nprogress.done();
                 })
@@ -46,19 +48,21 @@ export default {
 
         navigateDash() {
             router.visit("/dashboard");
+            localStorage.setItem("login", JSON.stringify({ login: true }))
         }
 
     },
     components: {
-
+        SweetAlerts
     },
 }
 </script>
 
 <template>
+    <SweetAlerts ref="sweetAlerts"></SweetAlerts>
     <section class="main_section">
         <div class="login_main">
-            <span v-if="response.error" class="error-disp">{{ response.message }}</span>
+            <!-- <span v-if="response.error" class="error-disp">{{ response.message }}</span> -->
 
             <div class="login_details">
                 <h1>
