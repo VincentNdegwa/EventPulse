@@ -71,18 +71,23 @@ export default {
                             }
                             console.log(res.data)
                         }).catch(err => {
+                            this.$refs.sweetAlerts.showNotificationError("Failed, an error occured!!")
+                            console.log(err)
                             this.error = true;
                             this.message = err
                             this.loading = false
                         })
                     }
                 }).catch(err => {
+                    this.$refs.sweetAlerts.showNotificationError("Failed, an error occured!!")
+                    console.log(err)
                     this.error = true;
                     this.message = err
                 })
 
 
             } else {
+                $this.$refs.showMessage(this.message || "An error has occured")
                 alert(this.error)
             }
         }, validateInputs(data) {

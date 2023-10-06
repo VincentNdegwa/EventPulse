@@ -117,7 +117,58 @@
     padding: 0.3em;
     border-radius: 0.4em;
 }
-
+.applicant-details-container {
+    background: var(--main-white);
+    width: 100%;
+    height: 95%;
+    border-radius: 0.4em;
+    position: relative !important;
+    display: grid;
+    gap: 0.75%;
+    grid-template-rows: 5% 23% 23% 23% 23%;
+    /* grid-template-rows: 0.4fr 1fr 1fr 1fr 1fr; */
+}
+.applicants-view {
+    display: grid;
+    width: 100%;
+    gap: 0.5em;
+    grid-template-rows: 5% 95%;
+    height: 100%;
+}
+.applicant-item {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    /* box-shadow: 2px 3px 4px rgba(0,0,0,0.4); */
+}
+.p {
+    flex-direction: column;
+}
+.p > p {
+    color: var(--main-green);
+    text-transform: capitalize;
+}
+.applicant-item > p {
+    margin: 0;
+}
+.p > span {
+    width: 100%;
+    height: 100%;
+    font-size: 0.7em;
+    color: var(--main-blue);
+    /* text-wrap: wrap; */
+    overflow-y: scroll;
+}
+.close-applicant-view {
+    background: var(--main-blue);
+    width: 3em;
+    border-radius: 0.3em;
+    font-size: 1.3em;
+    color: var(--main-white);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+}
 @media screen and (max-width: 950px) {
     .events-part-content {
         width: 80%;

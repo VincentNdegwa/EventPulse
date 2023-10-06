@@ -221,11 +221,16 @@ class events_controller extends Controller
     function getApplicants(Request $request)
     {
         try {
-            $events = events::rightJoin('event_application', 'events.id', '=', 'event_application.event_id')
-                ->where('events.creator_id', $request->input('user_id'))
-                ->where('event_application.status', 'pending')
-                ->with('eventApplicants')
+            $events = events::whereIn('events.id', function ($query) use ($request) {
+                $query->select('events.id')
+                    ->from('events')
+                    ->join('event_application', 'events.id', '=', 'event_application.event_id')
+                    ->where('events.creator_id', $request->input('user_id'))
+                    ->where('event_application.status', 'pending')
+                    ->distinct();
+            })->with(['eventApplicants', 'eventApplicants.user'])
                 ->get();
+
 
             return response()->json([
                 "error" => false,

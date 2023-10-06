@@ -2,34 +2,97 @@
 import SideNav from '../Dashboard/components/SideNav.vue';
 import axios from 'axios';
 import SweetAlerts from '@/components/SweetAlerts.vue';
+import ApplicantListForm from "./components/ApplicantListForm.vue"
 export default {
     data() {
         return {
-            approval: false
-
+            approval: false,
+            application: false,
+            mainData: Array,
+            applicants: Array,
+            applicantDetails: Object,
+            sendingData: []
         }
     },
     components: {
         SideNav,
-        SweetAlerts
+        SweetAlerts,
+        ApplicantListForm
     },
     methods: {
-        openApproval() {
+        openApproval(id) {
+            let data = this.mainData.find((item) => item.id == id)
+            this.applicants = data.event_applicants;
             this.approval = true
+            this.application = false
+
+            this.applicants.forEach((item) => {
+                item.state = false;
+            })
         },
         closeApproval() {
             this.approval = false
+            this.application = false
         }, requestData() {
             axios.post("/user-id").then(res => {
                 let userId = res?.data.userId
                 axios.post("api/events/approvals", { user_id: userId }).then(res => {
-                    console.log(res.data)
+                    if (!res.error) {
+                        this.mainData = res.data.data
+                    } else {
+                        this.$refs.sweetAlerts.showNotificationError("An error occured")
+                        console.log(res.data.message)
+                    }
                 }).catch(err => {
-                    console.log(err)
+                    this.$refs.sweetAlerts.showNotificationError(err)
                 })
             }).catch(err => {
                 this.$refs.sweetAlerts.showNotificationError(err)
             })
+        }, calculateDays(date) {
+            let current = new Date();
+            let eventTime = new Date(date)
+            if (eventTime) {
+                let diffMill = eventTime - current
+                let days = Math.ceil(diffMill / (1000 * 60 * 60 * 24));
+                return days;
+            } else {
+                return "N/A"
+            }
+
+        }, calculatePrice(price) {
+            if (price <= 0) {
+                return "Free"
+            } else if (price > 0) {
+                return `${price} Ksh`
+            }
+        }, viewApplication(id) {
+            this.application = true
+            this.approval = false
+            let data = this.applicants.find((item) => item.event_application_id == id)
+            this.applicantDetails = data
+        }, closeApplicantView() {
+            this.application = false
+            this.approval = true
+        }, submitApproved() {
+            let data = this.applicants.map(item => {
+                let userData = {
+                    applicant_id: item.user_id,
+                    state: item.state
+                };
+                this.sendingData.push(userData);
+            })
+            console.log(this.sendingData)
+        }, markAllSelected() {
+            return new Promise((resolve) => {
+                for (let i = 0; i < this.applicants.length; i++) {
+                    this.applicants[i].state = true;
+                }
+                resolve()
+            });
+        }, async approveAll() {
+            await this.markAllSelected()
+            this.submitApproved()
         }
     }, mounted() {
         this.requestData()
@@ -48,20 +111,20 @@ export default {
                 <div class="future-events-holder">
                     <div class="events-item-holder event-container">
 
-                        <div @click="openApproval" class="card" style="">
-                            <img src="images/image2.jpg" class="card-img-top" alt="...">
+                        <div class="card" style="" v-for="(item, index) in mainData" :key="index">
+                            <img :src="item.event_image" class="card-img-top" alt="...">
                             <div class="card-body">
-                                <p class="card-text">Tech Innovators Symposium</p>
-                                <span>A gathering of leading tech visionaries discussing the future of innovation</span>
+                                <p class="card-text">{{ item.title }}</p>
+                                <span>{{ item.description }}</span>
                                 <div class="event-desc-display">
-                                    <span>Silicon Valley</span>
-                                    <span>Technology</span>
-                                    <p>12May,2023::12pm</p>
+                                    <span>{{ item.venue }}</span>
+                                    <span>{{ item.category }}</span>
+                                    <p>In {{ calculateDays(item.event_date) }} Days</p>
                                 </div>
-                                <h6>1000ksh</h6>
+                                <h6>{{ calculatePrice(item.price) }}</h6>
                                 <div class="future-events-buttons">
-                                    <button @click="openApproval">View Applicants</button>
-                                    <button>Approve All</button>
+                                    <button @click="openApproval(item.id)">View Applicants</button>
+                                    <button @click="approveAll">Approve All</button>
 
                                 </div>
                             </div>
@@ -73,26 +136,41 @@ export default {
                         <i @click="closeApproval" class='bx bx-x close-event-desc'></i>
                         <div class="evemts-part-header">
                             <span>Applicants</span>
-                            <button>Select All</button>
+                            <button @click="markAllSelected">Select All</button>
                         </div>
-                        <form class="events-part-content">
-
-                            <div class="event-part-item">
-                                <div class="part-name">
-                                    <span>Edwin pip</span>
-                                    <p>12May,2023</p>
-                                </div>
-                                <div class="part-action">
-                                    <button>view</button>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                    </div>
-                                </div>
-                            </div>
-
-                        </form>
-                        <button class="approve-btn">Approve</button>
+                        <ApplicantListForm :applicants="applicants" @view_application="viewApplication" />
+                        <button @click="submitApproved" class="approve-btn">Approve</button>
                     </div>
+
+
+                    <div v-if="application" class="event-more-desc events-participants applicants-view">
+                        <i @click="closeApproval" class='bx bx-x close-event-desc'></i>
+                        <span @click="closeApplicantView" class="close-applicant-view"><i
+                                class='bx bx-arrow-back'></i></span>
+                        <div class="applicant-details-container">
+                            <div class="applicant-item">
+                                <p>Name:</p>
+                                <span>{{ applicantDetails.user.username }}</span>
+                            </div>
+                            <div class="applicant-item p">
+                                <p>Agenda</p>
+                                <span>{{ applicantDetails.event_agenda }}</span>
+                            </div>
+                            <div class="applicant-item p">
+                                <p>expectation</p>
+                                <span>{{ applicantDetails.expectation }}</span>
+                            </div>
+                            <div class="applicant-item p">
+                                <p>similar event</p>
+                                <span>{{ applicantDetails.similar_event }}</span>
+                            </div>
+                            <div class="applicant-item p">
+                                <p>learning objective</p>
+                                <span>{{ applicantDetails.learning_objective }}</span>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

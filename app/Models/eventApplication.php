@@ -24,4 +24,9 @@ class eventApplication extends Model
     {
         return $this->belongsTo(events::class);
     }
+
+    public function user()
+    {
+        return     $this->belongsTo(users::class);
+    }
 }
