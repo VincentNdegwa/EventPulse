@@ -8,6 +8,9 @@ import 'vuetify/styles';
 import * as VuetifyComponents from 'vuetify/components';
 import * as VuetifyDirectives from 'vuetify/directives';
 import axios from 'axios';
+
+import VueSweetalert2 from 'vue-sweetalert2';
+import "sweetalert2/dist/sweetalert2.min.css"
 axios.defaults.withCredentials = true
 const vuetify = createVuetify({
     components: VuetifyComponents,
@@ -23,6 +26,7 @@ createInertiaApp({
         createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(vuetify)
+            .use(VueSweetalert2)
             .mount(el);
     }
 });

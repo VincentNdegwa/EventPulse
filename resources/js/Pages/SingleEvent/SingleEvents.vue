@@ -2,7 +2,9 @@
 import axios from 'axios';
 import ApplicationForm from './components/ApplicationForm.vue';
 import Loader from '@/components/Loader.vue';
+import Message from '@/components/Message.vue';
 import { router } from '@inertiajs/vue3';
+import SweetAlerts from "@/components/SweetAlerts.vue"
 export default {
     props: {
         data: Array
@@ -48,7 +50,7 @@ export default {
         }, saveInputsToLocal() {
             localStorage.setItem("user_inputs", JSON.stringify(this.userInputs));
         }, saveBrowserState() {
-            localSotrage.setItem("application_status", JSON.stringify(this.browserState));
+            localStorage.setItem("application_status", JSON.stringify(this.browserState));
         }, submitForm(data) {
             if (this.validateInputs(data)) {
                 this.loading = true
@@ -58,22 +60,28 @@ export default {
                         axios.post("/api/event/apply", data).then(res => {
                             this.loading = false
                             if (res?.data?.error) {
-                                this.error = res.data.message;
+                                this.$refs.sweetAlerts.showNotificationError(res.data.message)
                             } else {
-                                this.message = res.data.message;
+                                this.$refs.sweetAlerts.showNotification(res.data.message);
+                                setTimeout(() => {
+                                    router.visit(route("tickets"))
+                                }, 5000)
                                 localStorage.removeItem("user_inputs");
                                 localStorage.removeItem("application_status");
-                                router.visit(route("tickets"))
                             }
                             console.log(res.data)
                         }).catch(err => {
-                            alert(err);
+                            this.error = true;
+                            this.message = err
                             this.loading = false
                         })
                     }
                 }).catch(err => {
-                    console.log(err)
+                    this.error = true;
+                    this.message = err
                 })
+
+
             } else {
                 alert(this.error)
             }
@@ -82,7 +90,8 @@ export default {
                 this.goBack()
                 return false;
             } else if (!data.event_agenda.trim() || !data.expectation.trim() || !data.similar_event.trim()) {
-                this.error = "Please fill in all required fields";
+                this.message = "Please fill in all required fields"
+                this.error = true;
                 return false;
             } else {
                 return true
@@ -91,21 +100,28 @@ export default {
     }, mounted() {
         this.eventsData = this.data[0]
         let storedInputs = localStorage.getItem("user_inputs");
-        let jsonInputs = JSON.parse(storedInputs);
-        if (jsonInputs.event_id == this.eventsData.id) {
-            this.userInputs = jsonInputs
-        } else {
-            localStorage.removeItem("user_inputs")
-            this.userInputs.event_id = this.eventsData.id
+        if (storedInputs) {
+            let jsonInputs = JSON.parse(storedInputs);
+            if (jsonInputs.event_id == this.eventsData.id) {
+                this.userInputs = jsonInputs
+            } else {
+                localStorage.removeItem("user_inputs")
+                this.userInputs.event_id = this.eventsData.id
+            }
+
         }
         let state = localStorage.getItem("application_status");
-        let jsonState = JSON.parse(state);
-        if (jsonState.started) {
-            this.openApply = true
+        if (state) {
+            let jsonState = JSON.parse(state);
+            if (jsonState.started) {
+                this.openApply = true
+            }
         }
     }, components: {
         ApplicationForm,
-        Loader
+        Loader,
+        Message,
+        SweetAlerts
     }, watch: {
         userInputs: {
             handler: function (newValue, oldValue) {
@@ -117,6 +133,9 @@ export default {
 }
 </script>
 <template>
+    <!-- <Message :error="error" :message="message" /> -->
+    <SweetAlerts ref="sweetAlerts"></SweetAlerts>
+
     <Loader :loading="loading" />
     <div class="single-events-container">
         <div class="event-button-navigation">
