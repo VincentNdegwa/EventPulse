@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\userProfile;
 use App\Models\users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,10 +41,21 @@ class user_controller extends Controller
                 ]);
 
                 if ($user) {
+                    userProfile::create([
+                        "first_name" => "",
+                        "last_name" => "",
+                        "phone_name" => "",
+                        "country" => "",
+                        "state" => "",
+                        "profile_image" => "",
+                        "user_profile_id" => $user->id
+                    ]);
+
                     return response()->json([
                         "error" => false,
                         "message" => "User created successfully!",
-                        "data" => $user
+                        "data" => $user,
+                        "pass" => $request->input("password")
                     ]);
                 } else {
                     return response()->json([

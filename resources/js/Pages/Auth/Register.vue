@@ -25,19 +25,40 @@ export default {
             axios.post("api/user/register", this.form).then(res => {
                 nprogress.done()
                 if (!res.data.error) {
-                    this.navigateDash()
+                    localStorage.setItem("user_details", JSON.stringify({ user_id: res.data.data.id }));
+                    this.navigateDash(res.data.data.email, res.data.pass)
                 } else {
                     this.$refs.sweetAlert.showNotificationError(res.data.message)
                 }
-                console.log(res.data)
             }).catch(err => {
                 nprogress.done()
                 console.log(err)
             })
         },
-        navigateDash() {
-            router.visit("/dashboard");
-            localStorage.setItem("login", JSON.stringify({ login: true }))
+        navigateDash(email, password) {
+            nprogress.start();
+            axios.post("/user/login", {
+                email: email,
+                password: password
+            })
+                .then(res => {
+                    if (res.data?.error === false) {
+                        this.response = {
+                            error: false,
+                            message: ""
+                        };
+                        router.visit("/dashboard");
+                        localStorage.setItem("login", JSON.stringify({ login: true }))
+                    } else {
+                        this.$refs.sweetAlerts.showNotificationError(res.data.message)
+                    }
+                    nprogress.done();
+                })
+                .catch(err => {
+                    nprogress.done();
+                    console.error(err);
+                });
+
         }
     },
     components: {

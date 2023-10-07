@@ -8,7 +8,9 @@ export default {
         userId: Number,
     },
     data() {
-
+        return {
+            user_id: ""
+        }
     },
     components: {
         SideNav,
@@ -24,6 +26,11 @@ export default {
                 this.$refs.sweetAlert.showNotification("You are signed in")
                 localStorage.removeItem("login")
             }
+        }
+        let user = localStorage.getItem("user_details");
+        if (user) {
+            let user_id = JSON.parse(user).user_id;
+            this.user_id = user_id
         }
     }, methods: {
         requestData() {

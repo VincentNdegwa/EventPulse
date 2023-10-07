@@ -30,13 +30,10 @@ export default {
                             error: false,
                             message: ""
                         };
+                        localStorage.setItem("user_details", JSON.stringify({ user_id: res.data.data.id }));
                         this.navigateDash();
                     } else {
                         this.$refs.sweetAlerts.showNotificationError(res.data.message)
-                        // this.response = {
-                        //     error: true,
-                        //     message: res.data.message
-                        // };
                     }
                     nprogress.done();
                 })
@@ -92,7 +89,8 @@ export default {
                             <button class="button_login" type="button" @click="submitForm">Login</button>
                         </div>
                         <div class="mb-3 input_label">
-                            <button type="submit" class="button_register reg_hidden">Register</button>
+                            <button @click="redirectToRegister" type="button"
+                                class="button_register reg_hidden">Register</button>
                         </div>
                     </form>
                 </div>
