@@ -18,4 +18,10 @@ class userProfile extends Model
         "profile_image",
         "user_profile_id"
     ];
+
+
+    public function user()
+    {
+        return $this->belongsTo(users::class, 'user_profile_id', 'id');
+    }
 }

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign("user_profile_id")->references("id")->on("users")->onDelete("cascade");
             $table->string("first_name")->nullable();
             $table->string("last_name")->nullable();
-            $table->string("phone_name")->nullable();
+            $table->string("phone_number")->nullable();
             $table->string("country")->nullable();
             $table->string("state")->nullable();
             $table->string("profile_image")->nullable();

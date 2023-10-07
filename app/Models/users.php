@@ -17,4 +17,16 @@ class users extends Model
     protected $hidden = [
         'password',
     ];
+
+
+    public function Application()
+    {
+        return $this->hasMany(eventApplication::class, "user_id");
+    }
+
+
+    public function profile()
+    {
+        return $this->hasOne(userProfile::class, 'user_profile_id', 'id');
+    }
 }

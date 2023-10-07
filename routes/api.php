@@ -44,4 +44,6 @@ Route::group(["prefix" => "applicant"], function () {
 
 Route::group(["prefix" => "profile"], function () {
     Route::post("/update", [profile_controller::class, "update"]);
+    Route::post("/retrieve", [profile_controller::class, "retrieve"]);
+    // Route::post("/update", [profile_controller::class, "update"]);
 });

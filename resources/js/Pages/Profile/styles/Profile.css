@@ -114,3 +114,15 @@
         margin-top: 1em;
     }
 }
+@media screen and (max-width: 1000px) {
+    .profile-image-holder {
+        width: 13em;
+        height: 13em;
+    }
+}
+@media screen and (max-width: 450px) {
+    .profile-details-items {
+        display: flex;
+        gap: 0.5em;
+    }
+}

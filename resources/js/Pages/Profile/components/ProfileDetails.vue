@@ -1,22 +1,26 @@
 <script>
 export default {
+    props: {
+        userData: Object
+    }, methods: {
 
+    },
 }
 </script>
 
 <template>
-    <div class="profile-details">
+    <div v-if="userData.profile" class="profile-details">
         <div class="profile-details-items">
-            <span>First Name</span>
-            <p>Vincent</p>
+            <span>First Name:</span>
+            <p>{{ userData.profile.first_name ? userData.profile.first_name : "No Name" }}</p>
         </div>
         <div class="profile-details-items">
             <span>Last Name</span>
-            <p>Ndegwa</p>
+            <p>{{ userData.profile.last_name ? userData.profile.last_name : "No Name" }}</p>
         </div>
         <div class="profile-details-items">
             <span>Email</span>
-            <p>ndegwavincent7@gmail.com</p>
+            <p>{{ userData.email }}</p>
         </div>
         <div class="profile-details-items">
             <span>Email Status</span>
@@ -24,7 +28,7 @@ export default {
         </div>
         <div class="profile-details-items">
             <span>Phone No</span>
-            <p>Vincent</p>
+            <p>{{ userData.profile.phone_number ? userData.profile.phone_number : "No Phone" }}</p>
         </div>
         <div class="profile-details-items">
             <span>Phone Status</span>
@@ -32,7 +36,8 @@ export default {
         </div>
         <div class="profile-details-items">
             <span>Addresss</span>
-            <p>Vincent</p>
+            <p>{{ userData.profile.country ? userData.profile.country : "N/A" }},{{ userData.profile.state ?
+                userData.profile.state : "N/A" }} </p>
         </div>
     </div>
 </template>
