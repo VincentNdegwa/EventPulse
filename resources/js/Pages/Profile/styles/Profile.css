@@ -1,0 +1,116 @@
+.profile-container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 50% 45%;
+    gap: 5%;
+    padding: 2em;
+    overflow-y: scroll;
+}
+.profile-details {
+    width: 100%;
+    height: 100%;
+    padding: 3em;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    background: var(--main-white);
+    box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.4);
+    border-radius: 1em;
+}
+.profile-details-items {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    gap: 0em;
+    align-items: center;
+    height: 3em;
+    overflow-wrap: break-word;
+}
+.profile-details-items > span {
+    font-size: 1.2em;
+    color: var(--main-blue);
+}
+.profile-details-items > p {
+    margin: 0;
+    font-size: 1.2em;
+    color: var(--main-green);
+}
+.profile-image-container {
+    background: var(--main-white);
+    box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.4);
+    border-radius: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1em;
+    height: fit-content;
+}
+.profile-image-holder {
+    width: 20em;
+    height: 20em;
+    border: 1px solid var(--main-orange);
+    border-radius: 50%;
+}
+.profile-image-holder > img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+.profile-name {
+    display: flex;
+    gap: 01em;
+}
+.profile-name > button {
+    background: var(--main-green);
+    padding: 1em;
+    color: var(--main-white);
+    margin-top: 1em;
+    border-radius: 1em;
+}
+.update-profile {
+    padding: 4em;
+}
+.update-button {
+    background: var(--main-orange);
+    padding: 1em;
+    border-radius: 0.3em;
+    color: var(--main-white);
+}
+.profile-image-test {
+    width: 5em;
+    height: 5em;
+    border: 1px solid var(--main-orange);
+    border-radius: 50%;
+}
+.profile-image-test > img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+@media screen and (max-width: 700px) {
+    .profile-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 5%;
+        padding: 2em;
+    }
+    .profile-image-holder {
+        width: 10em;
+        height: 10em;
+    }
+    .profile-image-container {
+        background: var(--main-white);
+        box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.4);
+        border-radius: 1em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 25em;
+    }
+    .profile-name > button {
+        padding: 0.5em;
+        margin-top: 1em;
+    }
+}
