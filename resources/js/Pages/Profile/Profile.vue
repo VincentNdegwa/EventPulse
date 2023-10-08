@@ -15,11 +15,13 @@ export default {
                 phone_number: "",
                 country: "",
                 state: "",
-                profile_image: ""
+                profile_image: "",
+                user_id: "",
 
             }, file: "",
             loading: false,
-            userData: Object
+            userData: Object,
+            user_id: ""
         }
     },
     components: {
@@ -31,21 +33,32 @@ export default {
     }, methods: {
         toggleUpdate() {
             this.openUpdate = true
-            this.userData.first_name = this.updateData.first_name
-            this.userData.last_name = this.updateData.last_name
-            this.userData.phone_number = this.updateData.phone_number
-            this.userData.state = this.updateData.state
-            this.userData.country = this.updateData.country
+            this.updateData.first_name = this.userData.profile.first_name
+            this.updateData.last_name = this.userData.profile.last_name
+            this.updateData.phone_number = this.userData.profile.phone_number
+            this.updateData.state = this.userData.profile.state
+            this.updateData.country = this.userData.profile.country
+            this.updateData.user_id = this.userData.id
+
+            this.file = this.userData.profile.profile_image
+            console.log(this.userData)
 
         },
         handleProfile(event) {
             const reader = new FileReader();
+            const file = event.target.files[0];
+
             reader.onload = (e) => {
-                this.file = e.target.result;
-                this.updateData.profile_image = this.file;
+                const fileData = e.target.result;
+                this.updateData.profile_image = fileData;
+                this.file = fileData
             };
-            reader.readAsDataURL(this.file);
-        }, requestData() {
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+        , requestData() {
             this.loading = true
             let user = localStorage.getItem("user_details");
 
@@ -67,6 +80,19 @@ export default {
                 console.log(err)
             })
 
+        }, updateProfile() {
+            axios.post("api/profile/update", this.updateData).then(res => {
+                if (!res.data.error) {
+                    this.$refs.sweetAlerts.showNotification(res.data.message)
+                } else {
+                    this.$refs.sweetAlerts.showNotificationError(res.data.message)
+                }
+            }).catch(err => {
+                this.$refs.sweetAlerts.showMessage("An error occured,Please try again")
+                console.log('err', err)
+            })
+        }, goBack() {
+            window.history.back()
         }
     }, mounted() {
         this.requestData()
@@ -112,7 +138,9 @@ export default {
                                 aria-label="State">
                         </div>
                     </div>
-                    <button class="mt-3 update-button">Update</button>
+                    <button type="button" @click="updateProfile" class="mt-3 update-button">Update</button>
+                    <button type="button" @click="goBack" class="mt-3 update-button ml-6 cancel-button">Cancel</button>
+
 
                 </form>
             </div>
