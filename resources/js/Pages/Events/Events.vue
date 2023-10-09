@@ -15,7 +15,8 @@ export default {
             loading: false,
             errorText: "",
             eventsData: [],
-            openedEvent: Object
+            openedEvent: Object,
+            categories: []
         }
     },
     components: {
@@ -32,10 +33,11 @@ export default {
         requestData() {
             this.loading = true
             axios.post("api/retrieve/events/all").then(res => {
-                this.loading = false
                 if (res) {
                     if (!res.data.error) {
                         this.eventsData = res.data.data
+                        this.categories = res.data.categories
+                        this.loading = false
                     } else {
                         this.errorText = res.data.message;
                     }
@@ -65,6 +67,20 @@ export default {
         }, openEvent(id) {
             this.loading = true
             router.get(`/view/${id}`)
+        },
+        handleCategory(category) {
+            console.log(category)
+
+            axios.get(`api/events/category/${category}`).then((res) => {
+                if (res) {
+                    if (!res.data.error) {
+                        this.eventsData = res.data.data
+                        this.loading = false
+                    }
+                }
+            }).catch((err) => {
+                console.log(err)
+            })
         }
     }
 }
@@ -77,10 +93,10 @@ export default {
     <div class="main-section">
         <SideNav />
         <div class="dash-main">
-            <div class="events-container">
-                <EventHeader />
+            <div class="events-container" v-if="categories">
+                <EventHeader :categories="categories" @handle-category="handleCategory" />
                 <div class="event-body">
-                    <div class="event-container">
+                    <div v-if="eventsData.length > 0" class="event-container">
 
                         <div @click="openEvent(item.id)" class="card" v-for="(item, index) in eventsData" :key="index">
                             <img :src="item.event_image" class="card-img-top" alt="...">
@@ -96,6 +112,10 @@ export default {
                             </div>
                         </div>
 
+                    </div>
+
+                    <div class="no-events">
+                        <h4>No events found</h4>
                     </div>
                 </div>
             </div>

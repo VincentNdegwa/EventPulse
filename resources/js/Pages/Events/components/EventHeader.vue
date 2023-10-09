@@ -1,3 +1,17 @@
+<script>
+export default {
+    props: {
+        categories: Array
+    }, mounted() {
+    }, methods: {
+        handleCategory(event) {
+            this.$emit("handle-category", event.target.value)
+        }
+    }
+}
+
+</script>
+
 <template>
     <div class="event-header">
         <div class="event-header-container">
@@ -5,11 +19,12 @@
                 <p>Events</p>
                 <div class="category-input">
                     <span>Category</span>
-                    <select class="form-select select-input" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                    <select @change="handleCategory($event)" class="form-select select-input"
+                        aria-label="Default select example" v-if="categories">
+                        <option selected>All</option>
+                        <option v-for="(item, index) in categories" :key="index" :value="item.category_name">{{
+                            item.category_name
+                        }}</option>
                     </select>
                 </div>
             </div>

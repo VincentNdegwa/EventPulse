@@ -6,6 +6,7 @@ use App\Models\eventApplication;
 use App\Models\events;
 use App\Models\host;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -106,10 +107,12 @@ class events_controller extends Controller
     function getAllEvents()
     {
         try {
+            $categories = DB::table("category")->get();
             $allEvents = events::with('hosts')->orderBy("events.created_at", "desc")->get();
             return response()->json([
                 "error" => false,
-                "data" => $allEvents
+                "data" => $allEvents,
+                "categories" => $categories
             ]);
         } catch (\Exception $th) {
             return response()->json([
@@ -240,6 +243,31 @@ class events_controller extends Controller
             return response()->json([
                 "error" => true,
                 'data' => $th->getMessage(),
+            ]);
+        }
+    }
+
+
+    function getEventCategory($id)
+    {
+        try {
+            if ($id != "All") {
+                $event = events::where("category", $id)->with('hosts')->orderBy("events.created_at", "desc")->get();
+                return response()->json([
+                    "error" => false,
+                    "data" => $event
+                ]);
+            } else {
+                $event = events::with('hosts')->orderBy("events.created_at", "desc")->get();
+                return response()->json([
+                    "error" => false,
+                    "data" => $event
+                ]);
+            }
+        } catch (\Exception $th) {
+            return response()->json([
+                "error" => true,
+                "message" => "Failed to get events"
             ]);
         }
     }

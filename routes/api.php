@@ -37,6 +37,10 @@ Route::group(['prefix' => 'retrieve'], function () {
     Route::post("/events/all", [events_controller::class, "getAllEvents"]);
     Route::post("/single", [events_controller::class, "getOneEvent"]);
 });
+
+Route::prefix("/events")->group(function () {
+    Route::get("category/{id}", [events_controller::class, "getEventCategory"]);
+});
 Route::post("event/apply", [events_controller::class, "applyEvents"]);
 Route::post("events/approvals", [events_controller::class, "getApplicants"]);
 Route::group(["prefix" => "applicant"], function () {
