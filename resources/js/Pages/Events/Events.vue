@@ -69,7 +69,6 @@ export default {
             router.get(`/view/${id}`)
         },
         handleCategory(category) {
-            console.log(category)
 
             axios.get(`api/events/category/${category}`).then((res) => {
                 if (res) {
