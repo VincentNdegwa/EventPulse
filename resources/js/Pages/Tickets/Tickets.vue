@@ -1,21 +1,55 @@
 <script>
 import SideNav from '../Dashboard/components/SideNav.vue';
+import SweetAlerts from '@/components/SweetAlerts.vue';
+import axios from 'axios';
+import dayjs from 'dayjs';
+import relativeTime from "dayjs/plugin/relativeTime"
 export default {
     data() {
         return {
-            openTicket: false
+            openTicket: false,
+            user_id: "",
+            ticketsData: [],
+            eventData: {}
         }
     },
     components: {
-        SideNav
+        SideNav,
+        SweetAlerts
     },
     methods: {
-        toggleTicket() {
+        toggleTicket(id) {
             this.openTicket = !this.openTicket
+            let clickedData = this.ticketsData.find((item) => item.event_application_id == id)
+            this.eventData = clickedData
+            console.log(this.eventData)
         },
         closeTicket() {
             this.openTicket = false
+        }, requestData() {
+            axios.post("api/applicant/tickets", { user_id: this.user_id }).then(res => {
+                if (res.data.error) {
+                    this.$refs.sweetAlerts.showMessage("An error occured, Please try again later");
+                } else {
+                    this.ticketsData = res.data.data;
+                }
+                // console.log(res.data.data)
+            }).catch(err => {
+                console.log(err)
+                this.$refs.sweetAlerts.showMessage("An error occured, Please try again later");
+            })
+        }, readableDate(date) {
+            dayjs.extend(relativeTime)
+            return dayjs(date).fromNow()
         }
+    }, mounted() {
+        let user = localStorage.getItem("user_details");
+
+        if (user) {
+            let user_id = JSON.parse(user).user_id;
+            this.user_id = user_id
+        }
+        this.requestData()
     }
 }
 
@@ -24,6 +58,7 @@ export default {
 <template>
     <div class="main-section">
         <SideNav />
+        <SweetAlerts ref="sweetAlerts"></SweetAlerts>
         <div class="dash-main">
             <div class="tickets-container">
                 <div class="tickets-sort">
@@ -38,12 +73,13 @@ export default {
                     <div class="applied-tickets-container">
                         <div class="tickets-holder">
                             <!-- start -->
-                            <div @click="toggleTicket" class="tickets-item">
+                            <div @click="toggleTicket(item.event_application_id)" class="tickets-item"
+                                v-for="(item, index) in ticketsData" :key="index">
                                 <div class="tickets-heading-status">
-                                    <span>DevOps Summit 2023</span>
-                                    <p>Pending</p>
+                                    <span>{{ item.event.title }}</span>
+                                    <p>{{ item.status }}</p>
                                 </div>
-                                <p>A gathering of leading tech visionaries discussing the future of innovation</p>
+                                <p>{{ item.event.description }}</p>
                             </div>
 
                         </div>
@@ -54,32 +90,32 @@ export default {
                                     <h5>DevOps Summit 2023</h5>
                                     <div class="ticket-status-holder">
                                         <p>Date Applied</p>
-                                        <span>3May 2023</span>
+                                        <span>{{ readableDate(eventData.created_at) }}</span>
                                     </div>
                                     <div class="ticket-status-holder">
                                         <p>Status</p>
-                                        <span>pending</span>
+                                        <span>{{ eventData.status }}</span>
                                     </div>
                                     <div class="ticket-status-holder">
                                         <p>Cash</p>
-                                        <span>1000</span>
+                                        <span>{{ eventData.event.price }}</span>
                                     </div>
                                 </div>
 
                                 <div class="ticket-place">
                                     <div class="ticket-place-holder">
                                         <p>Venue</p>
-                                        <span>Nairobi, Kenya</span>
+                                        <span>{{ eventData.event.venue }}</span>
                                     </div>
 
                                     <div class="ticket-place-holder">
                                         <p>Address</p>
-                                        <span>Ronald Ngara</span>
+                                        <span>{{ eventData.event.address }}</span>
                                     </div>
 
                                     <div class="ticket-place-holder">
                                         <p>Time</p>
-                                        <span>12:30pm, 20May,2023</span>
+                                        <span>{{ readableDate(eventData.event.event_date) }}</span>
                                     </div>
                                 </div>
 

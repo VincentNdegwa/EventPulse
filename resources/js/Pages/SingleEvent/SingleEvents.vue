@@ -65,7 +65,7 @@ export default {
                                 this.$refs.sweetAlerts.showNotification(res.data.message);
                                 setTimeout(() => {
                                     router.visit(route("tickets"))
-                                }, 5000)
+                                }, 3000)
                                 localStorage.removeItem("user_inputs");
                                 localStorage.removeItem("application_status");
                             }
@@ -87,7 +87,7 @@ export default {
 
 
             } else {
-                $this.$refs.showMessage(this.message || "An error has occured")
+                this.$refs.showMessage(this.message || "An error has occured")
                 alert(this.error)
             }
         }, validateInputs(data) {

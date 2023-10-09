@@ -73,7 +73,6 @@ export default {
                 } else {
                     this.$refs.sweetAlerts.showNotificationError(res.data.message)
                 }
-                console.log(this.userData)
             }).catch(err => {
                 this.loading = false
                 this.$refs.sweetAlerts.showMessage(err)

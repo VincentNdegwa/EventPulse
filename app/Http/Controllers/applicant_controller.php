@@ -33,4 +33,27 @@ class applicant_controller extends Controller
 
         return response()->json($results);
     }
+
+    public function retreiveTickets(Request $request)
+    {
+        try {
+            $ticket = eventApplication::where("user_id", $request->input("user_id"))->with("event")->get();
+            if ($ticket) {
+                return response()->json([
+                    "error" => false,
+                    "data" => $ticket
+                ]);
+            } else {
+                return response()->json([
+                    "error" => true,
+                    "message" => "Failed to retrieve"
+                ]);
+            }
+        } catch (\Exception $th) {
+            return response()->json([
+                "error" => true,
+                "message" => $th->getMessage()
+            ]);
+        }
+    }
 }

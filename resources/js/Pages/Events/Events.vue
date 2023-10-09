@@ -92,7 +92,7 @@ export default {
                                     <span>{{ item.category }}</span>
                                     <p>{{ this.calculateDays(item.event_date) }} Days to Event</p>
                                 </div>
-                                <h6>{{ this.eveluatePrice(item.price) }}</h6>
+                                <h6>{{ eveluatePrice(item.price) }}</h6>
                             </div>
                         </div>
 
