@@ -1,6 +1,39 @@
 <script>
+import { router } from '@inertiajs/vue3'
+import dayjs from 'dayjs'
+import relativeTime from "dayjs/plugin/relativeTime"
 export default {
-
+    props: {
+        dashData: Object
+    }, data() {
+        return {
+            categories: [],
+            randomEvent: this.dashData.randomEvent,
+            userTickets: this.dashData.userTickets,
+            recommendedEvents: this.dashData.recommendedEvents,
+        }
+    }, methods: {
+        getData() {
+            console.log(this.dashData)
+            let randomCat = []
+            for (let index = 0; index < 4; index++) {
+                let randomIndex = Math.floor(Math.random() * this.dashData.categories.length);
+                let randomItem = this.dashData.categories[randomIndex]
+                if (!randomCat.includes(randomItem)) {
+                    randomCat.push(randomItem)
+                }
+            }
+            this.categories = randomCat
+        },
+        readableDate(data) {
+            dayjs.extend(relativeTime)
+            return dayjs(data).fromNow()
+        }, book(id) {
+            router.visit(`/view/${id}`)
+        }
+    }, mounted() {
+        this.getData()
+    }
 }
 </script>
 
@@ -12,30 +45,30 @@ export default {
                 <div class="travel-advert">
                     <div class="travel-vcard">
 
-                        <v-card class="mx-auto" max-width="auto">
-                            <v-img src="images/hero.jpg"></v-img>
+                        <v-card v-if="randomEvent" class="mx-auto" max-width="auto">
+                            <v-img :src="randomEvent.event_image"></v-img>
 
                             <div class="event-details">
                                 <div class="event-descriptions">
 
                                     <v-card-title class="event-title">
-                                        India Tour Event
+                                        {{ randomEvent.title }}
                                     </v-card-title>
 
                                     <v-card-subtitle class="event-place">
-                                        Mumbai/India
+                                        {{ randomEvent.venue == "online" ? "Online" : randomEvent.address }}
                                     </v-card-subtitle>
 
                                     <p class="event-date">
-                                        May3,2023
+                                        {{ readableDate(randomEvent.event_date) }}
                                     </p>
                                 </div>
                                 <!-- <div class="event-actions"> -->
                                 <v-card-actions class="ev-actions">
                                     <v-card-title class="ev-price">
-                                        price:1000
+                                        price:{{ randomEvent.price }}
                                     </v-card-title>
-                                    <v-btn class="book_button">
+                                    <v-btn class="book_button" @click="book(randomEvent.id)">
                                         Book Ticket
                                     </v-btn>
                                 </v-card-actions>
@@ -69,9 +102,9 @@ export default {
                 <!-- top right -->
                 <div class="event-navigation">
                     <div class="events-category-select">
-                        <div class="select-item">
+                        <div class="select-item" v-for="(item, index) in categories" :key="index">
                             <i class='bx bx-briefcase-alt'></i>
-                            <span>Business</span>
+                            <span>{{ item.category_name }}</span>
                         </div>
 
                     </div>
@@ -80,12 +113,10 @@ export default {
                             Your Tickets
                         </p>
                         <div class="tickets-cards-holder">
-                            <v-card>
+                            <v-card v-for="(item, index) in userTickets" :key="index">
                                 <v-img class="ticket-image" src="images/hero.jpg" cover></v-img>
-                                <p class="ticket-title">DevOps Summit</p>
-                                <p class="ticket-number">th568</p>
-                                <p class="ticket-date">12May,2023</p>
-                                <p class="ticket-time">12:00pm</p>
+                                <p class="ticket-title">{{ item.event.title }}</p>
+                                <p class="ticket-number">{{ readableDate(item.event.event_date) }}</p>
                             </v-card>
 
                         </div>
@@ -97,20 +128,24 @@ export default {
                 <div class="recommended">
                     <p>Recommended</p>
                     <div class="recommended-holder">
-                        <v-card>
-                            <v-img src="images/image2.jpg" cover></v-img>
-                            <v-card-subtitle class="text-caption text-center rec-date">20thMay,2023</v-card-subtitle>
-                            <v-card-text class="text-body-2 rec-title ext-center">
-                                Let’s Talk Machine Learning
-                            </v-card-text>
-                            <v-card-subtitle class="text-h7 rec-place text-center">
-                                Nairobi
-                            </v-card-subtitle>
-                            <v-card-subtitle class="text-caption rec-price text-center">
-                                500ksh
-                            </v-card-subtitle>
+                        <div v-for="(item, index) in recommendedEvents" :key="index">
+                            <img class="recomended-img" :src="item.event_image" cover />
+                            <div class="recondend-items-holder">
+                                <p class="text-caption text-center rec-date">{{ readableDate(item.event_date)
+                                }}</p>
+                                <p class="text-body-2 rec-title ext-center">
+                                    {{ item.title }}
+                                </p>
+                                <p class="text-h7 rec-place text-center">
+                                    {{ item.venue == "online" ? "Online" : item.address }}
+                                </p>
+                                <p class="text-caption rec-price text-center">
+                                    {{ item.price }}
+                                </p>
 
-                        </v-card>
+                            </div>
+
+                        </div>
 
                     </div>
                 </div>

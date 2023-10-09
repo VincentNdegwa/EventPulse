@@ -3,13 +3,16 @@ import SideNav from './components/SideNav.vue';
 import DashMain from "./layouts/DashMain.vue"
 import Loader from '@/components/Loader.vue';
 import SweetAlerts from '@/components/SweetAlerts.vue';
+import axios from 'axios';
 export default {
     props: {
         userId: Number,
     },
     data() {
         return {
-            user_id: ""
+            user_id: "",
+            dashData: {},
+            loading: false
         }
     },
     components: {
@@ -18,7 +21,6 @@ export default {
         Loader,
         SweetAlerts
     }, mounted() {
-        this.requestData()
         let loginStatus = localStorage.getItem("login")
         if (loginStatus) {
             let status = JSON.parse(loginStatus).login
@@ -32,9 +34,19 @@ export default {
             let user_id = JSON.parse(user).user_id;
             this.user_id = user_id
         }
+        this.requestData()
     }, methods: {
         requestData() {
-
+            this.loading = true
+            axios.post("api/dashboard/retrieve", { user_id: this.user_id }).then(res => {
+                if (!res.data.error) {
+                    this.dashData = res.data
+                    this.loading = false
+                }
+            }).catch(err => {
+                console.log(err)
+                this.$refs.sweetAlert.showMessage("An error occurred")
+            })
         }
     }
 }
@@ -42,12 +54,10 @@ export default {
 
 <template>
     <SweetAlerts ref="sweetAlert"></SweetAlerts>
-    <section class="loading-section" v-if="false">
-        <Loader />
-    </section>
-    <section class="main-section">
+    <Loader :loading="loading" />
+    <section v-if="dashData.randomEvent" class="main-section">
         <SideNav />
-        <DashMain />
+        <DashMain :dashData="dashData" />
     </section>
 </template>
 <style>

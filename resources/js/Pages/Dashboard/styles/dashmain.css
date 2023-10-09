@@ -186,15 +186,17 @@
 }
 
 .ticket-title {
-    font-size: 0.6em !important;
+    font-size: 0.9em !important;
     color: var(--main-green) !important;
     font-weight: bold !important;
+    text-align: center;
 }
 
 .ticket-number {
-    font-size: 0.65em !important;
+    font-size: 0.9em !important;
     color: var(--main-orange);
     margin-top: -1em;
+    text-align: center;
 }
 
 .ticket-date {
@@ -240,16 +242,31 @@
     height: 100%;
     padding: 0.7em;
 }
-
+.recommended-holder > div {
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.3em;
+    box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.25);
+    height: 240px;
+}
+.recondend-items-holder > p {
+    margin: 0.2em;
+}
 .recommended-holder {
     border: 1px solid var(--main-orange);
     border-radius: 0.5em;
     display: grid;
+    gap: 0.3em;
     grid-template-columns: repeat(3, 1fr);
     justify-items: center;
     align-items: center;
+    height: 100%;
 }
 
+.recomended-img {
+    width: 100%;
+    height: 50% !important;
+}
 .saved-events-holder {
     display: grid;
     grid-template-columns: 1fr;
