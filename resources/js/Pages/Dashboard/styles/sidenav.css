@@ -17,11 +17,14 @@
 }
 
 .nav-logo > span {
-    background: linear-gradient(180deg, var(--main-white), var(--main-blue));
+    /* background: linear-gradient(180deg, var(--main-white), var(--main-blue));
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
-    font-size: 2em;
+    font-size: 2em; */
+    color: var(--main-orange);
+    font-size: 1.9em;
+    text-transform: capitalize;
 }
 
 .nav-item {
@@ -83,7 +86,6 @@
     }
 }
 @media screen and (max-width: 900px) {
-
     .nav-logo > span {
         display: none;
     }

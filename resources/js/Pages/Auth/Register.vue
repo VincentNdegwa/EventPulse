@@ -49,6 +49,9 @@ export default {
                         };
                         router.visit("/dashboard");
                         localStorage.setItem("login", JSON.stringify({ login: true }))
+                        localStorage.removeItem("user")
+                        localStorage.setItem("user"), JSON.stringify(res.data.data);
+
                     } else {
                         this.$refs.sweetAlerts.showNotificationError(res.data.message)
                     }

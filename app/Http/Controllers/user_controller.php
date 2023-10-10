@@ -97,7 +97,7 @@ class user_controller extends Controller
                         return response()->json([
                             "error" => false,
                             "message" => 'Login successful',
-                            "data" => Auth::user(),
+                            "data" => users::where("id", auth()->id())->with("profile")->first(),
                         ]);
                     }
                 } else {

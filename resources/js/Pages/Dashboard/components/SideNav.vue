@@ -5,6 +5,7 @@ export default {
     data() {
         return {
             menu: false,
+            userData: {}
         };
     },
     methods: {
@@ -21,15 +22,26 @@ export default {
                 this.menu = false;
             }
         });
+
+        let user = localStorage.getItem("user")
+        if (user) {
+            let userData = JSON.parse(user)
+            this.userData = userData
+            console.log(this.userData)
+        } else {
+            console.log("no data")
+        }
     },
 };
 </script>
 <template>
     <div :class="{ 'side-nav-active': menu, 'side-nav': !menu }">
         <div class="nav-logo">
-            <v-avatar color="green"></v-avatar>
+            <v-avatar v-if="userData?.profile?.profile_image" :image="userData?.profile?.profile_image"></v-avatar>
+            <v-avatar v-else image="images/avatar.jpg"></v-avatar>
+
             <span>
-                Vincent
+                {{ userData.username }}
             </span>
         </div>
         <nav class="nav-holder">

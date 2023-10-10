@@ -31,6 +31,9 @@ export default {
                             message: ""
                         };
                         localStorage.setItem("user_details", JSON.stringify({ user_id: res.data.data.id }));
+                        localStorage.removeItem("user")
+                        localStorage.setItem("user", JSON.stringify(res.data.data));
+
                         this.navigateDash();
                     } else {
                         this.$refs.sweetAlerts.showNotificationError(res.data.message)

@@ -14,7 +14,7 @@ export default {
         }
     }, methods: {
         getData() {
-            console.log(this.dashData)
+            // console.log(this.dashData)
             let randomCat = []
             for (let index = 0; index < 4; index++) {
                 let randomIndex = Math.floor(Math.random() * this.dashData.categories.length);
