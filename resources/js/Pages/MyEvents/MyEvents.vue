@@ -21,6 +21,7 @@ export default {
     methods: {
         toggleMore() {
             this.openMore = true
+            console.log(this.myEventsData)
         },
         closeMore() {
             this.openMore = false

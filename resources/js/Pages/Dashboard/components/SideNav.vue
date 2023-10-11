@@ -27,7 +27,7 @@ export default {
         if (user) {
             let userData = JSON.parse(user)
             this.userData = userData
-            console.log(this.userData)
+            // console.log(this.userData)
         } else {
             console.log("no data")
         }
