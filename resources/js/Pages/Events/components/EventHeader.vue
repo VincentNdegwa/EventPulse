@@ -2,10 +2,21 @@
 export default {
     props: {
         categories: Array
-    }, mounted() {
+    }, data() {
+        return {
+            input: ""
+        }
+    },
+    mounted() {
     }, methods: {
         handleCategory(event) {
             this.$emit("handle-category", event.target.value)
+            this.input = ""
+        },
+        searchResults() {
+            if (this.input.trim()) {
+                this.$emit("handle-search", this.input)
+            }
         }
     }
 }
@@ -31,8 +42,9 @@ export default {
             <div class="event-search">
                 <!-- <button>My Tasks</button> -->
                 <div class="input-group mt-3">
-                    <span class="input-group-text"><i class='bx bx-search-alt'></i></span>
-                    <input type="text" class="form-control search-input" aria-label="Amount (to the nearest dollar)">
+                    <span class="input-group-text" @click="searchResults"><i class='bx bx-search-alt'></i></span>
+                    <input v-model="input" @keypress.enter="searchResults" type="text" class="form-control search-input"
+                        aria-label="Amount (to the nearest dollar)">
                 </div>
 
             </div>

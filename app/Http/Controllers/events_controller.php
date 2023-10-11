@@ -77,30 +77,91 @@ class events_controller extends Controller
     }
     function getMyEvents(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'userId' => 'required|integer',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'error' => true,
-                'message' => 'Invalid input data',
-            ], 400);
-        }
-
-        try {
-            $userId = $request->input('userId');
-            $myevents = events::where('creator_id', $userId)->orderBy("events.created_at", "desc")->with("hosts")->get();
-
-            return response()->json([
-                'error' => false,
-                'data' => $myevents,
+        if ($request->input("userId") && !$request->input("category") && !$request->input("search")) {
+            $validator = Validator::make($request->all(), [
+                'userId' => 'required|integer',
             ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => true,
-                'message' => $e->getMessage(),
-            ], 500);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'Invalid input data',
+                ], 400);
+            }
+
+            try {
+                $userId = $request->input('userId');
+                $categories = DB::table("category")->get();
+                $myevents = events::where('creator_id', $userId)->orderBy("events.created_at", "desc")->with("hosts")->get();
+
+                return response()->json([
+                    'error' => false,
+                    'data' => $myevents,
+                    "categories" => $categories
+
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'error' => true,
+                    'message' => $e->getMessage(),
+                ], 500);
+            }
+        } elseif ($request->input("search")) {
+            try {
+                $userId = $request->input('userId');
+                $categories = DB::table("category")->get();
+                $myevents = events::where('creator_id', $userId)
+                    ->where(function ($query) use ($request) {
+                        $search = "%" . $request->input("search") . "%";
+                        $query->orWhere("title", "LIKE", $search)
+                            ->orWhere("description", "LIKE", $search)
+                            ->orWhere("category", "LIKE", $search)
+                            ->orWhere("venue", "LIKE", $search)
+                            ->orWhere("address", "LIKE", $search);
+                    })
+                    ->orderBy("events.created_at", "desc")
+                    ->with("hosts")
+                    ->get();
+
+                return response()->json([
+                    "error" => false,
+                    "data" => $myevents,
+                    "res" => $request->input("search")
+                ]);
+
+                return response()->json([
+                    'error' => false,
+                    'data' => $myevents,
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'error' => true,
+                    'message' => $e->getMessage(),
+                ], 500);
+            }
+        } elseif ($request->input("category")) {
+            $id = $request->input("category");
+            $userId = $request->input('userId');
+            try {
+                if ($id != "All") {
+                    $event = events::where("category", $id)->with('hosts')->where('creator_id', $userId)->orderBy("events.created_at", "desc")->get();
+                    return response()->json([
+                        "error" => false,
+                        "data" => $event
+                    ]);
+                } else {
+                    $event = events::with('hosts')->orderBy("events.created_at", "desc")->get();
+                    return response()->json([
+                        "error" => false,
+                        "data" => $event
+                    ]);
+                }
+            } catch (\Exception $th) {
+                return response()->json([
+                    "error" => true,
+                    "message" => "Failed to get events"
+                ]);
+            }
         }
     }
 
@@ -268,6 +329,33 @@ class events_controller extends Controller
             return response()->json([
                 "error" => true,
                 "message" => "Failed to get events"
+            ]);
+        }
+    }
+
+
+    function getEventSearch(Request $request)
+    {
+        try {
+            $events = events::where(function ($query) use ($request) {
+                $search = "%" . $request->input("search") . "%";
+                $query->orWhere("title", "LIKE", $search)
+                    ->orWhere("description", "LIKE", $search)
+                    ->orWhere("category", "LIKE", $search)
+                    ->orWhere("venue", "LIKE", $search)
+                    ->orWhere("address", "LIKE", $search);
+            })->get();
+
+            return response()->json([
+                "error" => false,
+                "data" => $events,
+                "res" => $request->input("search")
+            ]);
+        } catch (\Exception $th) {
+            return response()->json([
+                "error" => true,
+                "message" => "Failed to get events",
+                "ex" => $th->getMessage()
             ]);
         }
     }

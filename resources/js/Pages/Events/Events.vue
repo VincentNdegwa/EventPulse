@@ -80,6 +80,17 @@ export default {
             }).catch((err) => {
                 console.log(err)
             })
+        }, searchResults(text) {
+            axios.post("api/events/search", { search: text }).then((res) => {
+                if (res) {
+                    if (!res.data.error) {
+                        this.eventsData = res.data.data
+                        this.loading = false
+                    }
+                }
+            }).catch((err => {
+                console.log(err)
+            }))
         }
     }
 }
@@ -93,7 +104,7 @@ export default {
         <SideNav />
         <div class="dash-main">
             <div class="events-container" v-if="categories">
-                <EventHeader :categories="categories" @handle-category="handleCategory" />
+                <EventHeader :categories="categories" @handle-category="handleCategory" @handle-search="searchResults" />
                 <div class="event-body">
                     <div v-if="eventsData.length > 0" class="event-container">
 
@@ -113,7 +124,7 @@ export default {
 
                     </div>
 
-                    <div class="no-events">
+                    <div v-else class="no-events">
                         <h4>No events found</h4>
                     </div>
                 </div>

@@ -40,6 +40,7 @@ Route::group(['prefix' => 'retrieve'], function () {
 
 Route::prefix("/events")->group(function () {
     Route::get("category/{id}", [events_controller::class, "getEventCategory"]);
+    Route::post("search", [events_controller::class, "getEventSearch"]);
 });
 Route::post("event/apply", [events_controller::class, "applyEvents"]);
 Route::post("events/approvals", [events_controller::class, "getApplicants"]);

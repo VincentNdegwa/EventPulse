@@ -11,6 +11,7 @@ export default {
             loading: false,
             userid: "",
             myEventsData: [],
+            categories: [],
         }
     },
     components: {
@@ -37,6 +38,7 @@ export default {
                                 if (!res.data.error) {
                                     this.errorText = ""
                                     this.myEventsData = res.data.data
+                                    this.categories = res.data.categories
                                 } else {
                                     this.errorText = res?.data?.message
                                 }
@@ -71,6 +73,31 @@ export default {
             } else if (price > 0) {
                 return `${price} Ksh`
             }
+        }, handleCategory(category) {
+
+            axios.post("api/get-events", { userId: this.userid, category: category }).then(res => {
+                if (res) {
+                    if (!res.data.error) {
+                        this.myEventsData = res.data.data
+                        this.loading = false
+                    }
+                }
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+        , searchResults(text) {
+            axios.post("api/get-events", { userId: this.userid, search: text }).then(res => {
+                if (res) {
+                    if (!res.data.error) {
+                        this.myEventsData = res.data.data
+                        this.loading = false
+                    }
+                }
+                console.log(res.data)
+            }).catch(err => {
+                console.log(err)
+            })
         }
     }, mounted() {
         this.requestData()
@@ -83,7 +110,7 @@ export default {
         <SideNav />
         <div class="dash-main">
             <div class="events-container">
-                <MyEventsHeader />
+                <MyEventsHeader :categories="categories" @handle-category="handleCategory" @handle-search="searchResults" />
                 <div class="event-body">
                     <div class="my-events-container">
                         <div class="my-events-cards-holder event-container">
