@@ -47,6 +47,7 @@ Route::post("events/approvals", [events_controller::class, "getApplicants"]);
 Route::group(["prefix" => "applicant"], function () {
     Route::post("/approve", [applicant_controller::class, "approveApplicants"]);
     Route::post("/tickets", [applicant_controller::class, "retreiveTickets"]);
+    Route::post("/sort_tickets", [applicant_controller::class, "sortTicket"]);
 });
 
 Route::group(["prefix" => "profile"], function () {

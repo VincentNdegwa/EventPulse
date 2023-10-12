@@ -10,7 +10,8 @@ export default {
             openTicket: false,
             user_id: "",
             ticketsData: [],
-            eventData: {}
+            eventData: {},
+            categories: []
         }
     },
     components: {
@@ -32,8 +33,11 @@ export default {
                     this.$refs.sweetAlerts.showMessage("An error occured, Please try again later");
                 } else {
                     this.ticketsData = res.data.data;
+                    // this.categories = res.data.category
+                    for (let index = 0; index < res.data.category.length; index++) {
+                        this.categories.push(res.data.category[index])
+                    }
                 }
-                // console.log(res.data.data)
             }).catch(err => {
                 console.log(err)
                 this.$refs.sweetAlerts.showMessage("An error occured, Please try again later");
@@ -41,6 +45,15 @@ export default {
         }, readableDate(date) {
             dayjs.extend(relativeTime)
             return dayjs(date).fromNow()
+        }, sortTicketsCategory(category) {
+            axios.post("api/applicant/sort_tickets", { category: category, user_id: this.user_id }).then(res => {
+                if (res.data) {
+                    this.ticketsData = res.data.data
+                }
+            }).catch(err => {
+                console.log(err)
+            })
+            console.log(category)
         }
     }, mounted() {
         let user = localStorage.getItem("user_details");
@@ -62,9 +75,10 @@ export default {
         <div class="dash-main">
             <div class="tickets-container">
                 <div class="tickets-sort">
-                    <div class="ticket-sort-holder">
+                    <div class="ticket-sort-holder" @click="sortTicketsCategory(item.category_name)"
+                        v-for="(item, index) in categories" :key="index">
                         <i class='bx bxs-plane-take-off'></i>
-                        <p>Adventure</p>
+                        <p>{{ item.category_name }}</p>
                     </div>
                 </div>
 
@@ -73,13 +87,17 @@ export default {
                     <div class="applied-tickets-container">
                         <div class="tickets-holder">
                             <!-- start -->
-                            <div @click="toggleTicket(item.event_application_id)" class="tickets-item"
-                                v-for="(item, index) in ticketsData" :key="index">
+                            <div v-if="ticketsData.length > 0" @click="toggleTicket(item.event_application_id)"
+                                class="tickets-item" v-for="(item, index) in ticketsData" :key="index">
                                 <div class="tickets-heading-status">
                                     <span>{{ item.event.title }}</span>
                                     <p>{{ item.status }}</p>
                                 </div>
                                 <p>{{ item.event.description }}</p>
+                            </div>
+
+                            <div v-else class="tickets-empty">
+                                <h5>No events founds</h5>
                             </div>
 
                         </div>

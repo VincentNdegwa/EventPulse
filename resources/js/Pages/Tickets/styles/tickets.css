@@ -23,7 +23,7 @@
 }
 
 .ticket-sort-holder {
-    height: 90%;
+    height: 70%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -31,10 +31,12 @@
     margin-left: 2em;
     border-radius: 0.3em;
     background: var(--main-white);
+    padding: 0.6em;
 }
 
 .ticket-sort-holder > p {
     font-size: 0.8em;
+    color: var(--main-green);
 }
 
 .applied-tickets {

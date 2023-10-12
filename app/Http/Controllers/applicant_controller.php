@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\eventApplication;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class applicant_controller extends Controller
 {
@@ -38,10 +40,12 @@ class applicant_controller extends Controller
     {
         try {
             $ticket = eventApplication::where("user_id", $request->input("user_id"))->with("event")->get();
+            $categories = DB::table("category")->get();
             if ($ticket) {
                 return response()->json([
                     "error" => false,
-                    "data" => $ticket
+                    "data" => $ticket,
+                    "category" => $categories
                 ]);
             } else {
                 return response()->json([
@@ -54,6 +58,41 @@ class applicant_controller extends Controller
                 "error" => true,
                 "message" => $th->getMessage()
             ]);
+        }
+    }
+
+    public function sortTicket(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            "user_id" => "required",
+            "category" => "required"
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                "error" => true,
+                "message" => "Validation failed"
+            ]);
+        } else {
+            try {
+                $category = $request->input("category");
+
+                $ticket = eventApplication::where("user_id", $request->input("user_id"))
+                    ->whereHas("event", function ($query) use ($category) {
+                        $query->where("category", $category);
+                    })
+                    ->with("event")
+                    ->get();
+
+                return response()->json([
+                    "error" => false,
+                    "data" => $ticket
+                ]);
+            } catch (\Exception $th) {
+                return response()->json([
+                    "error" => true,
+                    "message" => $th->getMessage()
+                ]);
+            }
         }
     }
 }
