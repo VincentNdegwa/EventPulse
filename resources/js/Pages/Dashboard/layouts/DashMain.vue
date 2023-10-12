@@ -30,6 +30,13 @@ export default {
             return dayjs(data).fromNow()
         }, book(id) {
             router.visit(`/view/${id}`)
+        }, sortCategory(category) {
+            
+            router.visit("/category", {
+                method: "get", data: {
+                    category: category
+                }
+            })
         }
     }, mounted() {
         this.getData()
@@ -102,7 +109,8 @@ export default {
                 <!-- top right -->
                 <div class="event-navigation">
                     <div class="events-category-select">
-                        <div class="select-item" v-for="(item, index) in categories" :key="index">
+                        <div @click="sortCategory(item.category_name)" class="select-item"
+                            v-for="(item, index) in categories" :key="index">
                             <i class='bx bx-briefcase-alt'></i>
                             <span>{{ item.category_name }}</span>
                         </div>

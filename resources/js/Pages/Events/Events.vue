@@ -8,7 +8,8 @@ import { router } from '@inertiajs/vue3';
 export default {
     props: {
         error: Boolean,
-        message: String
+        message: String,
+        catEvents: Array
     },
     data() {
         return {
@@ -16,7 +17,8 @@ export default {
             errorText: "",
             eventsData: [],
             openedEvent: Object,
-            categories: []
+            categories: [],
+            propsData: false
         }
     },
     components: {
@@ -25,13 +27,20 @@ export default {
         Loader,
         SingleEvent
     }, mounted() {
-        this.requestData()
         if (this.error) {
             console.log(this.message)
+        }
+
+        if (this.catEvents !== undefined) {
+            console.log(this.catEvents)
+            this.eventsData = this.catEvents
+        } else {
+            this.requestData()
         }
     }, methods: {
         requestData() {
             this.loading = true
+
             axios.post("api/retrieve/events/all").then(res => {
                 if (res) {
                     if (!res.data.error) {
@@ -69,7 +78,6 @@ export default {
             router.get(`/view/${id}`)
         },
         handleCategory(category) {
-
             axios.get(`api/events/category/${category}`).then((res) => {
                 if (res) {
                     if (!res.data.error) {
@@ -91,6 +99,13 @@ export default {
             }).catch((err => {
                 console.log(err)
             }))
+        }
+    }, watch: {
+        catEvents: {
+            handler: function (newValue, oldValue) {
+                console.log(newValue)
+            },
+            deep: true
         }
     }
 }

@@ -94,10 +94,17 @@ Route::get('/view/{id}', function ($id) {
                 "data" => $allEvents
             ]);
         } catch (\Exception $th) {
-            Inertia::render("Events/Events", [
+            return Inertia::render("Events/Events", [
                 "error" => true,
                 "message" => $th->getMessage(),
             ]);
         }
     }
 })->name("getOneView");
+
+Route::get("/category", function (Request $request) {
+    $event = events::where("category", $request->input("category"))->get();
+    return Inertia::render("Events/Events", [
+        "catEvents" => $event
+    ]);
+})->name("category");
