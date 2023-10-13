@@ -140,7 +140,6 @@ export default {
                                 <div class="ticket-actions">
                                     <button>Cancel</button>
                                     <button>Print</button>
-
                                 </div>
                             </div>
 

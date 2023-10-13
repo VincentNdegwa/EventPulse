@@ -35,7 +35,7 @@ export default {
             <p>Inactive</p>
         </div>
         <div class="profile-details-items">
-            <span>Addresss</span>
+            <span>Address</span>
             <p>{{ userData.profile.country ? userData.profile.country : "N/A" }},{{ userData.profile.state ?
                 userData.profile.state : "N/A" }} </p>
         </div>
