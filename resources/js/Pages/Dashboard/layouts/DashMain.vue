@@ -31,7 +31,7 @@ export default {
         }, book(id) {
             router.visit(`/view/${id}`)
         }, sortCategory(category) {
-            
+
             router.visit("/category", {
                 method: "get", data: {
                     category: category
@@ -40,6 +40,7 @@ export default {
         }
     }, mounted() {
         this.getData()
+        console.log(this.userTickets)
     }
 }
 </script>
@@ -47,142 +48,116 @@ export default {
 <template>
     <div class="dash-main">
         <div class="dash-holder">
-            <div class="top-dash">
-                <!-- top left -->
-                <div class="travel-advert">
-                    <div class="travel-vcard">
-
-                        <v-card v-if="randomEvent" class="mx-auto" max-width="auto">
-                            <v-img :src="randomEvent.event_image"></v-img>
-
-                            <div class="event-details">
-                                <div class="event-descriptions">
-
-                                    <v-card-title class="event-title">
-                                        {{ randomEvent.title }}
-                                    </v-card-title>
-
-                                    <v-card-subtitle class="event-place">
-                                        {{ randomEvent.venue == "online" ? "Online" : randomEvent.address }}
-                                    </v-card-subtitle>
-
-                                    <p class="event-date">
-                                        {{ readableDate(randomEvent.event_date) }}
-                                    </p>
-                                </div>
-                                <!-- <div class="event-actions"> -->
-                                <v-card-actions class="ev-actions">
-                                    <v-card-title class="ev-price">
-                                        price:{{ randomEvent.price }}
-                                    </v-card-title>
-                                    <v-btn class="book_button" @click="book(randomEvent.id)">
-                                        Book Ticket
-                                    </v-btn>
-                                </v-card-actions>
-                                <!-- </div> -->
+            <div class="dash-holder">
+                <div class="dash-display-container">
+                    <!-- stats -->
+                    <div class="user-stats">
+                        <span>Stats</span>
+                        <div class="stats-container">
+                            <div class="stats-item">
+                                <span>Total Events Attended</span>
+                                <div class="stats-count">20</div>
                             </div>
 
-                        </v-card>
+                            <div class="stats-item">
+                                <span>Total Events Attended</span>
+                                <div class="stats-count">20</div>
+                            </div>
 
-                        <div class="top-places">
+                            <div class="stats-item">
+                                <span>Total Events Attended</span>
+                                <div class="stats-count">20</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Events on application -->
+                    <div class="events-application">
+                        <span>Events Holding</span>
+                        <div class="event-holding-container">
+                            <div class="event-holding-item">
+                                <span class="event-holding-name">Name of the Events Name of the Events Name of the
+                                    Events</span>
+                                <span class="event-holding-venue">Venue</span>
+                                <span class="event-holding-participants">20<span>Participants</span></span>
+                            </div>
+                            <div class="event-holding-item">
+                                <span class="event-holding-name">Name of the Events Name of the Events Name of the
+                                    Events</span>
+                                <span class="event-holding-venue">Venue</span>
+                                <span class="event-holding-participants">20<span>Participants</span></span>
+                            </div>
+                        </div>
+                    </div>
 
-                            <v-card>
-                                <div class="small-card-holder">
-                                    <v-img src="images/hero.jpg" cover></v-img>
-                                    <div class="text-carfd-holder">
-                                        <v-card-subtitle class="text-event-place">
-                                            Paris
-                                        </v-card-subtitle>
-                                        <v-card-subtitle class="text-event-count">
-                                            10k
-                                        </v-card-subtitle>
+                    <!-- trending event -->
+                    <div class="event-trending-display">
+                        <span>Top Recommended Event</span>
+                        <div class="event-trending-container">
+                            <div class="event-display-details-holder">
+                                <div class="events-image-holder">
+                                    <img src="images/image1.jpeg" alt="">
+                                </div>
+                                <div class="events-display-details">
+                                    <div class="left-event-display">
+                                        <span class="left-event-name">Event name</span>
+                                        <span class="left-event-des">Description</span>
+                                        <span class="left-event-time">Time</span>
+                                        <span class="left-event-venue">Venue</span>
 
                                     </div>
-                                </div>
-                            </v-card>
-
-
-                        </div>
-
-                    </div>
-                </div>
-                <!-- top right -->
-                <div class="event-navigation">
-                    <div class="events-category-select">
-                        <div @click="sortCategory(item.category_name)" class="select-item"
-                            v-for="(item, index) in categories" :key="index">
-                            <i class='bx bx-briefcase-alt'></i>
-                            <span>{{ item.category_name }}</span>
-                        </div>
-
-                    </div>
-                    <div class="tickets-display">
-                        <p>
-                            Your Tickets
-                        </p>
-                        <div class="tickets-cards-holder">
-                            <v-card v-for="(item, index) in userTickets" :key="index">
-                                <v-img class="ticket-image" src="images/hero.jpg" cover></v-img>
-                                <p class="ticket-title">{{ item.event.title }}</p>
-                                <p class="ticket-number">{{ readableDate(item.event.event_date) }}</p>
-                            </v-card>
-
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="botton-dash">
-                <div class="recommended">
-                    <p>Recommended</p>
-                    <div class="recommended-holder">
-                        <div v-for="(item, index) in recommendedEvents" :key="index">
-                            <img class="recomended-img" :src="item.event_image" cover />
-                            <div class="recondend-items-holder">
-                                <p class="text-caption text-center rec-date">{{ readableDate(item.event_date)
-                                }}</p>
-                                <p class="text-body-2 rec-title ext-center">
-                                    {{ item.title }}
-                                </p>
-                                <p class="text-h7 rec-place text-center">
-                                    {{ item.venue == "online" ? "Online" : item.address }}
-                                </p>
-                                <p class="text-caption rec-price text-center">
-                                    {{ item.price }}
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-                <div class="saved-events">
-                    <p>Saved Events</p>
-                    <div class="saved-events-holder">
-                        <v-card class="saved-events-card">
-                            <div class="saved-holder">
-                                <v-img src="images/image2.jpg" cover></v-img>
-                                <div class="saved-details">
-                                    <p class="text-caption saved-heading text-center">
-                                        Talk Machine Learning
-                                    </p>
-                                    <p class="saved-date">
-                                        12June,2023
-                                    </p>
-                                    <p class="saved-price">
-                                        2000
-                                    </p>
+                                    <button>-></button>
                                 </div>
                             </div>
-                        </v-card>
+                            <div class="event-host-display">
+                                <div class="hosts-holder">
+                                    <div class="event-host-item">
+                                        <div class="host-image-item-holder">
+                                            <img src="images/image1.jpeg" alt="">
+                                        </div>
+                                        <div class="host-details">
+                                            <span class="host-details-name">Vincent</span>
+                                            <span class="host-details-carreer">Software Dveloper</span>
+                                        </div>
+                                    </div>
 
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <!-- tickets -->
+                    <div class="event-tickets-display">
+                        <span>
+                            <span>Tickets</span>
+                            <button>View All</button>
+                        </span>
+                        <div class="event-tickets-item-holder">
+                            <div class="ticket-item">
+                                <img src="images/image1.jpeg" alt="">
+                                <div class="ticket-details-display">
+                                    <span class="event-ticket-dislay-name">Name of the event</span>
+                                    <span class="event-ticket-dislay-venue">Venue</span>
+                                    <span class="event-ticket-dislay-status">status</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- saved -->
+                    <div class="saved-event-display">
+                        <span>Event Bookmark</span>
+                        <div class="saved-events-items-holder">
+                            <div class="saved-events-item">
+                                <span>Event name</span>
+                                <p class="deadline">20/3/23</p>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
 </template>
 <style>
-@import url('../styles/dashmain.css');
+@import url('../styles/dash.css');
 </style>
