@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('venue');
             $table->decimal('price', 10, 2)->default(0.00);
             $table->unsignedBigInteger('creator_id');
-            $table->foreign('creator_id')->references('id')->on('users');
+            $table->foreign('creator_id')->references('id')->on('users')->onDelete("CASCADE");
             $table->string('address');
             $table->integer('age_limit')->nullable();
             $table->timestamps();

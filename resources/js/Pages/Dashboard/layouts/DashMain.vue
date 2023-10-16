@@ -7,23 +7,16 @@ export default {
         dashData: Object
     }, data() {
         return {
-            categories: [],
             randomEvent: this.dashData.randomEvent,
             userTickets: this.dashData.userTickets,
-            recommendedEvents: this.dashData.recommendedEvents,
+            eventsAttended: this.dashData.eventsAttended,
+            eventsCreated: this.dashData.eventsCreated,
+            eventsApplied: this.dashData.eventsApplied,
+            eventApplicants: this.dashData.eventApplicants
         }
     }, methods: {
         getData() {
-            // console.log(this.dashData)
-            let randomCat = []
-            for (let index = 0; index < 4; index++) {
-                let randomIndex = Math.floor(Math.random() * this.dashData.categories.length);
-                let randomItem = this.dashData.categories[randomIndex]
-                if (!randomCat.includes(randomItem)) {
-                    randomCat.push(randomItem)
-                }
-            }
-            this.categories = randomCat
+
         },
         readableDate(data) {
             dayjs.extend(relativeTime)
@@ -37,10 +30,12 @@ export default {
                     category: category
                 }
             })
+        }, openRandomEvent(id) {
+            router.visit(`/view/${id}`)
         }
     }, mounted() {
         this.getData()
-        console.log(this.userTickets)
+        console.log(this.dashData)
     }
 }
 </script>
@@ -55,18 +50,18 @@ export default {
                         <span>Stats</span>
                         <div class="stats-container">
                             <div class="stats-item">
-                                <span>Total Events Attended</span>
-                                <div class="stats-count">20</div>
+                                <span>Events Attended</span>
+                                <div class="stats-count">{{ eventsAttended }}</div>
                             </div>
 
                             <div class="stats-item">
-                                <span>Total Events Attended</span>
-                                <div class="stats-count">20</div>
+                                <span>Events Applied</span>
+                                <div class="stats-count">{{ eventsApplied }}</div>
                             </div>
 
                             <div class="stats-item">
-                                <span>Total Events Attended</span>
-                                <div class="stats-count">20</div>
+                                <span>Events Created</span>
+                                <div class="stats-count">{{ eventsCreated }}</div>
                             </div>
                         </div>
                     </div>
@@ -74,17 +69,17 @@ export default {
                     <div class="events-application">
                         <span>Events Holding</span>
                         <div class="event-holding-container">
-                            <div class="event-holding-item">
-                                <span class="event-holding-name">Name of the Events Name of the Events Name of the
-                                    Events</span>
-                                <span class="event-holding-venue">Venue</span>
-                                <span class="event-holding-participants">20<span>Participants</span></span>
+                            <div v-if="eventApplicants && eventApplicants.length > 0"
+                                v-for="(item, index) in eventApplicants" :key="index" class="event-holding-item">
+                                <span class="event-holding-name">{{ item.title }}</span>
+                                <span class="event-holding-venue">{{ item.venue == "physical" ? item.address : "Online"
+                                }}</span>
+                                <span class="event-holding-participants">{{ item.event_applicants_count
+                                }}<span>Participants</span></span>
                             </div>
-                            <div class="event-holding-item">
-                                <span class="event-holding-name">Name of the Events Name of the Events Name of the
-                                    Events</span>
-                                <span class="event-holding-venue">Venue</span>
-                                <span class="event-holding-participants">20<span>Participants</span></span>
+
+                            <div v-else class="no-event">
+                                <span>There are currently no events with application on going</span>
                             </div>
                         </div>
                     </div>
@@ -92,31 +87,33 @@ export default {
                     <!-- trending event -->
                     <div class="event-trending-display">
                         <span>Top Recommended Event</span>
-                        <div class="event-trending-container">
+                        <div v-if="randomEvent" class="event-trending-container">
                             <div class="event-display-details-holder">
                                 <div class="events-image-holder">
-                                    <img src="images/image1.jpeg" alt="">
+                                    <img :src="randomEvent.event_image" alt="">
                                 </div>
                                 <div class="events-display-details">
                                     <div class="left-event-display">
-                                        <span class="left-event-name">Event name</span>
-                                        <span class="left-event-des">Description</span>
-                                        <span class="left-event-time">Time</span>
-                                        <span class="left-event-venue">Venue</span>
+                                        <span class="left-event-name">{{ randomEvent.title }}</span>
+                                        <span class="left-event-des">{{ randomEvent.description }}</span>
+                                        <span class="left-event-time">{{ randomEvent.event_date }}</span>
+                                        <span class="left-event-venue">{{ randomEvent.venue == "physical" ?
+                                            randomEvent.address : "Online"
+                                        }}</span>
 
                                     </div>
-                                    <button>-></button>
+                                    <button @click="openRandomEvent(randomEvent.id)">-></button>
                                 </div>
                             </div>
                             <div class="event-host-display">
                                 <div class="hosts-holder">
-                                    <div class="event-host-item">
+                                    <div v-for="(item, index) in randomEvent.hosts" :key="index" class="event-host-item">
                                         <div class="host-image-item-holder">
-                                            <img src="images/image1.jpeg" alt="">
+                                            <img :src="item.profile_image" alt="">
                                         </div>
                                         <div class="host-details">
-                                            <span class="host-details-name">Vincent</span>
-                                            <span class="host-details-carreer">Software Dveloper</span>
+                                            <span class="host-details-name">{{ item.host_name }}</span>
+                                            <span class="host-details-carreer">{{ item.host_occupation }}</span>
                                         </div>
                                     </div>
 
@@ -131,12 +128,15 @@ export default {
                             <button>View All</button>
                         </span>
                         <div class="event-tickets-item-holder">
-                            <div class="ticket-item">
-                                <img src="images/image1.jpeg" alt="">
+                            <div v-for="(item, index) in userTickets" :key="index" class="ticket-item">
+                                <img :src="item.event.event_image" alt="">
                                 <div class="ticket-details-display">
-                                    <span class="event-ticket-dislay-name">Name of the event</span>
-                                    <span class="event-ticket-dislay-venue">Venue</span>
-                                    <span class="event-ticket-dislay-status">status</span>
+                                    <span class="event-ticket-dislay-name">{{ item.event.title }}</span>
+                                    <span class="event-ticket-dislay-venue">{{ item.event.venue == "physical" ?
+                                        item.event.address :
+                                        "Online"
+                                    }}</span>
+                                    <span class="event-ticket-dislay-status">{{ item.status }}</span>
                                 </div>
                             </div>
                         </div>

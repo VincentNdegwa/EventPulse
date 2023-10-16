@@ -26,38 +26,33 @@ class dash_controller extends Controller
                     "user_id" => $request->input("user_id")
                 ]);
             } else {
-                $categories = DB::table("category")->get();
-                $event = events::inRandomOrder()->first();
+                $event = events::inRandomOrder()->with("hosts")->first();
                 $tickets = eventApplication::where("user_id", $request->input("user_id"))
                     ->where("status", "approved")
                     ->orderBy("updated_at", "DESC")
                     ->with("event")
                     ->limit(3)
                     ->get();
-                $recommended = [];
-                $userdetails = userProfile::where("user_profile_id", $request->input("user_id"))->first();
+          
+                $eventsAttended = eventApplication::where("user_id", $request->input("user_id"))->where("status", "passed")->count();
+                $eventsCreated = events::where("creator_id", request()->input("user_id"))->count();
+                $eventsApplied = eventApplication::where("user_id", $request->input("user_id"))->count();
 
-                if ($userdetails) {
-                    if ($userdetails->country) {
-                        $recommended = events::where("address", 'LIKE', '%' . $userdetails->country . '%')
-                            ->where("id", '!=', $event->id)
-                            ->inRandomOrder()
-                            ->limit(3)
-                            ->get();
-                    } else {
-                        $recommended = events::where("creator_id", '!=', $request->input("user_id"))
-                            ->inRandomOrder()
-                            ->limit(3)
-                            ->get();
-                    }
-                }
+                $eventApplicants = events::where("deadline_application", '>=', now()->setTimezone("UTC")->toDateString())
+                    ->where("creator_id", $request->input("user_id"))
+                    ->withCount("eventApplicants")
+                    ->get();
+
 
                 return response()->json([
                     "error" => false,
-                    "categories" => $categories,
                     "randomEvent" => $event,
                     "userTickets" => $tickets,
-                    "recommendedEvents" => $recommended,
+                    "eventsAttended" => $eventsAttended,
+                    "eventsCreated" => $eventsCreated,
+                    "eventsApplied" => $eventsApplied,
+                    "eventApplicants" => $eventApplicants,
+                    "DATE" => now()->setTimezone("UTC")->toDateString()
                 ]);
             }
         } catch (\Exception $th) {

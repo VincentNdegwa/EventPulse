@@ -24,7 +24,7 @@ return new class extends Migration
     {
         Schema::table("events", function (Blueprint $table) {
             $table->dropColumn("meeting_link");
-            $table->integer("age_limit")->change();
+            // $table->integer("age_limit")->change();
         });
     }
 };

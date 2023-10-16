@@ -33,7 +33,7 @@ export default {
                         localStorage.setItem("user_details", JSON.stringify({ user_id: res.data.data.id }));
                         localStorage.removeItem("user")
                         localStorage.setItem("user", JSON.stringify(res.data.data));
-                        console.log(res.data.data)
+                        // console.log(res.data.data)
 
                         this.navigateDash();
                     } else {

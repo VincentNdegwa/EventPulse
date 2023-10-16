@@ -28,8 +28,8 @@ export default {
                 age_limit: "0",
                 meeting_link: "",
                 hostArray: [],
-                setFee: "yes",
-                setAge: "yes"
+                setFee: "no",
+                setAge: "no"
             }
 
         }

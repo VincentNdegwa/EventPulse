@@ -42,6 +42,7 @@ export default {
                 if (!res.data.error) {
                     this.dashData = res.data
                     this.loading = false
+                    console.log(res.data)
                 }
             }).catch(err => {
                 console.log(err)
@@ -55,7 +56,7 @@ export default {
 <template>
     <SweetAlerts ref="sweetAlert"></SweetAlerts>
     <Loader :loading="loading" />
-    <section v-if="dashData.randomEvent" class="main-section">
+    <section class="main-section">
         <SideNav />
         <DashMain :dashData="dashData" />
     </section>
