@@ -44,7 +44,7 @@ class user_controller extends Controller
                     userProfile::create([
                         "first_name" => "",
                         "last_name" => "",
-                        "phone_name" => "",
+                        "phone_number" => "",
                         "country" => "",
                         "state" => "",
                         "profile_image" => "",

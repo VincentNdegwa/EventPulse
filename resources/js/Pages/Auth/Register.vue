@@ -29,6 +29,7 @@ export default {
                     this.navigateDash(res.data.data.email, res.data.pass)
                 } else {
                     this.$refs.sweetAlert.showNotificationError(res.data.message)
+                    console.log(res.data)
                 }
             }).catch(err => {
                 nprogress.done()

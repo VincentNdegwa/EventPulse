@@ -51,17 +51,17 @@ export default {
                         <div class="stats-container">
                             <div class="stats-item">
                                 <span>Events Attended</span>
-                                <div class="stats-count">{{ eventsAttended }}</div>
+                                <div class="stats-count">{{ eventsAttended ? eventsAttended : "0" }}</div>
                             </div>
 
                             <div class="stats-item">
                                 <span>Events Applied</span>
-                                <div class="stats-count">{{ eventsApplied }}</div>
+                                <div class="stats-count">{{ eventsApplied ? eventsApplied : "0" }}</div>
                             </div>
 
                             <div class="stats-item">
                                 <span>Events Created</span>
-                                <div class="stats-count">{{ eventsCreated }}</div>
+                                <div class="stats-count">{{ eventsCreated ? eventsCreated : "0" }}</div>
                             </div>
                         </div>
                     </div>

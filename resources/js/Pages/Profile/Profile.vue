@@ -80,15 +80,19 @@ export default {
             })
 
         }, updateProfile() {
+            this.loading = true
             axios.post("api/profile/update", this.updateData).then(res => {
+                this.openUpdate = false
                 if (!res.data.error) {
                     this.$refs.sweetAlerts.showNotification(res.data.message)
                 } else {
                     this.$refs.sweetAlerts.showNotificationError(res.data.message)
                 }
+                this.loading = false
             }).catch(err => {
                 this.$refs.sweetAlerts.showMessage("An error occured,Please try again")
                 console.log('err', err)
+                this.loading = false
             })
         }, goBack() {
             window.history.back()
