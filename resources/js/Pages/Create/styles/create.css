@@ -190,3 +190,18 @@
     right: 0;
     cursor: pointer;
 }
+
+@media screen and (max-width: 800px) {
+    .fillable-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        height: 100vh;
+    }
+}
+
+/* @media screen and (max-height: 1100px) {
+    .fillable-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: 55% 40%;
+    }
+} */
