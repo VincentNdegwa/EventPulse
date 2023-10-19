@@ -7,15 +7,24 @@ export default {
         dashData: Object
     }, data() {
         return {
-            randomEvent: this.dashData.randomEvent,
-            userTickets: this.dashData.userTickets,
-            eventsAttended: this.dashData.eventsAttended,
-            eventsCreated: this.dashData.eventsCreated,
-            eventsApplied: this.dashData.eventsApplied,
-            eventApplicants: this.dashData.eventApplicants
+            localDashData: {},
+            randomEvent: {},
+            userTickets: [],
+            eventsAttended: [],
+            eventsCreated: "",
+            eventsApplied: "",
+            eventApplicants: ""
         }
     }, methods: {
+
         getData() {
+            this.localDashData = this.dashData
+            this.randomEvent = this.localDashData.randomEvent
+            this.userTickets = this.localDashData.userTickets
+            this.eventsAttended = this.localDashData.eventsAttended
+            this.eventsCreated = this.localDashData.eventsCreated
+            this.eventsApplied = this.localDashData.eventsApplied
+            this.eventApplicants = this.localDashData.eventApplicants
 
         },
         readableDate(data) {
@@ -36,6 +45,13 @@ export default {
     }, mounted() {
         this.getData()
         console.log(this.dashData)
+    }, watch: {
+        dashData: {
+            handler: function (newDash, oldDash) {
+                this.localDashData = newDash
+                this.getData()
+            }, deep: true
+        }
     }
 }
 </script>

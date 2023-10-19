@@ -40,12 +40,15 @@ export default {
             this.loading = true
             axios.post("api/dashboard/retrieve", { user_id: this.user_id }).then(res => {
                 if (!res.data.error) {
+                    this.loading = false
                     this.dashData = res.data
                     this.loading = false
-                    console.log(res.data)
+                } else {
+                    this.$refs.sweetAlert.showNotificationError("Unable to get your Id please logout the login")
                 }
             }).catch(err => {
                 console.log(err)
+                this.loading = false
                 this.$refs.sweetAlert.showMessage("An error occurred")
             })
         }
@@ -58,7 +61,7 @@ export default {
     <Loader :loading="loading" />
     <section class="main-section">
         <SideNav />
-        <DashMain :dashData="dashData" />
+        <DashMain :dashData="dashData" v-if="dashData" />
     </section>
 </template>
 <style>

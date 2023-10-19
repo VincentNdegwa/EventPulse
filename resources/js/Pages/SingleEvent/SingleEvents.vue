@@ -43,6 +43,7 @@ export default {
         }, goBack() {
             this.openApply = false;
             window.history.back()
+            localStorage.removeItem("application_status")
         }, apply() {
             this.openApply = true
             this.browserState.started = true
@@ -63,6 +64,7 @@ export default {
                                 this.$refs.sweetAlerts.showNotificationError(res.data.message)
                             } else {
                                 this.$refs.sweetAlerts.showNotification(res.data.message);
+                                localStorage.removeItem("application_status")
                                 setTimeout(() => {
                                     router.visit(route("tickets"))
                                 }, 3000)
@@ -103,6 +105,7 @@ export default {
             }
         }
     }, mounted() {
+        console.log(this.openApply)
         this.eventsData = this.data[0]
         let storedInputs = localStorage.getItem("user_inputs");
         if (storedInputs) {
@@ -145,9 +148,9 @@ export default {
     <div class="single-events-container">
         <div class="event-button-navigation">
             <button @click="goBack"><i class='bx bx-arrow-back'></i></button>
-            <button v-if="!openApply" @click="apply">View Application</button>
+            <button v-if="openApply === false" @click="apply">View Application</button>
         </div>
-        <div v-if="!openApply" class="single-event-holder">
+        <div v-if="openApply == false" class="single-event-holder">
             <div class="single-events-details">
                 <div class="single-event-item">
                     <h4>{{ eventsData.title }}</h4>
