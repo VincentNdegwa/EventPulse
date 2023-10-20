@@ -32,7 +32,11 @@ Route::group(['prefix' => 'user'], function () {
 
 
 Route::post("/create-event", [events_controller::class, "createEvent"]);
-Route::post("/get-events", [events_controller::class, "getMyEvents"]);
+
+Route::group(['prefix' => 'myevents'], function () {
+    Route::post("/", [events_controller::class, "getMyEvents"]);
+    Route::post("/update", [events_controller::class, "updateMyEvent"]);
+});
 Route::group(['prefix' => 'retrieve'], function () {
     Route::post("/events/all", [events_controller::class, "getAllEvents"]);
     Route::post("/single", [events_controller::class, "getOneEvent"]);

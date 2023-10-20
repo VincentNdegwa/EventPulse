@@ -92,7 +92,7 @@ class events_controller extends Controller
             try {
                 $userId = $request->input('userId');
                 $categories = DB::table("category")->get();
-                $myevents = events::where('creator_id', $userId)->orderBy("events.created_at", "desc")->with("hosts")->get();
+                $myevents = events::where('creator_id', $userId)->orderBy("events.created_at", "desc")->with("hosts")->withCount("eventApplicants")->get();
 
                 return response()->json([
                     'error' => false,

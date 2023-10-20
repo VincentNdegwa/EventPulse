@@ -57,9 +57,9 @@
 
 .desc-card-header {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    gap: 0.3em;
+    gap: 1em;
     padding: 0.2em;
 }
 

@@ -1,0 +1,106 @@
+.update-event-container {
+    position: fixed;
+    min-height: 100vh;
+    width: 100%;
+    padding: 1em;
+    overflow-y: scroll;
+    top: 0;
+    z-index: 100;
+    background: var(--main-white);
+    display: grid;
+    grid-template-columns: 50% 50%;
+    /* background: rgba(0, 0, 0, 0.8); */
+}
+.update-exit-button {
+    background: var(--main-blue);
+    padding: 1em;
+    color: var(--main-white) !important;
+    border-radius: 0.3em;
+}
+.button-top-nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1em;
+}
+.update-button {
+    background: var(--main-orange);
+    border-radius: 0.3em;
+}
+.event-image-update {
+    display: flex;
+    gap: 1em;
+}
+.event-image-update > img {
+    height: 4em;
+    width: 4em;
+}
+/* .event-update-fillables {
+} */
+.event-host-update {
+    /* background: gray; */
+    overflow-y: scroll;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: 1em;
+    position: relative;
+}
+.host-image-update {
+    height: 10em;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+.host-image-update > img {
+    width: 10em;
+    height: 100%;
+}
+.event-host-update > h4 {
+    color: var(--main-blue);
+}
+.event-functions {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    width: 40%;
+}
+.event-functions > input {
+    width: 100%;
+}
+.event-functions > button {
+    background: red;
+    width: fit-content;
+    padding: 0.3em;
+    color: var(--main-white);
+    border-radius: 0.2em;
+}
+.floating-button {
+    position: sticky;
+    top: 0%;
+    right: 0%;
+    background: var(--main-green);
+    color: var(--main-white) !important;
+    padding: 0.3em;
+    font-size: 1.4em;
+    width: 10em;
+}
+.floating-button > i {
+    color: var(--main-white) !important;
+}
+@media screen and (max-width: 758px) {
+    .update-event-container {
+        display: grid;
+        height: 100vh;
+        grid-template-rows: auto auto;
+        grid-template-columns: 1fr;
+        gap: 2em;
+    }
+}
+@media screen and (max-width: 600px) {
+    .input-holder > input {
+        width: 100%;
+    }
+}

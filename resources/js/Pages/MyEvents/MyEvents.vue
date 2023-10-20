@@ -1,6 +1,7 @@
 <script>
 import SideNav from "../Dashboard/components/SideNav.vue"
 import MyEventsHeader from "./components/MyEventsHeader.vue";
+import MyEventsUpdate from "./components/MyEventsUpdate.vue";
 import Loader from "@/components/Loader.vue";
 import axios from "axios";
 export default {
@@ -12,17 +13,24 @@ export default {
             userid: "",
             myEventsData: [],
             categories: [],
+            openedData: {},
+            viewUpdate: false
         }
     },
     components: {
         SideNav,
         MyEventsHeader,
-        Loader
+        Loader,
+        MyEventsUpdate
     },
     methods: {
-        toggleMore() {
+        openUpdate() {
+            this.viewUpdate = true
+        },
+        toggleMore(id) {
             this.openMore = true
-            console.log(this.myEventsData)
+            this.openedData = this.myEventsData.find(item => item.id === id)
+            // console.log(this.openedData)
         },
         closeMore() {
             this.openMore = false
@@ -32,7 +40,7 @@ export default {
                 if (res) {
                     this.userid = res.data.userId
                     if (res.data.userId) {
-                        axios.post("api/get-events", { userId: res.data.userId }).then(res => {
+                        axios.post("api/myevents", { userId: res.data.userId }).then(res => {
                             this.loading = false
                             if (res) {
                                 if (!res.data.error) {
@@ -75,7 +83,7 @@ export default {
             }
         }, handleCategory(category) {
 
-            axios.post("api/get-events", { userId: this.userid, category: category }).then(res => {
+            axios.post("api/myevents", { userId: this.userid, category: category }).then(res => {
                 if (res) {
                     if (!res.data.error) {
                         this.myEventsData = res.data.data
@@ -87,7 +95,7 @@ export default {
             })
         }
         , searchResults(text) {
-            axios.post("api/get-events", { userId: this.userid, search: text }).then(res => {
+            axios.post("api/myevents", { userId: this.userid, search: text }).then(res => {
                 if (res) {
                     if (!res.data.error) {
                         this.myEventsData = res.data.data
@@ -98,6 +106,8 @@ export default {
             }).catch(err => {
                 console.log(err)
             })
+        }, removeUpdate() {
+            this.viewUpdate = false
         }
     }, mounted() {
         this.requestData()
@@ -115,7 +125,8 @@ export default {
                     <div class="my-events-container">
                         <div class="my-events-cards-holder event-container">
 
-                            <div @click="toggleMore" class="card" v-for="(item, index) in myEventsData" :key="index">
+                            <div @click="toggleMore(item.id)" class="card" v-for="(item, index) in myEventsData"
+                                :key="index">
                                 <img :src="item.event_image" class="card-img-top" alt="...">
                                 <div class="card-body">
                                     <p class="card-text">{{ item.title }}</p>
@@ -136,36 +147,36 @@ export default {
                             <div class="events-details-display-action">
                                 <div class="desc-card">
                                     <div class="desc-card-header">
-                                        <v-avatar color="indigo"></v-avatar>
-                                        <p>Tech Innovators Symposium</p>
+                                        <v-avatar :image="openedData.event_image"></v-avatar>
+                                        <p>{{ openedData.title }}</p>
                                     </div>
-                                    <p class="desc-card-desc">A gathering of leading tech visionaries discussing the future
-                                        of
-                                        innovation</p>
+                                    <p class="desc-card-desc">{{ openedData.description }}</p>
                                     <div class="desc-card-participanats">
                                         <p>Participants</p>
-                                        <p class="desc-card-partcipants">2.3k</p>
+                                        <p class="desc-card-partcipants">{{ openedData.event_applicants_count }}</p>
                                     </div>
                                     <div class="desc-card-price">
                                         <p>prices</p>
-                                        <p class="desc-card-price">1000</p>
+                                        <p class="desc-card-price">{{ openedData.price }}</p>
                                     </div>
                                     <div class="desc-card-payment">
                                         <p>E.P</p>
-                                        <p class="desc-e-p">2.3M</p>
+                                        <p class="desc-e-p">{{ openedData.event_applicants_count * openedData.price }}</p>
                                     </div>
                                 </div>
                                 <div class="event-details-buttons">
-                                    <button>Update</button>
+                                    <button @click="openUpdate">Update</button>
                                     <button>Delete</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
 
+        <MyEventsUpdate :viewUpdate="viewUpdate" :eventData="openedData" @remove_update="removeUpdate" />
     </div>
 </template>
 
