@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use PhpParser\Node\Stmt\TryCatch;
 
 class events_controller extends Controller
 {
@@ -356,6 +357,135 @@ class events_controller extends Controller
                 "error" => true,
                 "message" => "Failed to get events",
                 "ex" => $th->getMessage()
+            ]);
+        }
+    }
+
+    function updateMyEvent(Request $request)
+    {
+        DB::beginTransaction();
+
+        $updatedStatus = true;
+        $message = "";
+        try {
+            if (preg_match('/^data/', $request->input("event_image"))) {
+                $filePath = events::select("event_image")->where("id", $request->input("id"))->get();
+                Storage::disk("public")->delete($filePath);
+
+                $binaryImageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $request->input("event_image")));
+                $fileName = "event" . time() . ".jpg";
+                Storage::disk("public")->put($fileName, $binaryImageData);
+                $url = Storage::url($fileName);
+
+                $updated = events::where("id", $request->input("id"))->update([
+                    "title" => $request->input("title"),
+                    "description" => $request->input("description"),
+                    "deadline_application" => $request->input("deadline_application"),
+                    "event_date" => $request->input("event_date"),
+                    "venue" => $request->input("venue"),
+                    "address" => $request->input("address"),
+                    "meeting_link" => $request->input("meeting_link"),
+                    "event_image" => $url,
+                ]);
+                if (!$updated) {
+                    $updatedStatus = false;
+                    $message = "Failed to update events with new barners";
+                }
+            } else {
+                $updated = events::where("id", $request->input("id"))->update([
+                    "title" => $request->input("title"),
+                    "description" => $request->input("description"),
+                    "deadline_application" => $request->input("deadline_application"),
+                    "event_date" => $request->input("event_date"),
+                    "venue" => $request->input("venue"),
+                    "address" => $request->input("address"),
+                    "meeting_link" => $request->input("meeting_link"),
+                ]);
+                if (!$updated) {
+                    $updatedStatus = false;
+                    $message = "Failed to update events";
+                }
+            }
+            $hostIndex = 0;
+            foreach ($request->input("hosts") as $host) {
+                if (isset($host["id"])) {
+                    if (
+                        preg_match('/^data/', $request->input("profile_image"))
+                    ) {
+                        $profilePath = host::select("profile_image")->where("id", $request->input("id"))->get();
+                        Storage::disk("public")->delete($profilePath);
+
+                        $binaryImageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $request->input("event_image")));
+                        $fileName = "host-" . $hostIndex . time() . ".jpg";
+                        Storage::disk("public")->put($fileName, $binaryImageData);
+                        $url = Storage::url($fileName);
+
+                        $hostUpdate =  host::where("id", $host["id"])->update([
+                            "host_name" => $host["host_name"],
+                            "host_email" => $host["host_email"],
+                            "host_occupation" => $host["host_occupation"],
+                            "host_social" => $host["host_social"],
+                            "profile_image" => $url
+                        ]);
+                        $hostIndex++;
+                        if (!$hostUpdate) {
+                            $updatedStatus = false;
+                            $message = "Failed to update the hosts with new profile";
+                        }
+                    } else {
+                        $hostUpdate =  host::where("id", $host["id"])->update([
+                            "host_name" => $host["host_name"],
+                            "host_email" => $host["host_email"],
+                            "host_occupation" => $host["host_occupation"],
+                            "host_social" => $host["host_social"],
+                        ]);
+                        if (!$hostUpdate) {
+                            $updatedStatus = false;
+                            $message = "Failed to update host";
+                        }
+                    }
+
+                    // print_r($host);
+                } else {
+                    $hostImage = $host["profile_image"];
+                    $binaryImageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $hostImage));
+                    $fileName = "host-" . $hostIndex . time() . ".jpg";
+                    Storage::disk("public")->put($fileName, $binaryImageData);
+                    $url = Storage::url($fileName);
+
+                    $host = host::create([
+                        "profile_image" => $url,
+                        "host_event_id" => $request->input("id"),
+                        "host_name" => $host["host_name"],
+                        "host_email" => $host["host_email"],
+                        "host_occupation" => $host["host_occupation"],
+                        "host_social" => $host["host_social"],
+                    ]);
+                    $hostIndex++;
+
+                    if (!$host) {
+                        $updatedStatus = false;
+                        $message = "Failed to create the new Host";
+                    }
+                }
+            }
+            if ($updatedStatus) {
+                DB::commit();
+                return response()->json([
+                    "error" => false,
+                    "data" => $updated
+                ]);
+            } else {
+                DB::rollBack();
+                return response()->json([
+                    "error" => true,
+                    "message" => $message,
+                ]);
+            }
+        } catch (\Exception $th) {
+            return response()->json([
+                "error" => true,
+                "message" => $th->getMessage()
             ]);
         }
     }
