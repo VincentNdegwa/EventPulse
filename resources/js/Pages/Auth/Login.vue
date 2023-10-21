@@ -61,7 +61,7 @@ export default {
 
 <template>
     <SweetAlerts ref="sweetAlerts"></SweetAlerts>
-    <section class="main_section">
+    <section class="main_section login-section">
         <div class="login_main">
             <!-- <span v-if="response.error" class="error-disp">{{ response.message }}</span> -->
 

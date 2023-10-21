@@ -407,8 +407,20 @@ class events_controller extends Controller
                 }
             }
             $hostIndex = 0;
+            $hostsWithIds = [];
+            $hostsWithoutIds = [];
+            $hostsRemoved = [];
             foreach ($request->input("hosts") as $host) {
                 if (isset($host["id"])) {
+                    $hostsWithIds[] = $host;
+                } else {
+                    $hostsWithoutIds[] = $host;
+                }
+            }
+            // get the count of the hosts in that event
+            $initialHostCount = host::where("host_event_id", $request->input("id"))->get();
+            if (count($hostsWithIds) >= count($initialHostCount)) {
+                foreach ($hostsWithIds as $host) {
                     if (
                         preg_match('/^data/', $request->input("profile_image"))
                     ) {
@@ -444,31 +456,48 @@ class events_controller extends Controller
                             $message = "Failed to update host";
                         }
                     }
-
-                    // print_r($host);
-                } else {
-                    $hostImage = $host["profile_image"];
-                    $binaryImageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $hostImage));
-                    $fileName = "host-" . $hostIndex . time() . ".jpg";
-                    Storage::disk("public")->put($fileName, $binaryImageData);
-                    $url = Storage::url($fileName);
-
-                    $host = host::create([
-                        "profile_image" => $url,
-                        "host_event_id" => $request->input("id"),
-                        "host_name" => $host["host_name"],
-                        "host_email" => $host["host_email"],
-                        "host_occupation" => $host["host_occupation"],
-                        "host_social" => $host["host_social"],
-                    ]);
-                    $hostIndex++;
-
-                    if (!$host) {
-                        $updatedStatus = false;
-                        $message = "Failed to create the new Host";
+                }
+            } else {
+                foreach ($initialHostCount as $existHost) {
+                    $found = false;
+                    foreach ($hostsWithIds as $host) {
+                        if ($host["id"] == $existHost->id) {
+                            $found = true;
+                            break;
+                        }
+                    }
+                    if (!$found) {
+                        $hostsRemoved[] = $existHost->id;
                     }
                 }
+                foreach($hostsRemoved as $hostId){
+                    $deletedHosts = host::findOrFail($hostId)->delete();
+                }
             }
+
+            foreach ($hostsWithoutIds as $host) {
+                $hostImage = $host["profile_image"];
+                $binaryImageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $hostImage));
+                $fileName = "host-" . $hostIndex . time() . ".jpg";
+                Storage::disk("public")->put($fileName, $binaryImageData);
+                $url = Storage::url($fileName);
+
+                $host = host::create([
+                    "profile_image" => $url,
+                    "host_event_id" => $request->input("id"),
+                    "host_name" => $host["host_name"],
+                    "host_email" => $host["host_email"],
+                    "host_occupation" => $host["host_occupation"],
+                    "host_social" => $host["host_social"],
+                ]);
+                $hostIndex++;
+
+                if (!$host) {
+                    $updatedStatus = false;
+                    $message = "Failed to create the new Host";
+                }
+            }
+
             if ($updatedStatus) {
                 DB::commit();
                 return response()->json([

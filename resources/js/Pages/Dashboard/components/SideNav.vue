@@ -31,6 +31,21 @@ export default {
         } else {
             console.log("no data")
         }
+
+        let navItem = document.querySelectorAll(".nav-item")
+        if (window.innerWidth < 900 && window.innerWidth > 500) {
+            navItem.forEach(element => {
+                element.addEventListener("mouseover", () => {
+                    let navText = element.querySelector(".nav-text");
+                    navText.style.display = "flex";
+                })
+
+                element.addEventListener("mouseout", () => {
+                    let navText = element.querySelector(".nav-text");
+                    navText.style.display = "none";
+                })
+            });
+        }
     },
 };
 </script>

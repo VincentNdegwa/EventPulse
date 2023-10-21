@@ -91,6 +91,8 @@
     }
     .nav-text {
         display: none;
+        font-size: 0.7em;
+        color: var(--main-blue);
     }
     .side-nav {
         width: 10%;
@@ -109,6 +111,8 @@
     /*  */
     .nav-text {
         display: flex;
+        font-size: 1em;
+        color: var(--main-white);
     }
     .dash-main {
         padding-left: 0%;

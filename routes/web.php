@@ -24,46 +24,81 @@ use PhpParser\Builder\Param;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Home/MainPage', [
-        "userId" => auth()->id(),
-        "loggedIn" => auth()->check()
-    ]);
+Route::group(["middleware" => "auth"], function () {
+    Route::get('/', function () {
+        return Inertia::render('Home/MainPage', [
+            "userId" => auth()->id(),
+            "loggedIn" => auth()->check()
+        ]);
+    });
+
+    Route::get('/register', function () {
+        return Inertia::render('Auth/Register');
+    })->name("register");
+
+
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard/Dashboard', [
+            "userId" => auth()->id(),
+        ]);
+    })->name("dashboard")->middleware("auth");
+    Route::get('/events', function () {
+        return Inertia::render('Events/Events');
+    })->name("events");
+
+    Route::get('/my-events', function () {
+        return Inertia::render('MyEvents/MyEvents');
+    })->name("my-events");
+    Route::get('/create', function () {
+        return Inertia::render('Create/Create');
+    })->name("create_event");
+    Route::get('/tickets', function () {
+        return Inertia::render('Tickets/Tickets');
+    })->name("tickets");
+    Route::get('/approvals', function () {
+        return Inertia::render('Approvals/Approvals');
+    })->name("approvals");
+
+
+    Route::get('/profile', function () {
+        return Inertia::render('Profile/Profile');
+    })->name("profile");
+
+
+    Route::get('/view/{id}', function ($id) {
+
+        if ($id == null || $id == "undefined") {
+            Inertia::render("Events/Events", [
+                "error" => true,
+                "message" => "Invalid Data"
+            ]);
+        } else {
+            try {
+                $allEvents = events::with('hosts')->where("events.id", $id)->get();
+                return Inertia::render("SingleEvent/SingleEvents", [
+                    "error" => false,
+                    "data" => $allEvents
+                ]);
+            } catch (\Exception $th) {
+                return Inertia::render("Events/Events", [
+                    "error" => true,
+                    "message" => $th->getMessage(),
+                ]);
+            }
+        }
+    })->name("getOneView");
+
+    Route::get("/category", function (Request $request) {
+        $event = events::where("category", $request->input("category"))->get();
+        return Inertia::render("Events/Events", [
+            "catEvents" => $event
+        ]);
+    })->name("category");
 });
+
 Route::get('/login', function () {
     return Inertia::render('Auth/Login');
 })->name("login");
-Route::get('/register', function () {
-    return Inertia::render('Auth/Register');
-})->name("register");
-
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard/Dashboard', [
-        "userId" => auth()->id(),
-    ]);
-})->name("dashboard")->middleware("auth");
-Route::get('/events', function () {
-    return Inertia::render('Events/Events');
-})->name("events");
-
-Route::get('/my-events', function () {
-    return Inertia::render('MyEvents/MyEvents');
-})->name("my-events");
-Route::get('/create', function () {
-    return Inertia::render('Create/Create');
-})->name("create_event");
-Route::get('/tickets', function () {
-    return Inertia::render('Tickets/Tickets');
-})->name("tickets");
-Route::get('/approvals', function () {
-    return Inertia::render('Approvals/Approvals');
-})->name("approvals");
-
-
-Route::get('/profile', function () {
-    return Inertia::render('Profile/Profile');
-})->name("profile");
 // create_event
 Route::group(['prefix' => 'user'], function () {
     Route::post('register', [user_controller::class, 'register']);
@@ -78,33 +113,3 @@ Route::post("/user-id", function () {
     ];
     return response()->json($data, 200);
 })->name("get-user-id");
-
-Route::get('/view/{id}', function ($id) {
-
-    if ($id == null || $id == "undefined") {
-        Inertia::render("Events/Events", [
-            "error" => true,
-            "message" => "Invalid Data"
-        ]);
-    } else {
-        try {
-            $allEvents = events::with('hosts')->where("events.id", $id)->get();
-            return Inertia::render("SingleEvent/SingleEvents", [
-                "error" => false,
-                "data" => $allEvents
-            ]);
-        } catch (\Exception $th) {
-            return Inertia::render("Events/Events", [
-                "error" => true,
-                "message" => $th->getMessage(),
-            ]);
-        }
-    }
-})->name("getOneView");
-
-Route::get("/category", function (Request $request) {
-    $event = events::where("category", $request->input("category"))->get();
-    return Inertia::render("Events/Events", [
-        "catEvents" => $event
-    ]);
-})->name("category");
