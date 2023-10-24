@@ -9,10 +9,47 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use PhpParser\Node\Stmt\TryCatch;
 
 class events_controller extends Controller
 {
+    function getMainEvents(Request $request)
+    {
+        try {
+            $date = now()->toDateString();
+            $latestEvents = events::with('hosts')
+                ->orderBy("events.created_at", "desc")
+                ->whereDate("events.deadline_application", ">=", $date)
+                ->limit(20)
+                ->get();
+            $recomendedEvents = events::with("hosts")
+                ->withCount("eventApplicants")
+                ->whereDate("events.deadline_application", ">=", $date)
+                ->limit(20)
+                ->orderBy("event_applicants_count", "DESC")
+                ->get();
+            $upcomingEvents = events::with("hosts")
+                ->withCount("eventApplicants")
+                ->whereDate("events.event_date", ">=", now()->addDays(2)->toDateString())
+                ->whereDate("events.event_date", "<=", now()->addDays(8)->toDateString())
+                ->limit(20)
+                ->orderBy("event_applicants_count", "DESC")
+                ->get();
+
+            return response()->json([
+                "error" => false,
+                "latestEvents" => $latestEvents,
+                "recomendedEvents" => $recomendedEvents,
+                "upCommingEvents" => $upcomingEvents,
+                "day" => $date
+            ]);
+        } catch (\Exception $th) {
+            return response()->json([
+                "error" => true,
+                "message" => $th->getMessage()
+            ]);
+        }
+    }
+
     function createEvent(Request $request)
     {
         try {
@@ -470,7 +507,7 @@ class events_controller extends Controller
                         $hostsRemoved[] = $existHost->id;
                     }
                 }
-                foreach($hostsRemoved as $hostId){
+                foreach ($hostsRemoved as $hostId) {
                     $deletedHosts = host::findOrFail($hostId)->delete();
                 }
             }

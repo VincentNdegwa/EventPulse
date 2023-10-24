@@ -38,6 +38,7 @@ Route::group(['prefix' => 'myevents'], function () {
     Route::post("/update", [events_controller::class, "updateMyEvent"]);
 });
 Route::group(['prefix' => 'retrieve'], function () {
+    Route::post("/", [events_controller::class, "getMainEvents"]);
     Route::post("/events/all", [events_controller::class, "getAllEvents"]);
     Route::post("/single", [events_controller::class, "getOneEvent"]);
 });

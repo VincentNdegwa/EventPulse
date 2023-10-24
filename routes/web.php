@@ -24,13 +24,13 @@ use PhpParser\Builder\Param;
 |
 */
 
+Route::get('/', function () {
+    return Inertia::render('Home/MainPage', [
+        "userId" => auth()->id(),
+        "loggedIn" => auth()->check()
+    ]);
+});
 Route::group(["middleware" => "auth"], function () {
-    Route::get('/', function () {
-        return Inertia::render('Home/MainPage', [
-            "userId" => auth()->id(),
-            "loggedIn" => auth()->check()
-        ]);
-    });
 
     Route::get('/register', function () {
         return Inertia::render('Auth/Register');

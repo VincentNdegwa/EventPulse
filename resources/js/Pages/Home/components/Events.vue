@@ -1,3 +1,19 @@
+<script>
+export default {
+    data() {
+        return {
+
+        }
+    }, methods: {
+
+    },
+    mounted() {
+
+    }
+
+}
+</script>
+
 <template>
     <div class="view-container" id="events">
         <div class="view-holder">
