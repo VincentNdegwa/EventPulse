@@ -49,15 +49,20 @@ export default {
 <template>
     <div class="fillable-container">
         <div class="part-one-fillables">
- 
             <!--  -->
-           <div class="input-holder mb-2">
+            <div class="input-holder mb-2">
+                <label class="event-label">Event Name</label>
+                <input v-model="eventData.title" type="text" class="event-form" required />
+                <span class="helper-text">Add a simplename of your event</span>
+            </div>
+            <!--  -->
+            <div class="input-holder mb-2">
                 <label class="event-label">Event Description</label>
                 <textarea v-model="eventData.description" type="text" class="event-form event-text-area"
                     required></textarea>
                 <span class="helper-text">Add a description that explains what will be in the event and what
                     the event is all about</span>
-            </div> 
+            </div>
             <!--  -->
             <div class="input-holder mb-2">
                 <label class="event-label">Event Barner</label>

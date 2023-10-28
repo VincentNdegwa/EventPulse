@@ -24,6 +24,7 @@ class events_controller extends Controller
             $recomendedEvents = events::with("hosts")
                 ->withCount("eventApplicants")
                 ->whereDate("events.deadline_application", ">=", $date)
+                ->where("price", "0.00")
                 ->limit(20)
                 ->orderBy("event_applicants_count", "DESC")
                 ->get();
@@ -34,12 +35,20 @@ class events_controller extends Controller
                 ->limit(20)
                 ->orderBy("event_applicants_count", "DESC")
                 ->get();
+            $trendingEvents = events::with("hosts")
+                ->withCount("eventApplicants")
+                ->whereDate("events.deadline_application", ">=", $date)
+                ->limit(20)
+                ->orderBy("event_applicants_count", "DESC")
+                ->limit(3)
+                ->get();
 
             return response()->json([
                 "error" => false,
                 "latestEvents" => $latestEvents,
                 "recomendedEvents" => $recomendedEvents,
                 "upCommingEvents" => $upcomingEvents,
+                "trendingEvents" => $trendingEvents,
                 "day" => $date
             ]);
         } catch (\Exception $th) {
@@ -375,14 +384,18 @@ class events_controller extends Controller
     function getEventSearch(Request $request)
     {
         try {
-            $events = events::where(function ($query) use ($request) {
-                $search = "%" . $request->input("search") . "%";
-                $query->orWhere("title", "LIKE", $search)
-                    ->orWhere("description", "LIKE", $search)
-                    ->orWhere("category", "LIKE", $search)
-                    ->orWhere("venue", "LIKE", $search)
-                    ->orWhere("address", "LIKE", $search);
-            })->get();
+            if ($request->input("search") == "All") {
+                $events = events::with('hosts')->orderBy("events.created_at", "desc")->get();
+            } else {
+                $events = events::where(function ($query) use ($request) {
+                    $search = "%" . $request->input("search") . "%";
+                    $query->orWhere("title", "LIKE", $search)
+                        ->orWhere("description", "LIKE", $search)
+                        ->orWhere("category", "LIKE", $search)
+                        ->orWhere("venue", "LIKE", $search)
+                        ->orWhere("address", "LIKE", $search);
+                })->with("hosts")->get();
+            }
 
             return response()->json([
                 "error" => false,

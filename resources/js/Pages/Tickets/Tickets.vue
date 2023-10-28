@@ -11,7 +11,7 @@ export default {
             user_id: "",
             ticketsData: [],
             eventData: {},
-            categories: []
+            // categories: []
         }
     },
     components: {
@@ -23,7 +23,6 @@ export default {
             this.openTicket = !this.openTicket
             let clickedData = this.ticketsData.find((item) => item.event_application_id == id)
             this.eventData = clickedData
-            console.log(this.eventData)
         },
         closeTicket() {
             this.openTicket = false
@@ -34,9 +33,9 @@ export default {
                 } else {
                     this.ticketsData = res.data.data;
                     // this.categories = res.data.category
-                    for (let index = 0; index < res.data.category.length; index++) {
-                        this.categories.push(res.data.category[index])
-                    }
+                    // for (let index = 0; index < res.data.category.length; index++) {
+                    //     this.categories.push(res.data.category[index])
+                    // }
                 }
             }).catch(err => {
                 console.log(err)
@@ -51,9 +50,9 @@ export default {
                     this.ticketsData = res.data.data
                 }
             }).catch(err => {
+                this.$refs.sweetAlerts.showMessage(err)
                 console.log(err)
             })
-            console.log(category)
         }
     }, mounted() {
         let user = localStorage.getItem("user_details");
@@ -75,11 +74,11 @@ export default {
         <div class="dash-main">
             <div class="tickets-container">
                 <div class="tickets-sort">
-                    <div class="ticket-sort-holder" @click="sortTicketsCategory(item.category_name)"
+                    <!-- <div class="ticket-sort-holder" @click="sortTicketsCategory(item.category_name)"
                         v-for="(item, index) in categories" :key="index">
                         <i class='bx bxs-plane-take-off'></i>
                         <p>{{ item.category_name }}</p>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="applied-tickets">

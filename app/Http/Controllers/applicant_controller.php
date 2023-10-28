@@ -44,8 +44,9 @@ class applicant_controller extends Controller
             if ($ticket) {
                 return response()->json([
                     "error" => false,
+                    "message" => "Tickets fetched",
                     "data" => $ticket,
-                    "category" => $categories
+                    // "category" => $categories
                 ]);
             } else {
                 return response()->json([
