@@ -16,7 +16,9 @@ class userProfile extends Model
         "country",
         "state",
         "profile_image",
-        "user_profile_id"
+        "user_profile_id",
+        "email_status",
+        "phone_status"
     ];
 
 

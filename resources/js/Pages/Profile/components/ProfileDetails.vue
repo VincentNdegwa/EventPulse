@@ -7,7 +7,8 @@ export default {
     },
 }
 </script>
-
+<!--  "email_status",
+        "phone_status" -->
 <template>
     <div v-if="userData.profile" class="profile-details">
         <div class="profile-details-items">
@@ -24,7 +25,7 @@ export default {
         </div>
         <div class="profile-details-items">
             <span>Email Status</span>
-            <p>Inactive</p>
+            <p>{{ userData.email_status }}</p>
         </div>
         <div class="profile-details-items">
             <span>Phone No</span>
@@ -32,7 +33,7 @@ export default {
         </div>
         <div class="profile-details-items">
             <span>Phone Status</span>
-            <p>Inactive</p>
+            <p>{{ userData.phone_status }}</p>
         </div>
         <div class="profile-details-items">
             <span>Address</span>
