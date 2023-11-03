@@ -65,8 +65,10 @@
 }
 
 .event-desc-display > p {
-    font-size: 0.6em;
-    margin-bottom: 0.4em;
+    font-size: 0.7em;
+    margin-left: 0.4em;
+    margin-top: 1em;
+    color: var(--main-orange);
 }
 
 .card-body > h6 {
@@ -76,6 +78,15 @@
 
 .event-container::-webkit-scrollbar {
     display: none;
+}
+.book_button {
+    position: absolute;
+    bottom: 1em;
+    right: 1em;
+    background: var(--main-blue);
+    padding: 0.7em;
+    color: var(--main-white);
+    border-radius: 1em;
 }
 
 @media screen and (max-width: 1305px) {

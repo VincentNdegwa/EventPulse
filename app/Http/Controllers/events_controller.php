@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\eventApplication;
 use App\Models\events;
 use App\Models\host;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -215,12 +216,16 @@ class events_controller extends Controller
     function getAllEvents()
     {
         try {
+            $today = Carbon::now()->toDateString();
             $categories = DB::table("category")->get();
-            $allEvents = events::with('hosts')->orderBy("events.created_at", "desc")->get();
+            $allEvents = events::with('hosts')
+                ->whereDate("event_date", ">", $today)
+                ->orderBy("events.created_at", "desc")->get();
             return response()->json([
                 "error" => false,
                 "data" => $allEvents,
-                "categories" => $categories
+                "categories" => $categories,
+                "date" => $today
             ]);
         } catch (\Exception $th) {
             return response()->json([

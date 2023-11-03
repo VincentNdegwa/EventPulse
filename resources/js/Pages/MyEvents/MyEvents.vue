@@ -4,6 +4,8 @@ import MyEventsHeader from "./components/MyEventsHeader.vue";
 import MyEventsUpdate from "./components/MyEventsUpdate.vue";
 import Loader from "@/components/Loader.vue";
 import axios from "axios";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime"
 export default {
     data() {
         return {
@@ -65,12 +67,10 @@ export default {
                 console.log(err)
             })
         }, calculateDays(date) {
-            let current = new Date();
             let eventTime = new Date(date)
             if (eventTime) {
-                let diffMill = eventTime - current
-                let days = Math.ceil(diffMill / (1000 * 60 * 60 * 24));
-                return days;
+                dayjs.extend(relativeTime);
+                return dayjs(date).fromNow()
             } else {
                 return "N/A"
             }
@@ -124,9 +124,7 @@ export default {
                 <div class="event-body">
                     <div class="my-events-container">
                         <div class="my-events-cards-holder event-container">
-
-                            <div @click="toggleMore(item.id)" class="card" v-for="(item, index) in myEventsData"
-                                :key="index">
+                            <div class="card" v-for="(item, index) in myEventsData" :key="index">
                                 <img :src="item.event_image" class="card-img-top" alt="...">
                                 <div class="card-body">
                                     <p class="card-text">{{ item.title }}</p>
@@ -134,12 +132,12 @@ export default {
                                     <div class="event-desc-display">
                                         <span>{{ item.venue }}</span>
                                         <span>{{ item.category }}</span>
-                                        <p>{{ this.calculateDays(item.event_date) }} Days to Event</p>
+                                        <p>{{ this.calculateDays(item.event_date) }}</p>
                                     </div>
-                                    <h6>{{ this.eveluatePrice(item.price) }}</h6>
+                                    <!-- <h6>{{ eveluatePrice(item.price) }}</h6> -->
+                                    <button @click="toggleMore(item.id)" class="book_button">View</button>
                                 </div>
                             </div>
-
 
                         </div>
                         <div v-if="openMore" class="event-more-desc">

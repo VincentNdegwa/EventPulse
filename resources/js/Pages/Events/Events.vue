@@ -5,6 +5,8 @@ import EventHeader from './components/EventHeader.vue';
 import Loader from "@/components/Loader.vue";
 import SingleEvent from "../SingleEvent/SingleEvents.vue"
 import { router } from '@inertiajs/vue3';
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime"
 export default {
     props: {
         error: Boolean,
@@ -47,6 +49,7 @@ export default {
                         this.eventsData = res.data.data
                         this.categories = res.data.categories
                         this.loading = false
+                        console.log(res.data)
                     } else {
                         this.errorText = res.data.message;
                     }
@@ -57,12 +60,10 @@ export default {
             })
 
         }, calculateDays(date) {
-            let current = new Date();
             let eventTime = new Date(date)
             if (eventTime) {
-                let diffMill = eventTime - current
-                let days = Math.ceil(diffMill / (1000 * 60 * 60 * 24));
-                return days;
+                dayjs.extend(relativeTime);
+                return dayjs(date).fromNow()
             } else {
                 return "N/A"
             }
@@ -123,7 +124,7 @@ export default {
                 <div class="event-body">
                     <div v-if="eventsData.length > 0" class="event-container">
 
-                        <div @click="openEvent(item.id)" class="card" v-for="(item, index) in eventsData" :key="index">
+                        <div class="card" v-for="(item, index) in eventsData" :key="index">
                             <img :src="item.event_image" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <p class="card-text">{{ item.title }}</p>
@@ -131,9 +132,10 @@ export default {
                                 <div class="event-desc-display">
                                     <span>{{ item.venue }}</span>
                                     <span>{{ item.category }}</span>
-                                    <p>{{ this.calculateDays(item.event_date) }} Days to Event</p>
+                                    <p>{{ this.calculateDays(item.event_date) }}</p>
                                 </div>
-                                <h6>{{ eveluatePrice(item.price) }}</h6>
+                                <!-- <h6>{{ eveluatePrice(item.price) }}</h6> -->
+                                <button @click="openEvent(item.id)" class="book_button">Book</button>
                             </div>
                         </div>
 

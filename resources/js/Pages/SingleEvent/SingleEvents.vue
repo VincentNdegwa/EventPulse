@@ -55,41 +55,47 @@ export default {
         }, submitForm(data) {
             if (this.validateInputs(data)) {
                 this.loading = true
-                axios.post("/user-id").then(res => {
-                    this.userInputs.user_id = res?.data?.userId;
-                    if (this.userInputs.user_id) {
-                        axios.post("/api/event/apply", data).then(res => {
-                            this.loading = false
-                            if (res?.data?.error) {
-                                this.$refs.sweetAlerts.showNotificationError(res.data.message)
-                            } else {
-                                this.$refs.sweetAlerts.showNotification(res.data.message);
-                                localStorage.removeItem("application_status")
-                                setTimeout(() => {
-                                    router.visit(route("tickets"))
-                                }, 3000)
-                                localStorage.removeItem("user_inputs");
-                                localStorage.removeItem("application_status");
-                            }
-                            console.log(res.data)
-                        }).catch(err => {
-                            this.$refs.sweetAlerts.showNotificationError("Failed, an error occured!!")
-                            console.log(err)
-                            this.error = true;
-                            this.message = err
-                            this.loading = false
-                        })
-                    }
-                }).catch(err => {
-                    this.$refs.sweetAlerts.showNotificationError("Failed, an error occured!!")
-                    console.log(err)
-                    this.error = true;
-                    this.message = err
-                })
+                if (new Date(this.eventsData.deadline_application) >= new Date()) {
+
+                    axios.post("/user-id").then(res => {
+                        this.userInputs.user_id = res?.data?.userId;
+                        if (this.userInputs.user_id) {
+                            axios.post("/api/event/apply", data).then(res => {
+                                this.loading = false
+                                if (res?.data?.error) {
+                                    this.$refs.sweetAlerts.showNotificationError(res.data.message)
+                                } else {
+                                    this.$refs.sweetAlerts.showNotification(res.data.message);
+                                    localStorage.removeItem("application_status")
+                                    setTimeout(() => {
+                                        router.visit(route("tickets"))
+                                    }, 3000)
+                                    localStorage.removeItem("user_inputs");
+                                    localStorage.removeItem("application_status");
+                                }
+                                console.log(res.data)
+                            }).catch(err => {
+                                this.$refs.sweetAlerts.showNotificationError("Failed, an error occured!!")
+                                console.log(err)
+                                this.error = true;
+                                this.message = err
+                                this.loading = false
+                            })
+                        }
+                    }).catch(err => {
+                        this.$refs.sweetAlerts.showNotificationError("Failed, an error occured!!")
+                        console.log(err)
+                        this.error = true;
+                        this.message = err
+                    })
+                } else {
+                    this.$refs.sweetAlerts.showNotificationError("Application Closed")
+                    this.goBack()
+                }
 
 
             } else {
-                this.$refs.showMessage(this.message || "An error has occured")
+                this.$refs.sweetAlerts.showMessage(this.message || "An error has occured")
                 alert(this.error)
             }
         }, validateInputs(data) {
@@ -105,7 +111,6 @@ export default {
             }
         }
     }, mounted() {
-        console.log(this.openApply)
         this.eventsData = this.data[0]
         let storedInputs = localStorage.getItem("user_inputs");
         if (storedInputs) {
