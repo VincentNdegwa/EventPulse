@@ -39,6 +39,13 @@ class profile_controller extends Controller
                 Storage::disk("public")->put($filesName, $binaryImageData);
                 $url = Storage::url($filesName);
 
+                $existingImageUrl = userProfile::where("user_profile_id", $request->input("user_id"))
+                    ->value("profile_image");
+
+                if ($existingImageUrl != "") {
+                    Storage::disk("public")->delete($existingImageUrl);
+                }
+
                 $profile =  userProfile::where("user_profile_id", $request->input("user_id"))->update([
                     "last_name" => $request->input("last_name"),
                     "phone_number" => $request->input("phone_number"),
