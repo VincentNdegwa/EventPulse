@@ -389,8 +389,12 @@ class events_controller extends Controller
     function getEventSearch(Request $request)
     {
         try {
+            $today = now()->toDateString();
             if ($request->input("search") == "All") {
-                $events = events::with('hosts')->orderBy("events.created_at", "desc")->get();
+                $events = events::with('hosts')
+                    ->whereDate("event_date", ">", $today)
+                    ->orderBy("events.created_at", "desc")
+                    ->get();
             } else {
                 $events = events::where(function ($query) use ($request) {
                     $search = "%" . $request->input("search") . "%";
@@ -399,7 +403,10 @@ class events_controller extends Controller
                         ->orWhere("category", "LIKE", $search)
                         ->orWhere("venue", "LIKE", $search)
                         ->orWhere("address", "LIKE", $search);
-                })->with("hosts")->get();
+                })
+                    ->with("hosts")
+                    ->whereDate("event_date", ">", $today)
+                    ->get();
             }
 
             return response()->json([

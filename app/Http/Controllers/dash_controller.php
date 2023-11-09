@@ -26,10 +26,18 @@ class dash_controller extends Controller
                     "user_id" => $request->input("user_id")
                 ]);
             } else {
-                $event = events::inRandomOrder()->with("hosts")->where("creator_id", "!=", request()->input("user_id"))->first();
+                $today = now()->toDateString();
+                $event = events::inRandomOrder()
+                    ->with("hosts")
+                    ->whereDate("event_date", ">", $today)
+                    ->where("creator_id", "!=", request()->input("user_id"))
+                    ->first();
                 $tickets = eventApplication::where("user_id", $request->input("user_id"))
                     ->where("status", "approved")
                     ->orderBy("updated_at", "DESC")
+                    ->whereHas("event", function ($query) {
+                        $query->whereDate("event_date", ">=", now()->toDateString());
+                    })
                     ->with("event")
                     ->limit(3)
                     ->get();

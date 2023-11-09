@@ -39,7 +39,9 @@ class applicant_controller extends Controller
     public function retreiveTickets(Request $request)
     {
         try {
-            $ticket = eventApplication::where("user_id", $request->input("user_id"))->with("event")->get();
+            $ticket = eventApplication::where("user_id", $request->input("user_id"))
+                ->with("event")
+                ->get();
             $categories = DB::table("category")->get();
             if ($ticket) {
                 return response()->json([

@@ -198,7 +198,11 @@
         height: 100vh;
     }
 }
-
+@media screen and (max-width: 700px) {
+    .create-host-container {
+        padding: 1em;
+    }
+}
 /* @media screen and (max-height: 1100px) {
     .fillable-container {
         grid-template-columns: 1fr;

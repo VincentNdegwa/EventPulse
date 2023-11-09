@@ -25,6 +25,7 @@ export default {
             this.eventsCreated = this.localDashData.eventsCreated
             this.eventsApplied = this.localDashData.eventsApplied
             this.eventApplicants = this.localDashData.eventApplicants
+            console.log(this.userTickets)
 
         },
         readableDate(data) {
@@ -136,6 +137,9 @@ export default {
                                 </div>
                             </div>
                         </div>
+                        <div class="no-events-display">
+                            <p>Found no event</p>
+                        </div>
                     </div>
                     <!-- tickets -->
                     <div class="event-tickets-display">
@@ -143,7 +147,7 @@ export default {
                             <span>Tickets</span>
                             <button>View All</button>
                         </span>
-                        <div class="event-tickets-item-holder">
+                        <div v-if="userTickets.length > 0" class="event-tickets-item-holder">
                             <div v-for="(item, index) in userTickets" :key="index" class="ticket-item">
                                 <img :src="item.event.event_image" alt="">
                                 <div class="ticket-details-display">
@@ -156,6 +160,10 @@ export default {
                                 </div>
                             </div>
                         </div>
+                        <div v-else class="no-events-display">
+                            <p>There no approved tickets</p>
+                        </div>
+
                     </div>
 
                     <!-- saved -->

@@ -363,11 +363,31 @@
 }
 
 .no-event {
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 .no-event > span {
+    margin: 0;
+    font-size: 1.5rem;
     color: var(--main-white);
+    font-weight: bold;
+}
+
+.no-events-display {
+    width: 100%;
+    height: 100%;
+    background: var(--main-blue);
+    display: grid;
+    place-items: center;
+}
+.no-events-display > p {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--main-white);
+    font-weight: bold;
 }
 /* .406 */
 /* media queries */
