@@ -169,7 +169,6 @@
 }
 .inputs-host-holder {
     width: 100%;
-    /* border-left: 1px solid gray; */
 }
 .inputs-host-holder > input {
     width: 100%;
@@ -203,9 +202,4 @@
         padding: 1em;
     }
 }
-/* @media screen and (max-height: 1100px) {
-    .fillable-container {
-        grid-template-columns: 1fr;
-        grid-template-rows: 55% 40%;
-    }
-} */
+

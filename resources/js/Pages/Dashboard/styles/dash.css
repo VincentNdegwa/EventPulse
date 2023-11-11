@@ -389,7 +389,6 @@
     color: var(--main-white);
     font-weight: bold;
 }
-/* .406 */
 /* media queries */
 @media screen and (max-width: 684px) {
     .dash-display-container {
