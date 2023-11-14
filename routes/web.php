@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 use Inertia\Inertia;
 use Mockery\Undefined;
 use PhpParser\Builder\Param;
@@ -113,3 +114,7 @@ Route::post("/user-id", function () {
     ];
     return response()->json($data, 200);
 })->name("get-user-id");
+
+Route::get("/email", function () {
+    return View("emailVerification");
+});
