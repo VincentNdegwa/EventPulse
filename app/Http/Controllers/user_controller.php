@@ -22,7 +22,7 @@ class user_controller extends Controller
         $validator = Validator::make($request->all(), [
             'username' => "required|string|max:100",
             'email' => "required|string|unique:users|max:100",
-            'password' => "required|string|min:2",
+            'password' => "required|string|min:6",
             'passwordConf' => "required|string|same:password",
         ]);
 
@@ -48,7 +48,8 @@ class user_controller extends Controller
                         "country" => "",
                         "state" => "",
                         "profile_image" => "",
-                        "user_profile_id" => $user->id
+                        "user_profile_id" => $user->id,
+                        "email_status" => "active",
                     ]);
 
                     return response()->json([

@@ -5,6 +5,9 @@ export default {
     }, methods: {
 
     },
+    mounted() {
+        console.log(this.userData);
+    }
 }
 </script>
 <!--  "email_status",
@@ -25,7 +28,7 @@ export default {
         </div>
         <div class="profile-details-items">
             <span>Email Status</span>
-            <p>{{ userData.email_status }}</p>
+            <p>{{ userData.profile.email_status }}</p>
         </div>
         <div class="profile-details-items">
             <span>Phone No</span>
@@ -33,7 +36,7 @@ export default {
         </div>
         <div class="profile-details-items">
             <span>Phone Status</span>
-            <p>{{ userData.phone_status }}</p>
+            <p>{{ userData.profile.phone_status }}</p>
         </div>
         <div class="profile-details-items">
             <span>Address</span>

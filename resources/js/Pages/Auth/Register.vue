@@ -13,7 +13,8 @@ export default {
                 "email": this.emailProp,
                 "password": "",
                 "passwordConf": ""
-            }
+            },
+            message: ""
         };
     },
 
@@ -21,21 +22,42 @@ export default {
         redirectToLogin() {
             window.location.href = "/login"
         },
+        validate(data) {
+            if (data) {
+                if (data.username.trim() && data.email.trim() && data.password.trim() && data.passwordConf.trim()) {
+                    if (data.password === data.passwordConf) {
+                        if (data.password.length >= 6) {
+                            this.message = ""
+                            return true
+                        } else {
+                            this.message = "Password should be more than 6 characters"
+                        }
+                    } else {
+                        this.message = "Password did not match"
+                    }
+                }
+            }
+            return false
+        },
         submitForm() {
             nprogress.start()
-            axios.post("api/user/register", this.form).then(res => {
-                nprogress.done()
-                if (!res.data.error) {
-                    localStorage.setItem("user_details", JSON.stringify({ user_id: res.data.data.id }));
-                    this.navigateDash(res.data.data.email, res.data.pass)
-                } else {
-                    this.$refs.sweetAlert.showNotificationError(res.data.message)
-                    console.log(res.data)
-                }
-            }).catch(err => {
-                nprogress.done()
-                console.log(err)
-            })
+            if (this.validate(this.form)) {
+                axios.post("/api/user/register", this.form).then(res => {
+                    nprogress.done()
+                    if (!res.data.error) {
+                        localStorage.setItem("user_details", JSON.stringify({ user_id: res.data.data.id }));
+                        this.navigateDash(res.data.data.email, res.data.pass)
+                    } else {
+                        this.$refs.sweetAlert.showNotificationError(res.data.message)
+                        console.log(res.data)
+                    }
+                }).catch(err => {
+                    nprogress.done()
+                    console.log(err)
+                })
+            } else {
+                this.$refs.sweetAlert.showNotificationError(this.message)
+            }
         },
         navigateDash(email, password) {
             nprogress.start();

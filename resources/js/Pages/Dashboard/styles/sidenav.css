@@ -16,14 +16,15 @@
     border-bottom: 1px solid var(--main-white);
 }
 
-.nav-logo > span {
+.user_name {
     /* background: linear-gradient(180deg, var(--main-white), var(--main-blue));
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
     font-size: 2em; */
     color: var(--main-orange);
-    font-size: 1.9em;
+    font-size: 1em;
+    width: 90%;
     text-transform: capitalize;
 }
 

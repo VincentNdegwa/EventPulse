@@ -55,7 +55,7 @@ export default {
             <v-avatar v-if="userData?.profile?.profile_image" :image="userData?.profile?.profile_image"></v-avatar>
             <v-avatar v-else image="images/avatar.jpg"></v-avatar>
 
-            <span>
+            <span class="user_name">
                 {{ userData.username }}
             </span>
         </div>
