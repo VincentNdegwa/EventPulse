@@ -31,12 +31,8 @@ Route::get('/', function () {
         "loggedIn" => auth()->check()
     ]);
 });
+
 Route::group(["middleware" => "auth"], function () {
-
-    Route::get('/register', function () {
-        return Inertia::render('Auth/Register');
-    })->name("register");
-
 
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard/Dashboard', [
@@ -100,6 +96,11 @@ Route::group(["middleware" => "auth"], function () {
 Route::get('/login', function () {
     return Inertia::render('Auth/Login');
 })->name("login");
+
+Route::get('/register', function () {
+    return Inertia::render('Auth/EmailVerfication');
+})->name("register");
+
 // create_event
 Route::group(['prefix' => 'user'], function () {
     Route::post('register', [user_controller::class, 'register']);

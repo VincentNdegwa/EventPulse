@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\applicant_controller;
 use App\Http\Controllers\dash_controller;
+use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\events_controller;
 use App\Http\Controllers\profile_controller;
 use App\Http\Controllers\user_controller;
@@ -63,4 +64,8 @@ Route::group(["prefix" => "profile"], function () {
 
 Route::group(["prefix" => "dashboard"], function () {
     Route::post("/retrieve", [dash_controller::class, "openDash"]);
+});
+
+Route::prefix("/email")->group(function () {
+    Route::post("verify", [EmailVerificationController::class, "send"]);
 });
