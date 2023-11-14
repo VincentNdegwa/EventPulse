@@ -3,6 +3,7 @@
 use App\Http\Controllers\dash_controller;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\user_controller;
+use App\Models\EmailVerificationModel;
 use App\Models\events;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
@@ -116,6 +117,21 @@ Route::post("/user-id", function () {
     return response()->json($data, 200);
 })->name("get-user-id");
 
-Route::get("/email", function () {
-    return View("emailVerification");
+Route::get("/email/status", function (Request $request) {
+
+    $details = EmailVerificationModel::where("md5", $request->input("link"))->first();
+    if ($details) {
+        if ($details->deadline < now()) {
+            return Inertia::render("Auth/EmailVerfication");
+        } else {
+            return Inertia::render("Auth/Register", [
+                "emailProp" => $details->email
+            ]);
+        }
+    } else {
+        return Inertia::render("Auth/Components/TokenExpired");
+    }
+    return response()->json([
+        "data" => $request->input("link")
+    ]);
 });

@@ -7,7 +7,8 @@ export default {
             email: "",
             buttonsDisabled: false,
             loading: false,
-            sent: false
+            sent: false,
+            failed: false
         }
     },
     components: {
@@ -33,16 +34,22 @@ export default {
         requestSend(email) {
             axios.post("api/email/verify", { email: email }).then((res) => {
                 if (res.data.error) {
-                    this.$refs.SweetAlerts.showNotificationError("Failed to send " + res.data.message)
+                    this.$refs.SweetAlerts.showNotificationError("Failed to send, " + res.data.message)
+                    this.failed = true
                 } else {
                     this.$refs.SweetAlerts.showNotification(res.data.message)
                     this.sent = true
+                    this.failed = false
                 }
                 console.log(res.data)
             }).catch((err) => {
                 this.$refs.showMessage(err)
+                this.failed = true
             })
 
+        }
+        , goBack() {
+            window.history.back()
         }
     }
 }
@@ -56,15 +63,17 @@ export default {
             important updates and
             notifications.</p>
 
-        <span v-if="loading && !sent" class="loader-icon"></span>
-        <form v-if="!loading && !sent" @submit.prevent="submitForm" class="verification-form">
+        <span v-if="loading && !sent && !failed" class="loader-icon"></span>
+        <form v-if="(!loading && !sent) || failed" @submit.prevent="submitForm" class="verification-form">
             <div class="mb-3 input_label">
                 <input v-model="email" type="email" class="form-control" placeholder="Enter your active email address"
                     id="pass" required>
             </div>
             <div class="button-container">
-                <button :disabled="buttonsDisabled" class="verification-cancel" type="button">Cancel</button>
-                <button :disabled="buttonsDisabled" class="verification-send" type="submit">Send Email</button>
+                <button :disabled="buttonsDisabled" class="verification-button verification-cancel" @click="goBack"
+                    type="button">Cancel</button>
+                <button :disabled="buttonsDisabled" class="verification-button verification-send" type="submit">Send
+                    Email</button>
             </div>
         </form>
         <h4 v-if="sent" class="sent-message">Email Sent to {{ email }}</h4>
@@ -84,6 +93,8 @@ export default {
 .section-email-ver {
     height: 100vh;
     display: flex;
+    max-width: 1500px !important;
+    width: 100%;
     flex-direction: column;
     align-items: center;
     box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.3);
@@ -157,6 +168,14 @@ export default {
     border-left: 4px solid var(--main-orange);
     border-bottom: 4px solid transparent;
     animation: rotation 0.5s linear infinite reverse;
+}
+
+.verification-button {
+    color: var(--main-white) !important;
+}
+
+.verification-button:hover {
+    background-color: var(--main-blue);
 }
 
 @keyframes rotation {

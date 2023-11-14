@@ -5,11 +5,12 @@ import axios from 'axios';
 import nprogress from 'nprogress';
 import SweetAlerts from '@/components/SweetAlerts.vue';
 export default {
+    props: ["emailProp"],
     data() {
         return {
             form: {
                 "username": "",
-                "email": "",
+                "email": this.emailProp,
                 "password": "",
                 "passwordConf": ""
             }
@@ -95,10 +96,10 @@ export default {
                             <input v-model="form.username" type="text" class="form-control" id="username"
                                 placeholder="Bill">
                         </div>
-                        <div class="mb-3 input_label">
+                        <div class="mb-3 input_label" v-if="!emailProp">
                             <label for="email" class="form-label">Email address</label>
                             <input v-model="form.email" type="email" class="form-control" id="email"
-                                placeholder="test@gmail.com">
+                                placeholder="test@gmail.com" readonly hidden>
                         </div>
                         <div class="mb-3 input_label">
                             <label for="pass" class="form-label">Password</label>
