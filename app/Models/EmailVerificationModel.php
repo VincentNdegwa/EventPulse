@@ -13,5 +13,7 @@ class EmailVerificationModel extends Model
     protected $fillable = [
         "email",
         "md5",
+        "time",
+        "deadline",
     ];
 }

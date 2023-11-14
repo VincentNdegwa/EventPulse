@@ -38,7 +38,7 @@
 <body>
     <P class="headline">Thank you for Signing to EventPulse</P>
     <p class="instruction">Click the following button to verify your email</p>
-    <button class="verify-button"><a href={{ $link }}>Verify</a></button>
+    <a href={{ $link }}> <button class="verify-button">Verify</button> </a>
 </body>
 
 </html>

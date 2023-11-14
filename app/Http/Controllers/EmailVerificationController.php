@@ -19,12 +19,17 @@ class EmailVerificationController extends Controller
             $dataArray["email"] = $email;
             $dataArray["md5"] = $md5;
 
-            $insert = EmailVerificationModel::create($dataArray);
+
+            $insert = EmailVerificationModel::create([
+                "email" => $email,
+                "md5" => $md5
+            ]);
+
             if ($insert) {
                 $appUrl = env("APP_URL");
-                $link = $appUrl . "verify?link=" . $dataArray["md5"];
+                $link = $appUrl . "api/email/status?link=" . $dataArray["md5"];
                 $dataArray["link"] = $link;
-                
+
                 try {
                     Mail::to($email)->send(new EmailVerificationMail($dataArray));
                     return response()->json([
@@ -34,7 +39,23 @@ class EmailVerificationController extends Controller
                 } catch (\Exception $th) {
                     return response()->json(['error' => true, 'message' => $th->getMessage()]);
                 }
+            } else {
+                return response()->json([
+                    "error" => true,
+                    "message" => "Error inserting"
+                ]);
             }
+        } else {
+            return response()->json([
+                "error" => true,
+                "message" => "No Email Sent"
+            ]);
         }
+    }
+
+    public function changeStatus(Request $request){
+        return response()->json([
+            "data"=>$request->input("link")
+        ]);
     }
 }

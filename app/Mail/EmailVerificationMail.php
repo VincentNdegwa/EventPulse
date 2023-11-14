@@ -31,7 +31,7 @@ class EmailVerificationMail extends Mailable
         return new Envelope(
             from: new Address("ndegwavincent7@gmail.com", "EventPulse"),
             replyTo: [
-                new Address($this->dataArray->email),
+                new Address($this->dataArray["email"]),
             ],
             subject: "Email Verification"
         );
@@ -43,9 +43,9 @@ class EmailVerificationMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.emailVerification',
-            with:[
-                "link"=> $this->dataArray->link,
+            view: 'emailVerification',
+            with: [
+                "link" => $this->dataArray["link"],
             ]
         );
     }

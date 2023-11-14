@@ -68,4 +68,5 @@ Route::group(["prefix" => "dashboard"], function () {
 
 Route::prefix("/email")->group(function () {
     Route::post("verify", [EmailVerificationController::class, "send"]);
+    Route::get("status", [EmailVerificationController::class, "changeStatus"]);
 });
