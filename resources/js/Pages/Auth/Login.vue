@@ -50,6 +50,9 @@ export default {
         navigateDash() {
             router.visit("/dashboard");
             localStorage.setItem("login", JSON.stringify({ login: true }))
+        },
+        navBack() {
+            window.history.back()
         }
 
     },
@@ -65,7 +68,7 @@ export default {
         <div class="login_main">
             <!-- <span v-if="response.error" class="error-disp">{{ response.message }}</span> -->
 
-            <div class="login_details">
+            <!-- <div class="login_details">
                 <h1>
                     Welcome to our EventPulse, where you can access exclusive content and personalized features for an
                     enriched
@@ -73,7 +76,7 @@ export default {
                 </h1>
                 <button @click="redirectToRegister" class="button_register" type="button">Register</button>
 
-            </div>
+            </div> -->
 
 
             <div class="login_form_holder login-main-container">
@@ -93,14 +96,13 @@ export default {
                             <button class="button_login" type="button" @click="submitForm">Login</button>
                         </div>
                         <div class="mb-3 input_label">
-                            <button @click="redirectToRegister" type="button"
-                                class="button_register reg_hidden">Register</button>
+                            <button @click="redirectToRegister" type="button" class="button_register">Register</button>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <div class="back-icon">
+            <div class="back-icon" @click="navBack">
                 <i class='bx bx-left-arrow-alt'></i>
             </div>
 

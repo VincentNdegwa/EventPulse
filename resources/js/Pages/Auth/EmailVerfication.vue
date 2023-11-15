@@ -58,8 +58,8 @@ export default {
 <template>
     <SweetAlerts ref="SweetAlerts"></SweetAlerts>
     <section class="section-email-ver">
-        <h3 class="header-ver">Email Verification</h3>
-        <p class="desc-email-pupose">Please enter your email address in the field below. We'll use this email to send you
+        <h3 class="header-ver">Welcome</h3>
+        <p class="desc-email-pupose">Please enter your email address in the field below to be verified. We'll use this email to create an account, send you
             important updates and
             notifications.</p>
 
@@ -98,13 +98,20 @@ export default {
     flex-direction: column;
     align-items: center;
     box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.3);
+    background-image: linear-gradient(90deg,
+            var(--main-orange),
+            var(--main-green));
+}
+
+.section-email-ver>* {
+    max-width: 500px;
 }
 
 .desc-email-pupose {
     width: 70%;
     text-align: center;
     margin-top: 1em;
-    color: var(--main-green);
+    color: var(--main-white);
 }
 
 .verification-form {

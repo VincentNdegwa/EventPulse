@@ -86,6 +86,9 @@ export default {
                     console.error(err);
                 });
 
+        },
+        navBack() {
+            window.history.back()
         }
     },
     components: {
@@ -96,10 +99,10 @@ export default {
 
 <template>
     <SweetAlerts ref="sweetAlert"></SweetAlerts>
-    <section class="main_section">
+    <section class="main_section login-section">
         <div class="login_main">
 
-            <div class="login_details">
+            <!-- <div class="login_details">
                 <h1>
                     Welcome to our EventPulse, where you can access exclusive content and personalized features for an
                     enriched
@@ -107,10 +110,10 @@ export default {
                 </h1>
                 <button @click="redirectToLogin" class="button_register" type="button">Login</button>
 
-            </div>
+            </div> -->
 
 
-            <div class="login_form_holder">
+            <div class="login_form_holder login-main-container">
                 <div class="form_holder">
                     <form class="form_main form-control">
                         <div class="mb-3 input_label">
@@ -129,19 +132,19 @@ export default {
                         </div>
                         <div class="mb-3 input_label">
                             <label for="pass" class="form-label">Password Confirmation</label>
-                            <input v-model="form.passwordConf" type="password" class="form-control" id="pass">
+                            <input v-model="form.passwordConf" type="password" class="form-control" id="pass1">
                         </div>
                         <div class="mb-3 input_label login-button">
                             <button @click="submitForm" class="button_login" type="button">Register</button>
                         </div>
                         <div class="mb-3 input_label">
-                            <button @click="redirectToLogin" class="button_register reg_hidden" type="button">Login</button>
+                            <button @click="redirectToLogin" class="button_register" type="button">Login</button>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <div class="back-icon">
+            <div class="back-icon" @click="navBack">
                 <i class='bx bx-left-arrow-alt'></i>
             </div>
 
