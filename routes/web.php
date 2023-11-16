@@ -122,7 +122,7 @@ Route::get("/email/status", function (Request $request) {
     $details = EmailVerificationModel::where("md5", $request->input("link"))->first();
     if ($details) {
         if ($details->deadline < now()) {
-            return Inertia::render("Auth/EmailVerfication");
+            return Inertia::render("Auth/Components/TokenExpired");
         } else {
             return Inertia::render("Auth/Register", [
                 "emailProp" => $details->email
