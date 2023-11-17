@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
 
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('app:clean-expired-email-verifications')->daily();
+        $schedule->command(CleanExpiredEmailVerifications::class)->daily();
     }
 
 
