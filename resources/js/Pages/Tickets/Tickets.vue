@@ -74,11 +74,11 @@ export default {
         <div class="dash-main">
             <div class="tickets-container">
                 <div class="tickets-sort">
-                    <!-- <div class="ticket-sort-holder" @click="sortTicketsCategory(item.category_name)"
-                        v-for="(item, index) in categories" :key="index">
-                        <i class='bx bxs-plane-take-off'></i>
-                        <p>{{ item.category_name }}</p>
-                    </div> -->
+                    <select>
+                        <option value="applied">Applied</option>
+                        <option value="applied">Applied</option>
+                        <option value="applied">Applied</option>
+                    </select>
                 </div>
 
                 <div class="applied-tickets">

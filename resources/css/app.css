@@ -24,4 +24,5 @@ body {
 #app {
     display: flex;
     justify-content: center;
+    background-color: rgb(252, 248, 241);
 }
