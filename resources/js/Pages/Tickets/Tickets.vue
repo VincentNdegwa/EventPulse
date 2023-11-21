@@ -11,6 +11,7 @@ export default {
             user_id: "",
             ticketsData: [],
             eventData: {},
+            tickestState: "pending"
             // categories: []
         }
     },
@@ -53,6 +54,10 @@ export default {
                 this.$refs.sweetAlerts.showMessage(err)
                 console.log(err)
             })
+        },
+        sortTickets() {
+            this.ticketsData = this.ticketsData.map((item) => item.status == this.tickestState)
+            console.log(this.tickestState)
         }
     }, mounted() {
         let user = localStorage.getItem("user_details");
@@ -74,10 +79,11 @@ export default {
         <div class="dash-main">
             <div class="tickets-container">
                 <div class="tickets-sort">
-                    <select>
-                        <option value="applied">Applied</option>
-                        <option value="applied">Applied</option>
-                        <option value="applied">Applied</option>
+                    <select @change="sortTickets" v-model="tickestState">
+                        <option value="pending" selected>Pending</option>
+                        <option value="rejected">Rejected</option>
+                        <option value="approved">Approved</option>
+                        <option value="passed">Passed</option>
                     </select>
                 </div>
 

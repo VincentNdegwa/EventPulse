@@ -21,6 +21,16 @@
     display: none !important;
     width: 0rem !important;
 }
+.tickets-sort > select {
+    width: 250px;
+    background-color: var(--main-blue);
+    margin-left: 1em;
+    padding: 0.5em;
+    font-size: 1.4rem;
+    color: var(--main-white);
+    border: 1px solid var(--main-orange);
+    border-radius: 1em;
+}
 
 .ticket-sort-holder {
     height: 70%;
