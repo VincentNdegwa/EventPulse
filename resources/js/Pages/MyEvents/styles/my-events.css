@@ -12,6 +12,7 @@
     justify-content: start;
 }
 .my-events-cards-holder > .card {
+    position: relative !important;
     display: grid;
     background-color: green;
     /* height: 250px; */
@@ -145,6 +146,22 @@
     color: var(--main-blue);
 }
 
+.status_badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 5rem;
+    height: 3rem;
+    border-radius: 0 0.3em 0.3em 0.3em;
+    background: rgba(0, 0, 0, 0.6);
+    display: grid;
+    place-items: center;
+}
+.status_text {
+    color: green;
+    margin: 0;
+    font-weight: bold;
+}
 @media screen and (max-width: 950px) {
     .event-more-desc {
         position: absolute;

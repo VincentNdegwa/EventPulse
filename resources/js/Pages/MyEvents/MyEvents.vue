@@ -108,6 +108,14 @@ export default {
             })
         }, removeUpdate() {
             this.viewUpdate = false
+        }, checkEventAStatus(date) {
+            let eventTime = new Date(date)
+            const today = new Date();
+            if (eventTime > today) {
+                return true
+            } else {
+                return false
+            }
         }
     }, mounted() {
         this.requestData()
@@ -126,6 +134,9 @@ export default {
                         <div class="my-events-cards-holder event-container">
                             <div class="card" v-for="(item, index) in myEventsData" :key="index">
                                 <img :src="item.event_image" class="card-img-top" alt="...">
+                                <span class="status_badge">
+                                    <p class="status_text">Open</p>
+                                </span>
                                 <div class="card-body">
                                     <p class="card-text">{{ item.title }}</p>
                                     <span>{{ item.description }}</span>
