@@ -25,8 +25,8 @@
     width: 250px;
     background-color: var(--main-blue);
     margin-left: 1em;
-    padding: 0.5em;
     font-size: 1.4rem;
+    padding-left: 0.5em;
     color: var(--main-white);
     border: 1px solid var(--main-orange);
     border-radius: 1em;

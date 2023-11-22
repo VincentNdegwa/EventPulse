@@ -10,8 +10,9 @@ export default {
             openTicket: false,
             user_id: "",
             ticketsData: [],
+            mainTicketsData: [],
             eventData: {},
-            tickestState: "pending"
+            ticketState: "pending"
             // categories: []
         }
     },
@@ -33,10 +34,8 @@ export default {
                     this.$refs.sweetAlerts.showMessage("An error occured, Please try again later");
                 } else {
                     this.ticketsData = res.data.data;
-                    // this.categories = res.data.category
-                    // for (let index = 0; index < res.data.category.length; index++) {
-                    //     this.categories.push(res.data.category[index])
-                    // }
+                    this.mainTicketsData = res.data.data
+        
                 }
             }).catch(err => {
                 console.log(err)
@@ -56,8 +55,13 @@ export default {
             })
         },
         sortTickets() {
-            this.ticketsData = this.ticketsData.map((item) => item.status == this.tickestState)
-            console.log(this.tickestState)
+            var sortData = []
+            this.mainTicketsData.forEach((item) => {
+                if (item.status == this.ticketState) {
+                    sortData.push(item)
+                }
+            })
+            this.ticketsData = sortData
         }
     }, mounted() {
         let user = localStorage.getItem("user_details");
@@ -79,7 +83,7 @@ export default {
         <div class="dash-main">
             <div class="tickets-container">
                 <div class="tickets-sort">
-                    <select @change="sortTickets" v-model="tickestState">
+                    <select @change="sortTickets" v-model="ticketState">
                         <option value="pending" selected>Pending</option>
                         <option value="rejected">Rejected</option>
                         <option value="approved">Approved</option>
