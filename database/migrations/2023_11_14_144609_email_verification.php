@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string("md5");
             $table->string("code");
             $table->dateTime("time")->default(now());
+            $table->enum("status", ["true", "false"])->default("false");
             $table->dateTime("deadline")->default(now()->addDay());
             $table->timestamps();
         });
