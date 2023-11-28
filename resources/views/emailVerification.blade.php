@@ -2,43 +2,32 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body {
-            background-color: beige;
-            display: grid;
-            justify-items: center;
-        }
-
-        .headline {
-            color: #252b48;
-            font-size: 1.6rem;
-            font-weight: bold;
-            margin: 0
-        }
-
-        .instruction {
-            color: #267871;
-            font-size: 1.2em;
-        }
-
-        .verify-button {
-            padding: 10px;
-            font-size: 1.2rem;
-            color: #ffff;
-            background-color: #ff6000;
-            border-radius: 0.3em;
-            outline: none;
-            border: 0px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
 </head>
 
-<body>
-    <P class="headline">Thank you for Signing to EventPulse</P>
-    <p class="instruction">Click the following button to verify your email</p>
-    <a href={{ $link }}> <button class="verify-button">Verify</button> </a>
+<body style="font-family: Arial, sans-serif;">
+
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f8f8f8; border: 1px solid #ddd;">
+
+        <h2 style="color: #333;">Email Verification</h2>
+
+        <p>Hello,</p>
+
+        <p>Thank you for registering on our website. Please use the following code to verify your email address:</p>
+
+        <p style="font-size: 24px; font-weight: bold; color: #007BFF;">{{ $code }}</p>
+
+        <p>Visit <a href={{ $link }} style="color: #007BFF; text-decoration: none;">{{ $link }}</a> to
+            input the code and complete the verification process.</p>
+
+        <p>If you did not sign up for our website, please ignore this email.</p>
+
+        <p>Best regards,<br>EventPulse Team</p>
+
+    </div>
+
 </body>
 
 </html>

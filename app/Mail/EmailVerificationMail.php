@@ -46,6 +46,7 @@ class EmailVerificationMail extends Mailable
             view: 'emailVerification',
             with: [
                 "link" => $this->dataArray["link"],
+                "code" => $this->dataArray["code"],
             ]
         );
     }

@@ -15,5 +15,6 @@ class EmailVerificationModel extends Model
         "md5",
         "time",
         "deadline",
+        "code",
     ];
 }

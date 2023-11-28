@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("email");
             $table->string("md5");
+            $table->string("code");
             $table->dateTime("time")->default(now());
             $table->dateTime("deadline")->default(now()->addDay());
             $table->timestamps();

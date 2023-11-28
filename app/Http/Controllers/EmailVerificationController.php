@@ -14,7 +14,7 @@ class EmailVerificationController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            "email" => "required|unique:email_verification,email|unique:users,email",
+            "email" => "required:unique:users,email",
         ]);
 
         if ($validator->fails()) {
@@ -29,15 +29,28 @@ class EmailVerificationController extends Controller
             if ($request->has('email')) {
                 $md5 = md5($request->input("email"));
                 $email = $request->input("email");
+                $verificationCode = mt_rand(11111, 99999);
 
                 $dataArray["email"] = $email;
                 $dataArray["md5"] = $md5;
+                $dataArray["code"] = $verificationCode;
 
+                $emailExits = EmailVerificationModel::where("email", $email)->first();
 
-                $insert = EmailVerificationModel::create([
-                    "email" => $email,
-                    "md5" => $md5
-                ]);
+                if ($emailExits) {
+                    $insert = EmailVerificationModel::where("email", $email)->update([
+                        "code" => $verificationCode,
+                        "time" => now(),
+                        "deadline" => now()->addDay()
+                    ]);
+                } else {
+                    $insert = EmailVerificationModel::create([
+                        "email" => $email,
+                        "md5" => $md5,
+                        "code" => $verificationCode,
+                    ]);
+                }
+
 
                 if ($insert) {
                     $appUrl = env("APP_URL");
@@ -70,6 +83,5 @@ class EmailVerificationController extends Controller
 
     public function changeStatus(Request $request)
     {
-        
     }
 }
