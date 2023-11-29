@@ -19,7 +19,7 @@
 
         <p style="font-size: 24px; font-weight: bold; color: #007BFF;">{{ $code }}</p>
 
-        <p>Visit <a href={{ $link }} style="color: #007BFF; text-decoration: none;">{{ $link }}</a> to
+        <p>Visit <a href={{ $link }} style="color: #007BFF; text-decoration: none;">Click Me!</a> to
             input the code and complete the verification process.</p>
 
         <p>If you did not sign up for our website, please ignore this email.</p>

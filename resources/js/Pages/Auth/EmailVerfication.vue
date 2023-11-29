@@ -1,6 +1,7 @@
 <script>
 import SweetAlerts from '@/components/SweetAlerts.vue'
 import axios from 'axios'
+import { router } from "@inertiajs/vue3"
 export default {
     data() {
         return {
@@ -40,6 +41,11 @@ export default {
                     this.$refs.SweetAlerts.showNotification(res.data.message)
                     this.sent = true
                     this.failed = false
+
+                    setTimeout(() => {
+                        router.visit(`/email/status?link=${res.data.md5}`)
+                    }, 3000);
+
                 }
                 console.log(res.data)
             }).catch((err) => {
@@ -59,7 +65,8 @@ export default {
     <SweetAlerts ref="SweetAlerts"></SweetAlerts>
     <section class="section-email-ver">
         <h3 class="header-ver">Welcome</h3>
-        <p class="desc-email-pupose">Please enter your email address in the field below to be verified. We'll use this email to create an account, send you
+        <p class="desc-email-pupose">Please enter your email address in the field below to be verified. We'll use this email
+            to create an account, send you
             important updates and
             notifications.</p>
 

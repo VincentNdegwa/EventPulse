@@ -124,7 +124,7 @@ Route::get("/email/status", function (Request $request) {
         if ($details->deadline < now()) {
             return Inertia::render("Auth/Components/TokenExpired");
         } else {
-            return Inertia::render("Auth/Register", [
+            return Inertia::render("Auth/EmailCode", [
                 "emailProp" => $details->email
             ]);
         }

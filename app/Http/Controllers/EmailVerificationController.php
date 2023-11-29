@@ -48,6 +48,7 @@ class EmailVerificationController extends Controller
                         "email" => $email,
                         "md5" => $md5,
                         "code" => $verificationCode,
+                        "deadline" => now()->addDay()
                     ]);
                 }
 
@@ -62,7 +63,8 @@ class EmailVerificationController extends Controller
                         return response()->json([
                             "error" => false,
                             "message" => "Email Sent",
-                            "code" => $verificationCode
+                            "code" => $verificationCode,
+                            "md5" => $md5
 
                         ]);
                     } catch (\Exception $th) {
