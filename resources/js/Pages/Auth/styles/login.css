@@ -1,6 +1,6 @@
 .login_main {
     position: relative;
-    width: 60% !important;
+    width: 90% !important;
     height: 100vh;
     display: grid;
     place-items: center;
@@ -10,15 +10,15 @@
     width: 100%;
     display: grid;
     place-items: center;
-    background-image: linear-gradient(
+    /* background-image: linear-gradient(
         90deg,
         var(--main-orange),
         var(--main-green)
-    );
+    ); */
 }
 .login_details,
 .login_form_holder {
-    max-width: 600px;
+    max-width: 900px;
     width: 100%;
     height: 100%;
 }
@@ -50,6 +50,9 @@
 .form_holder {
     width: 100%;
     height: 60%;
+    background-color: var(--main-blue);
+    border-radius: 0.9rem;
+    padding: 2rem;
 }
 
 .button_login {

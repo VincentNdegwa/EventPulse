@@ -63,7 +63,7 @@ export default {
 
 <template>
     <SweetAlerts ref="SweetAlerts"></SweetAlerts>
-    <section class="section-email-ver">
+    <section class="login-section">
         <h3 class="header-ver">Welcome</h3>
         <p class="desc-email-pupose">Please enter your email address in the field below to be verified. We'll use this email
             to create an account, send you
@@ -97,7 +97,14 @@ export default {
     margin-top: 3em;
 }
 
-.section-email-ver {
+.verification-form {
+    background-color: var(--main-blue);
+    height: 80%;
+    padding: 2rem;
+    border-radius: 0.9rem;
+}
+
+/* .login-section {
     height: 100vh;
     display: flex;
     max-width: 1500px !important;
@@ -108,10 +115,10 @@ export default {
     background-image: linear-gradient(90deg,
             var(--main-orange),
             var(--main-green));
-}
+} */
 
-.section-email-ver>* {
-    max-width: 500px;
+.login-section>* {
+    max-width: 900px;
 }
 
 .desc-email-pupose {
