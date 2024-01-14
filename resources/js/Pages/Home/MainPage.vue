@@ -2,10 +2,10 @@
 import TopHeader from './components/TopHeader.vue';
 import HeroSection from './components/HeroSection.vue';
 import Events from './components/Events.vue';
-import Sponsors from "../../data/sponsors"
 import Loader from '@/components/Loader.vue';
 import axios from 'axios';
 import SweetAlerts from '@/components/SweetAlerts.vue';
+import SponsorComponent from "./components/SponsorComponent.vue"
 export default {
     props: {
         userId: Number,
@@ -13,7 +13,6 @@ export default {
     },
     data() {
         return {
-            Sponsors,
             loading: false,
             mainData: {}
         }
@@ -23,7 +22,8 @@ export default {
         HeroSection,
         Events,
         Loader,
-        SweetAlerts
+        SweetAlerts,
+        SponsorComponent
     }, mounted() {
         this.requestData()
     }, methods: {
@@ -59,10 +59,11 @@ export default {
                 <div class="sponsors-container">
                     <span>Companies That Support EventPulse</span>
                     <div class="sponsor-cards">
-                        <div class="sponsor-car-item" v-for="(item, index) in Sponsors" :key="index">
+                        <SponsorComponent />
+                        <!-- <div class="sponsor-car-item" v-for="(item, index) in Sponsors" :key="index">
                             <p>{{ item.name }}</p>
                             <img :src="item.url" alt="">
-                        </div>
+                        </div> -->
 
                     </div>
                 </div>

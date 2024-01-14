@@ -18,13 +18,17 @@
 }
 
 .sponsor-cards {
-    height: auto;
+    /* height: auto;
     margin-top: 5em;
     gap: 1rem;
     justify-content: center;
     width: 100%;
     display: flex;
+    flex-wrap: wrap; */
+    display: flex;
     flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
 }
 
 .sponsor-car-item {

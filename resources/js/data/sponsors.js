@@ -1,23 +1,9 @@
 const Sponsor = [
-    {
-        name: "discord",
-        url: "images/discord.png"
-    },
-    {
-        name: "linkedin",
-        url: "images/linkedin.png"
-    },{
-        name: "skype",
-        url: "images/skype.jpg"
-    },{
-        name: "slack",
-        url: "images/slack.png"
-    },{
-        name: "twitter",
-        url: "images/twiter.jpg"
-    },{
-        name: "zoom",
-        url: "images/zoom.jpg"
-    }
+    { name: "discord", url: "images/discord.png", description: "Discord is a messaging platform for communities. It allows users to communicate through voice, video, and text. Create your own server or join existing ones to chat with friends and communities.", website: "https://discord.com" },
+    { name: "linkedin", url: "images/linkedin.png", description: "LinkedIn is a professional networking platform. Connect with professionals, build your professional identity, and grow your network. Discover job opportunities and stay updated on industry news.", website: "https://www.linkedin.com" },
+    { name: "skype", url: "images/skype.jpg", description: "Skype is a communication platform that provides video chat, voice calls, and instant messaging. Connect with friends, family, and colleagues from anywhere in the world.", website: "https://www.skype.com" },
+    { name: "slack", url: "images/slack.png", description: "Slack is a collaboration hub for work. It brings your team's communication and files in one place, where you can easily collaborate and stay organized. Create channels, share files, and integrate with other tools.", website: "https://slack.com" },
+    { name: "twitter", url: "images/twitter.jpg", description: "Twitter is a social media platform for microblogging. Share your thoughts, updates, and engage with others through tweets. Stay connected with the latest trends and news.", website: "https://twitter.com" },
+    { name: "zoom", url: "images/zoom.jpg", description: "Zoom is a video conferencing platform. Host virtual meetings, webinars, and collaborate with teams online. Stay connected and productive no matter where you are.", website: "https://zoom.us" }
 ]
 export default Sponsor
