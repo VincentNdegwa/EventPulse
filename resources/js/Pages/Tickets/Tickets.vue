@@ -13,7 +13,6 @@ export default {
             mainTicketsData: [],
             eventData: {},
             ticketState: "pending"
-            // categories: []
         }
     },
     components: {

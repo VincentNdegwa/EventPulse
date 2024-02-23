@@ -4,14 +4,12 @@
     position: absolute;
     top: 0;
     z-index: 15;
-    /* background: rgba(0, 0, 0, 0.6); */
     background: var(--main-white);
     padding-left: 2em;
     padding-right: 2em;
     display: grid;
     align-content: center;
     color: var(--main-blue);
-    /* place-items: center; */
 }
 .single-events-details {
     display: grid;
