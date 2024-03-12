@@ -59,17 +59,6 @@ export default {
                         Support
                     </a>
                 </button>
-                <button @click="removeMenu">
-                    <a href="#">
-                        Home
-                    </a>
-                </button>
-                <button @click="removeMenu">
-                    <a href="#">
-                        Home
-                    </a>
-
-                </button>
             </div>
             <button v-if="loggedIn" class="login-nav-button" @click="navigateToDash">
                 Dashboard
