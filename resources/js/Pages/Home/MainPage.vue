@@ -6,6 +6,7 @@ import Loader from '@/components/Loader.vue';
 import axios from 'axios';
 import SweetAlerts from '@/components/SweetAlerts.vue';
 import SponsorComponent from "./components/SponsorComponent.vue"
+import Steps from './components/Steps.vue';
 export default {
     props: {
         userId: Number,
@@ -23,7 +24,8 @@ export default {
         Events,
         Loader,
         SweetAlerts,
-        SponsorComponent
+        SponsorComponent,
+        Steps
     }, mounted() {
         this.requestData()
     }, methods: {
@@ -54,6 +56,7 @@ export default {
         <div class="home-conatiner">
             <TopHeader :loggedIn="loggedIn" />
             <HeroSection />
+            <Steps />
             <Events :mainData="mainData" />
             <div class="sponsors-holder cont" id="Support">
                 <div class="sponsors-container">
@@ -81,4 +84,3 @@ export default {
 @import url("./styles/sponsor.css");
 @import url("../../../css/app.css");
 </style>
-
