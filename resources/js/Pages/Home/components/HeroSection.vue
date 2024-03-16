@@ -6,6 +6,7 @@
                 <div class="button-holder">
                     <button>Create <i class='bx bxs-plus-square'></i></button>
                     <button>Find Event <i class='bx bx-search-alt'></i></button>
+                    <hr/>
                 </div>
             </div>
         </main>

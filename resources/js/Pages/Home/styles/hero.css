@@ -34,6 +34,11 @@ img {
     justify-content: flex-start;
     align-items: center; */
     width: 100%;
+    background: linear-gradient(
+        227deg,
+        var(--main-green),
+        var(--main-blue)
+    );
 }
 
 .side-holder {
@@ -85,14 +90,10 @@ img {
     .side-holder {
         width: 100%;
         justify-content: center;
-       
     }
-
 }
 
 @media screen and (max-width: 500px) {
-
-
     .side-holder {
         margin: 0;
     }
