@@ -82,10 +82,16 @@
                     <div class="fs-4 text-center">Goals</div>
                     <div class="more_content_container">
                         <div class="fs-6 content_text">
-                            Our mission is to democratize event planning by providing accessible tools and resources
-                            that enable anyone to bring their vision to life. We strive to simplify the event management
-                            process, streamline communication between organizers and attendees, and foster meaningful
-                            connections that leave a lasting impression.
+                            <ul>
+                                <li>Empowerment: Provide event organizers with tools and support for successful
+                                    planning.</li>
+                                <li>Accessibility: Make event planning intuitive and affordable for all.</li>
+                                <li>Community Building: Foster an inclusive community for idea sharing and
+                                    collaboration.</li>
+                                <li>Innovation: Drive industry innovation with technology and creative solutions.</li>
+                                <li>Impact: Create events that promote diversity, sustainability, and social
+                                    responsibility.</li>
+                            </ul>
                         </div>
                         <div class="illustator_holder">
                             <img src="images/goal.png" alt="mission">

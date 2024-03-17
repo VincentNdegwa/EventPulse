@@ -8,6 +8,7 @@ import SweetAlerts from '@/components/SweetAlerts.vue';
 import SponsorComponent from "./components/SponsorComponent.vue"
 import Steps from './components/Steps.vue';
 import AboutUs from './components/AboutUs.vue';
+import Faqs from './components/Faqs.vue';
 export default {
     props: {
         userId: Number,
@@ -27,7 +28,8 @@ export default {
         SweetAlerts,
         SponsorComponent,
         Steps,
-        AboutUs
+        AboutUs,
+        Faqs,
     }, mounted() {
         this.requestData()
     }, methods: {
@@ -60,7 +62,9 @@ export default {
             <HeroSection />
             <Steps />
             <AboutUs />
+            <Faqs />
             <Events :mainData="mainData" />
+
             <div class="sponsors-holder cont" id="Support">
                 <div class="sponsors-container">
                     <span>Companies That Support EventPulse</span>

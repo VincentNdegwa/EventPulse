@@ -8,7 +8,7 @@
     --main-green: #267871;
     --main-white: #ffffff;
     --main-blue: #252b48;
-    --main-orange: #ff6000;
+    --main-orange: rgb(255, 96, 0);
     --main-fade-green: #9dc2bf;
 }
 body {
