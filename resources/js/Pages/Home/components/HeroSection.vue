@@ -4,8 +4,12 @@
             <h1 class="hero_title">Crafting Unforgettable Moments</h1>
             <p class="hero_subtitle">Every Detail, Every Event, Every Time</p>
             <div class="button-holder">
-                <button class="create_event_btn">Create Your Event <i class='bx bxs-plus-square'></i></button>
-                <button class="find_event_btn">Find Events <i class='bx bx-search-alt'></i></button>
+                <a href="#">
+                    <button class="create_event_btn">Create Your Event <i class='bx bxs-plus-square'></i></button>
+                </a>
+                <a href="#">
+                    <button class="find_event_btn">Find Events <i class='bx bx-search-alt'></i></button>
+                </a>
             </div>
         </div>
     </div>
@@ -20,7 +24,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url("images/bg.jpg");
+    background-image: linear-gradient(135deg,
+            rgba(20, 50, 100, 0.1),
+            rgba(256, 96, 0, 0.4)), url("images/bg.jpg");
+
 }
 
 .hero_content {
@@ -50,6 +57,17 @@
 
 .create_event_btn,
 .find_event_btn {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    &>i {
+        font-size: 1.6rem;
+        color: var(--main-orange);
+    }
+}
+
+.button-holder>a {
     background-color: var(--main-blue);
     color: #fff;
     border: none;
@@ -60,7 +78,13 @@
     text-transform: uppercase;
     border-radius: 25px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    text-decoration: none;
 }
 
+.button-holder>a:hover {
+    background-color: var(--main-white);
+    color: var(--main-blue);
+    transition: all 1s ease;
+}
 </style>

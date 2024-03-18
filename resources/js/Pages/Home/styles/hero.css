@@ -16,35 +16,9 @@ img {
     background-repeat: no-repeat;
     width: 100%;
 }
-.hero_section::after {
-    content: "";
-    position: absolute;
-    /* top: -40%;
-    left: -50%;
-    width: 200%;
-    height: 70%;
-    background: linear-gradient(
-        217deg,
-        var(--main-blue),
-        var(--main-green) 70.71%
-    );
-    background-color: var(--main-blue);
-    transform: rotate(10deg); */
-    /* background-color: rgba(0, 0, 0, 0.6); */
-    background: linear-gradient(
-        135deg,
-        rgba(20, 50, 100, 0.1),
-        rgba(256, 96, 0, 0.4)
-    );
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
+
 .hero_main {
     width: 100%;
-
-    /* background: #fffdfd; */
 }
 
 .side-holder {
@@ -65,32 +39,12 @@ img {
 
 .button-holder {
     display: flex;
+    flex-wrap: wrap;
     margin-top: 2rem;
     gap: 2em;
 }
 
-.button-holder > button {
-    padding: 1rem;
-    outline: none;
-    border: 1px solid var(--main-white);
-    background: var(--main-blue);
-    color: var(--main-green);
-    font-size: 1.2rem;
-    border-radius: 0.5em;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    transition: all ease 1s;
-}
-.button-holder > button:hover {
-    border: 1px solid var(--main-blue);
-    background: var(--main-white);
-    transition: all ease 1s;
-}
-.button-holder > button > i {
-    font-size: 1.6rem;
-    color: var(--main-orange);
-}
+
 
 @media screen and (max-width: 700px) {
     .side-holder {
