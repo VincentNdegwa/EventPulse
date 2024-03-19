@@ -9,6 +9,7 @@ import SponsorComponent from "./components/SponsorComponent.vue"
 import Steps from './components/Steps.vue';
 import AboutUs from './components/AboutUs.vue';
 import Faqs from './components/Faqs.vue';
+import Testimonials from './components/Testimonials.vue';
 export default {
     props: {
         userId: Number,
@@ -30,6 +31,7 @@ export default {
         Steps,
         AboutUs,
         Faqs,
+        Testimonials
     }, mounted() {
         this.requestData()
     }, methods: {
@@ -63,21 +65,21 @@ export default {
             <Steps />
             <AboutUs />
             <Faqs />
-            <Events :mainData="mainData" />
-
+            <Testimonials />
+            <!-- <Events :mainData="mainData" />
             <div class="sponsors-holder cont" id="Support">
                 <div class="sponsors-container">
                     <span>Companies That Support EventPulse</span>
                     <div class="sponsor-cards">
                         <SponsorComponent />
-                        <!-- <div class="sponsor-car-item" v-for="(item, index) in Sponsors" :key="index">
+                        <div class="sponsor-car-item" v-for="(item, index) in Sponsors" :key="index">
                             <p>{{ item.name }}</p>
                             <img :src="item.url" alt="">
-                        </div> -->
+                        </div>
 
                     </div>
                 </div>
-            </div>
+            </div> -->
 
         </div>
 
