@@ -10,6 +10,7 @@ import Steps from './components/Steps.vue';
 import AboutUs from './components/AboutUs.vue';
 import Faqs from './components/Faqs.vue';
 import Testimonials from './components/Testimonials.vue';
+import Contacts from './components/Contacts.vue';
 export default {
     props: {
         userId: Number,
@@ -31,7 +32,8 @@ export default {
         Steps,
         AboutUs,
         Faqs,
-        Testimonials
+        Testimonials,
+        Contacts
     }, mounted() {
         this.requestData()
     }, methods: {
@@ -66,6 +68,7 @@ export default {
             <AboutUs />
             <Faqs />
             <Testimonials />
+            <Contacts />
             <!-- <Events :mainData="mainData" />
             <div class="sponsors-holder cont" id="Support">
                 <div class="sponsors-container">
