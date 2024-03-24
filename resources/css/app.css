@@ -16,6 +16,11 @@ body {
 }
 .main_section {
     max-width: 1500px;
+    height: 200vh;
+    overflow-y: scroll;
+}
+.main_section::-webkit-scrollbar {
+    display: none;
 }
 
 #app {

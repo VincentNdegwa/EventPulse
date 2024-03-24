@@ -18,6 +18,9 @@
 
                         </div>
                     </div>
+
+
+
                 </div>
                 <div class="contact_illust col">
                     <img src="images/contact.png" alt="">
@@ -74,8 +77,8 @@
     margin-bottom: 20px;
     padding: 20px;
 }
-
 .details {
+
     &>h4 {
         color: var(--main-white);
         font-size: 2.5rem;

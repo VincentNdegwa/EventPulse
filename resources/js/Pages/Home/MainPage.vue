@@ -11,6 +11,7 @@ import AboutUs from './components/AboutUs.vue';
 import Faqs from './components/Faqs.vue';
 import Testimonials from './components/Testimonials.vue';
 import Contacts from './components/Contacts.vue';
+import Footer from './components/Footer.vue'
 export default {
     props: {
         userId: Number,
@@ -33,7 +34,8 @@ export default {
         AboutUs,
         Faqs,
         Testimonials,
-        Contacts
+        Contacts,
+        Footer
     }, mounted() {
         this.requestData()
     }, methods: {
@@ -69,7 +71,8 @@ export default {
             <Faqs />
             <Testimonials />
             <Contacts />
-            <!-- <Events :mainData="mainData" />
+            <Footer/>
+             <!-- <Events :mainData="mainData" />
             <div class="sponsors-holder cont" id="Support">
                 <div class="sponsors-container">
                     <span>Companies That Support EventPulse</span>
