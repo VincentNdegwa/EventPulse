@@ -1,7 +1,15 @@
+<script>
+
+export default {
+    methods: {
+     
+    }
+}
+</script>
 <template>
     <div class="about_container p-4">
-        <div class="background">
-            <img src="images/background3D.jpg" alt="background">
+        <div class="background" @mousemove="">
+            <img src="images/background3D.jpg" alt="background" ref="backgroundImage">
         </div>
         <div class="about_holder">
 
@@ -122,12 +130,18 @@
 <style>
 .about_container {
     position: relative;
+    border: 0px;
 
 }
 
 .about_holder {
-    z-index: 1;
+    z-index: 2;
     position: relative;
+
+    &>h3,
+    &>p {
+        color: var(--main-white);
+    }
 }
 
 .background {
@@ -137,12 +151,27 @@
     width: 100%;
     height: 100%;
     z-index: 0;
+    overflow: hidden;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 150%;
+        height: 150%;
+        transform: translate(-50%, -50%);
+        background-color: #242a47da;
+        z-index: 2;
+
+    }
 
     &>img {
         object-fit: cover;
         width: 100%;
         height: 100%;
         object-position: center;
+        filter: blur(5px);
     }
 }
 
