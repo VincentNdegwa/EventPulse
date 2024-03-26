@@ -74,7 +74,6 @@
     width: 100%;
     height: auto;
     background: var(--main-green);
-    margin-bottom: 20px;
     padding: 20px;
 }
 .details {
