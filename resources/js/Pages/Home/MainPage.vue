@@ -49,7 +49,6 @@ export default {
                     this.$refs.SweetAlerts.showMessage(res.data.message)
                     this.loading = false
                 }
-                // console.log(res.data)
             }).catch(err => {
                 this.$refs.SweetAlerts.showMessage(err)
                 console.log(err)
@@ -72,20 +71,7 @@ export default {
             <Testimonials />
             <Contacts />
             <Footer/>
-             <!-- <Events :mainData="mainData" />
-            <div class="sponsors-holder cont" id="Support">
-                <div class="sponsors-container">
-                    <span>Companies That Support EventPulse</span>
-                    <div class="sponsor-cards">
-                        <SponsorComponent />
-                        <div class="sponsor-car-item" v-for="(item, index) in Sponsors" :key="index">
-                            <p>{{ item.name }}</p>
-                            <img :src="item.url" alt="">
-                        </div>
-
-                    </div>
-                </div>
-            </div> -->
+      
 
         </div>
 
