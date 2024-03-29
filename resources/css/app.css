@@ -16,7 +16,7 @@ body {
 }
 .main_section {
     max-width: 1500px;
-    height: 200vh;
+    height: auto;
     overflow-y: scroll;
 }
 .main_section::-webkit-scrollbar {
